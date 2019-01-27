@@ -1,5 +1,4 @@
 .default {
   flex: 1;
-  margin-bottom: 100vh;
-  height: 1000px;
+  margin-bottom: 3rem;
 }

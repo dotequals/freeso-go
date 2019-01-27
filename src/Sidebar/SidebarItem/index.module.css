@@ -7,9 +7,20 @@
   background-color: var(--highlight);
 }
 
+.push {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+}
+
+.push:hover {
+  animation-name: push;
+  animation-duration: 0.3s;
+}
+
+
 .active {
   composes: default;
-  /* border-left: 5px solid var(--accent); */
 }
 
 .active:before {

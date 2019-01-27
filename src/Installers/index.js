@@ -3,7 +3,7 @@ import React from 'react';
 import Header from '../Header';
 
 const fs = window.nodeRequire('fs');
-const { exec, spawn } = window.nodeRequire('child_process');
+const { exec } = window.nodeRequire('child_process');
 const registry = window.nodeRequire('winreg');
 
 // HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full
@@ -41,9 +41,9 @@ const Installers = () => {
 
   console.log(`.NET? ${dotNetInstalled}`);
 
-  const theSimsOnline = new registry({
+  // const theSimsOnline = new registry({
     
-  });
+  // });
 
   const windowsPath = 'C:\\Windows\\';
   // returned true, but only needed for OGL :thinking:

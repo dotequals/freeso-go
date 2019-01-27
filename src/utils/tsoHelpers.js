@@ -7,20 +7,20 @@ const { app } = remote;
 const os = window.nodeRequire('os');
 
 const { arch } = os;
-const ts1Registry = `\\Software\\${arch() === 'x64' ? 'WOW6432Node\\' : ''}Maxis\\The Sims`;
-const localPath = `${app.getAppPath()}${path.sep}data${path.sep}The Sims`;
+const tsoRegistry = `\\Software\\${arch() === 'x64' ? 'WOW6432Node\\' : ''}Maxis\\The Sims Online`;
+const localPath = `${app.getAppPath()}${path.sep}data${path.sep}The Sims Online`;
 
 const getRegistry = async () => {
   const value = await getRegistryValue(
     'HKLM',
-    ts1Registry,
-    'InstallPath'
+    tsoRegistry,
+    'InstallDir'
   );
 
   return value;
 }
 
-const ts1InstallPath = async () => {
+const tsoInstallDir = async () => {
   let localInstall = fs.existsSync(localPath);
   if (localInstall) {
     return {
@@ -40,8 +40,8 @@ const ts1InstallPath = async () => {
   return {};
 }
 
-const hasTs1 = async () => {
-  let localInstall = fs.existsSync(localPath);
+const hasTso = async () => {
+  let localInstall = fs.existsSync(`${app.getAppPath()}${path.sep}data${path.sep}The Sims`);
 
   if (!localInstall && os.platform() === 'win32') {
     const installPath = await getRegistry();
@@ -53,6 +53,6 @@ const hasTs1 = async () => {
 }
 
 export {
-  ts1InstallPath,
-  hasTs1,
+  tsoInstallDir,
+  hasTso,
 };

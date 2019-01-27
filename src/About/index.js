@@ -2,22 +2,21 @@ import React from 'react';
 
 import Header from '../Header';
 
-import styles from './index.module.css';
+import Container from '../Container';
+import Scrollable from '../Scrollable';
+import Main from '../Main';
+import InfoPanel from '../InfoPanel';
 
 const title = 'About';
 
 const About = () => (
-  <div className={styles.scroller}>
+  <Container>
     <Header title={title} />
-    <div className={styles.columns}>
-      <div className={styles.main}>
-        <h3>What is FreeSO?</h3>
+    <Scrollable>
+      <Main>
+        <h3 className="firstHeading">What is FreeSO?</h3>
         <div>
           FreeSO (Free Simulator Online) is a re-implementation of The Sims Online&trade; (TSO) using C#, .NET, and MonoGame.
-        </div>
-        <h3>Is FreeSO Legal?</h3>
-        <div>
-          Yes, FreeSO consists of 100% original code reverse-engineered to replicate the gameplay of TSO. FreeSO is only a game engine, thus any content that resembles the graphics or sound effects of TSO must be legally obtained and provided by the user. We neither distribute nor alter any intellectual property belonging to Electronic Arts, Inc. We use our own original artwork to promote FreeSO and maintain the project as non-commercial. 
         </div>
         <h3>Is FreeSO Legal?</h3>
         <div>
@@ -31,8 +30,8 @@ const About = () => (
         <div>
           Right-click the play button.
         </div>
-      </div>
-      <div className={styles.links}>
+      </Main>
+      <InfoPanel>
         <div className="emphasis">
           Helpful Links
         </div>
@@ -109,9 +108,9 @@ const About = () => (
             </a>
           </li>
         </ul>
-      </div>
-    </div>
-  </div>
+      </InfoPanel>
+    </Scrollable>
+  </Container>
 );
 
 export default About;

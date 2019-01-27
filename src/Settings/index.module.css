@@ -1,0 +1,9 @@
+.setting {
+  margin-bottom: 2rem;
+}
+
+.toggle {
+  align-items: center;
+  display: flex;
+  margin-top: 1rem;
+}

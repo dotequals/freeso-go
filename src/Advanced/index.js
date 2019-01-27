@@ -8,8 +8,13 @@ import Scrollable from '../Scrollable';
 
 import isRunningAsAdmin from '../utils/isRunningAsAdmin';
 import launchScreenshotTool from '../utils/launchScreenshotTool';
+import { ts1InstallPath } from '../utils/ts1Helpers';
+import { tsoInstallDir } from '../utils/tsoHelpers';
+import { fsoInstallPath } from '../utils/fsoHelpers';
+import { simitonePath } from '../utils/simitoneHelpers';
 
 import styles from './index.module.css';
+
 
 const sysInfo = window.nodeRequire('systeminformation');
 const clipboardy = window.nodeRequire('clipboardy');
@@ -27,7 +32,11 @@ class Advanced extends PureComponent {
       includeFilePaths: false,
     };
 
+    this.copied = React.createRef();
+    this.textarea = React.createRef();
+
     this.toggleFilePaths = this.toggleFilePaths.bind(this);
+    this.buildProfile = this.buildProfile.bind(this);
     this.copyProfile = this.copyProfile.bind(this);
     this.requestProfile = this.requestProfile.bind(this);
   }
@@ -47,7 +56,10 @@ class Advanced extends PureComponent {
     const os = await sysInfo.osInfo();
     const graphics = await sysInfo.graphics();
 
-    console.log(os);
+    const ts1Dir = await ts1InstallPath();
+    const tsoDir = await tsoInstallDir();
+    const simitoneDir = simitonePath();
+    const fsoDir = await fsoInstallPath();
 
     const ram = bytesToGB(mem.total);
     let gpus = '';
@@ -55,19 +67,40 @@ class Advanced extends PureComponent {
       gpus += `GPU #${index + 1}: ${gpu.model} VRAM: ${kbToGB(gpu.vram)}GB\n`;
     });
     const isAdmin = await isRunningAsAdmin();
-  
+
+    const { includeFilePaths } = this.state;
+    let ts1Text = '';
+    let tsoText = '';
+    let simitoneText = '';
+    let fsoText = '';
+    if (includeFilePaths) {
+      ts1Text = 
+`The Sims: ${ts1Dir.value ? ts1Dir.value : 'Not Installed'}
+Registry Value? ${ts1Dir.isGlobal ? 'Yes' : `${ts1Dir.value ? 'No' : 'N/A'}`}`;
+      tsoText = 
+`The Sims Online: ${tsoDir.value ? tsoDir.value : 'Not Installed'}
+Registry Value? ${tsoDir.isGlobal ? 'Yes' : `${tsoDir.value ? 'No' : 'N/A'}`}`;
+      fsoText =
+`FreeSO: ${fsoDir.value ? fsoDir.value : `${tsoDir.value ? 'Not Installed' : 'Not Eligible (Missing The Sims Online)'}`}
+Registry Value? ${fsoDir.isGlobal ? 'Yes' : `${fsoDir.value ? 'No' : 'N/A'}`}`;
+      simitoneText = 
+`Simitone: ${simitoneDir ? simitoneDir : `${ts1Dir.value ? 'Not Installed' : 'Not Eligible (Missing The Sims)'}`}`;
+    }
+
     const profile = 
-`${isAdmin ? 'Running' : 'Not running'} FreeSO Launcher Go as Administrator
+`${isAdmin ? 'Running' : 'Not running'} FreeSO Go as Administrator
 
 CPU: ${cpu.speed}GHz ${cpu.cores} core ${cpu.manufacturer} ${cpu.brand}
 RAM: ${ram}GB
 OS: ${os.distro} ${os.release} (${os.arch === 'x64' ? '64 bit' : '32 bit'})
 ${gpus}
+${tsoText}
 
-The Sims Registry InstallPath: 
-Simitone: 
-The Sims Online Registry InstallPath:
-FreeSO:
+${fsoText}
+
+${ts1Text}
+
+${simitoneText}
 
 Graphics Mode:
 3D Mode:
@@ -78,19 +111,33 @@ Graphics Mode:
 
   copyProfile() {
     const { profile } = this.state;
+    const copied = this.copied.current;
     clipboardy.writeSync(profile);
-    this.setState({ copied: true })
+    this.setState({ copied: true });
+    copied.style.visibility = 'visible';
+
+    setTimeout(() => {
+      copied.style.visibility = 'hidden';
+    }, 5e3);
   }
 
   async requestProfile() {
+    const copied = this.copied.current;
+    const textarea = this.textarea.current;
+    copied.style.visibility = 'hidden';
+    textarea.style.display = 'none';
     this.setState({ copied: false, profile: '' });
+
     const profile = await this.buildProfile();
+    
     this.setState({ profile });
+    textarea.style.display = 'inline-block';
+    textarea.style.height = `${this.textarea.current.scrollHeight}px`;
   }
 
   render() {
-    const { copied, includeFilePaths, profile } = this.state;
-    const filePathWarning = (<div className={styles.danger}>
+    const { includeFilePaths, profile } = this.state;
+    const filePathWarning = (<div className={styles.note}>
       Note: This will include the locations of various game dependencies on your computer in the system profile. These paths may contain sensitive information such as your real name and aren't always needed when troubleshooting.
     </div>);
     const copyProfile = (<button onClick={this.copyProfile}>Copy Profile</button>);
@@ -99,31 +146,31 @@ Graphics Mode:
         <Header title="Advanced" />
         <Scrollable>
           <Main>
-            <textarea className={styles.profile} value={profile} readOnly />
+            <textarea ref={this.textarea} className={styles.profile} value={profile} readOnly />
             <div className={styles.profileButtons}>
-              <div>
+              <div className={styles.filePathsGroup}>
                 <button onClick={this.requestProfile}>Request Profile</button>
-                <input type="checkbox" name="includeFilePaths" value="IncludeFilePaths" onChange={this.toggleFilePaths} checked={includeFilePaths} />
-                Include File Paths?
+                <div className={styles.filePathsGroupText}>
+                  <input className="nonToggle" type="checkbox" name="includeFilePaths" id="includeFilePaths" onChange={this.toggleFilePaths} checked={includeFilePaths} />
+                  <label htmlFor="includeFilePaths"> Include File Paths?</label>
+                </div>
+                
               </div>
-              <div>
-                {copied ? 'Copied!' : ''}
+              <div className={styles.copyGroup}>
                 {profile ? copyProfile : ''}
+                <div ref={this.copied} className={styles.copied}>Copied!</div>
               </div>
             </div>
             {includeFilePaths ? filePathWarning : ''}
-            <div>
-              yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote yeet yaught yote 
-            </div>
           </Main>
         
           <InfoPanel>
             <div className="emphasis">Troubleshooting Tools</div>
             <ul className="list">
               <li className="link">
-                <a onClick={launchScreenshotTool}>
+                <button className="buttonLink" onClick={launchScreenshotTool}>
                   Take a Screenshot
-                </a>
+                </button>
               </li>
               <li className="link">
                 <a href="http://forum.freeso.org/threads/common-errors-crashes.6326/" target="_blank" rel="noopener noreferrer">
@@ -134,9 +181,9 @@ Graphics Mode:
             <div className="emphasis">Launcher Problems?</div>
             <ul className="list">
               <li className="link">
-                <a onClick={this.openDevTools}>
+                <button className="buttonLink" onClick={this.openDevTools}>
                   Open Dev Tools
-                </a>
+                </button>
               </li>
             </ul>
           </InfoPanel>

@@ -1,16 +1,45 @@
 .profile {
   background: none;
+  border: none;
   color: var(--foreground-color);
-  height: 30rem;
+  display: none;
+  line-height: 1.2rem;
+  outline: none;
+  overflow-wrap: break-word;
+  padding: 0.5rem 0;
   resize: none;
   width: 100%;
 }
 
-.danger {
+.note {
   color: var(--accent);
+  margin-top: 1rem;
 }
 
 .profileButtons {
   display: flex;
   justify-content: space-between;
+}
+
+.filePathsGroup {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+}
+
+.filePathsGroupText {
+  margin-top: 0.5rem;
+}
+
+.copyGroup {
+  align-items: flex-start;
+  display: flex;
+}
+
+.copied {
+  display: flex;
+  align-items: center;
+  height: 50%;
+  margin-left: 0.5rem;
+  visibility: hidden;
 }

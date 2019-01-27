@@ -35,6 +35,15 @@
   --highlight-light: #0000001b;
 }
 
+@keyframes push {
+  50% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 * {
   transition: background-color 0.5s ease-in;
   transition: color 0.5s ease-in;
@@ -74,6 +83,19 @@ body {
   width: 100vw;
 }
 
+h3 {
+  font-weight: normal;
+  margin: 3rem 0 1rem;
+}
+
+:not(input):not(textarea),
+:not(input):not(textarea)::after,
+:not(input):not(textarea)::before {
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: default;
+}
+
 button {
   background: none;
   border: 2px solid var(--foreground);
@@ -109,6 +131,79 @@ code {
     monospace;
 }
 
+.nonToggle {
+  appearance: none;
+  border: 2px solid var(--foreground-translucent);
+  outline: none;
+  height: 1.2rem;
+  margin: 0;
+  position: relative;
+  vertical-align: text-bottom;
+  width: 1.2rem;
+}
+
+.nonToggle:hover {
+  border-color: var(--foreground);
+}
+
+.nonToggle:checked {
+  border-color: var(--accent);
+  background-color: var(--accent);
+}
+
+.nonToggle:checked:hover {
+  border-color: var(--foreground);
+}
+
+.nonToggle:checked::after {
+  content: '\2713';
+  color: var(--foreground);
+  left: 1px;
+  position: absolute;
+  top: -2px;
+}
+
+select {
+  appearance: none;
+  background-color: transparent;
+  border: 2px solid var(--foreground-translucent);
+  box-sizing: border-box;
+  color: var(--foreground);
+  display: block;
+  margin-top: 0.5rem;
+  outline: none;
+  padding: 0.25rem 0.6rem;
+  position: relative;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 17.5rem;
+}
+
+select:hover {
+  border-color: var(--foreground);
+}
+
+select::after {
+  content: 'W';
+  color: var(--foreground);
+  top: 0;
+  right: 0;
+  position: absolute;
+}
+
+option {
+  background-color: var(--background);
+  outline: none;
+}
+
+option:hover {
+  background-color: var(--accent);
+}
+
+option:focus {
+  outline: none;
+}
+
 .clearButton {
   background: none;
   border: none;
@@ -116,6 +211,24 @@ code {
   font: inherit;
   outline: inherit;
   padding: 0;
+}
+
+.buttonLink {
+  background: none;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  font: inherit;
+  outline: inherit;
+  padding: 0;
+}
+
+.buttonLink:hover {
+  color: var(--foreground);
+}
+
+.firstHeading {
+  margin-top: 0;
 }
 
 .emphasis {
