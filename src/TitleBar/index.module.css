@@ -1,0 +1,18 @@
+.default {
+  display: flex;
+  justify-content: space-between;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  -webkit-app-region: drag;
+}
+
+.start {
+  composes: default;
+}
+
+.end {
+  composes: default;
+  flex-direction: row-reverse;
+}

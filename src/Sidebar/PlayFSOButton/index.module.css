@@ -1,0 +1,18 @@
+.default {
+  composes: clearButton from '../../index.css';
+  display: block;
+  font-size: 1.5rem;
+  margin: 1rem auto;
+  outline: solid 2px transparent;
+  padding: 0.5rem 4rem;
+}
+
+.default:hover {
+  color: var(--accent);
+  outline: solid 2px var(--accent);
+  padding: 0.5rem 4rem;
+}
+
+.border {
+
+}

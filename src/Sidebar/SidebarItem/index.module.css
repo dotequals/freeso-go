@@ -1,0 +1,22 @@
+.default {
+  padding: 1rem;
+  position: relative;
+}
+
+.default:hover {
+  background-color: var(--highlight);
+}
+
+.active {
+  composes: default;
+  /* border-left: 5px solid var(--accent); */
+}
+
+.active:before {
+  background-color: var(--accent);
+  content: '';
+  height: 1rem;
+  left: 0;
+  position: absolute;
+  width: 4px;
+}

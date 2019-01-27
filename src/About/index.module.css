@@ -1,0 +1,22 @@
+.scroller {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 3rem);
+  overflow: hidden;
+}
+
+.columns {
+  display: flex;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.main {
+  margin-bottom: 100vh;
+}
+
+.links {
+  margin-left: 1.5rem;
+  min-width: 15rem;
+  width: 15rem;
+}

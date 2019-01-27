@@ -1,0 +1,14 @@
+.default {
+  background-color: var(--background-translucent);
+  /* background-color: #00f; */
+  color: var(--foreground);
+  width: 20rem;
+  padding-top: 2rem;
+}
+
+.logo {
+  display: block;
+  height: auto;
+  margin: 1rem auto 2rem;
+  width: 60%;
+}

@@ -1,0 +1,16 @@
+.profile {
+  background: none;
+  color: var(--foreground-color);
+  height: 30rem;
+  resize: none;
+  width: 100%;
+}
+
+.danger {
+  color: var(--accent);
+}
+
+.profileButtons {
+  display: flex;
+  justify-content: space-between;
+}

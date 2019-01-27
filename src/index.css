@@ -1,14 +1,139 @@
+:root {
+  /* Dynamic Variables */
+  --background: #000;
+  --background-translucent: #0f0f0ffa;
+
+  --foreground: #fff;
+  --foreground-translucent: #ffffff80;
+
+  --accent: #3faced;
+  --accent-shade: #367abb;
+  --border: #363636;
+  --danger: #f00;
+  --highlight: #ffffff33;
+  --success: #54d035;
+  --warning: #ff0;
+
+  /* Dark Variables */
+  --background-dark: #000;
+  --background-translucent-dark: #1f1f1ffa;
+
+  --foreground-dark: #fff;
+  --foreground-translucent-dark: #ffffff80;
+
+  --border-dark: #363636;
+  --highlight-dark: #ffffff03;
+
+  /* Light Variables */
+  --background-light: #fff;
+  --background-translucent-light: #e6e6e6fa;
+
+  --foreground-light: #000;
+  --foreground-translucent-light: #00000080;
+
+  --border-dark: #5c5c5c;
+  --highlight-light: #0000001b;
+}
+
+* {
+  transition: background-color 0.5s ease-in;
+  transition: color 0.5s ease-in;
+  transition: outline 0.5s ease-in;
+}
+
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+::-webkit-scrollbar:hover {
+  width: 1rem;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--foreground-translucent);
+}
+
+html {
+  overflow: hidden;
+}
+
 body {
+  height: 100vh;
   margin: 0;
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
+  font-size: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  width: 100vw;
+}
+
+button {
+  background: none;
+  border: 2px solid var(--foreground);
+  color: inherit;
+  font: inherit;
+  outline: inherit;
+  padding: 0.35rem 1rem;
+}
+
+button:hover {
+  /* background: var(--accent); */
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+a,
+a:visited,
+a:hover {
+  text-decoration: none;
+}
+
+a,
+a:visited {
+  color: var(--accent);
+}
+
+a:hover {
+  color: var(--foreground);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.clearButton {
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  outline: inherit;
+  padding: 0;
+}
+
+.emphasis {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.clearList {
+  list-style: none;
+  padding: 0;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 3rem;
+}
+
+.link {
+  margin-bottom: 0.5rem;
 }

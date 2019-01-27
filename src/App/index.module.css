@@ -1,0 +1,23 @@
+.default {
+  border: 1px solid var(--border);
+  box-sizing: border-box;
+  color: var(--foreground);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+  width: 100vw;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+}
+
+.main {
+  background-color: var(--background);
+  color: var(--foreground);
+  flex: 1;
+  padding: 2rem 0.1875rem 1rem 1rem;
+  /* padding: 2rem 1rem 1rem 1rem; */
+}

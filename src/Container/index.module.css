@@ -1,0 +1,8 @@
+.default {
+  background-color: #f00;
+  color: #00f;
+  /* display: flex;
+  flex-direction: column;
+  height: calc(100vh- 3rem);
+  overflow: hidden; */
+}

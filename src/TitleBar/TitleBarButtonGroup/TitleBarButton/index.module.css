@@ -1,0 +1,61 @@
+@keyframes push {
+  50% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.default {
+  border-radius: 50%;
+  box-sizing: border-box;
+  composes: clearButton from '../../../index.css';
+  display: inline-block;
+  height: 1.25rem;
+  margin: 0.25rem;
+  mask: url(../../../assets/images/freeso-icon.svg);
+  mask: none;
+  width: 1.25rem;
+  -webkit-app-region: no-drag;
+}
+
+.default:hover {
+  animation: push 0.3s linear;
+}
+
+.close-dark {
+  composes: default;
+  background-color: #f04747;
+  border: 2px solid #f58989;
+}
+
+.close-light {
+  composes: default;
+  background-color: #f58989;
+  border: 2px solid #f04747;
+}
+
+.maximize-dark {
+  composes: default;
+  background-color: #43b581;
+  border: 2px solid #87cfaf;
+}
+
+.maximize-light {
+  composes: default;
+  background-color: #87cfaf;
+  border: 2px solid #43b581;
+}
+
+.minimize-dark {
+  composes: default;
+  background-color: #faa61a;
+  border: 2px solid #fcc56c;
+}
+
+.minimize-light {
+  composes: default;
+  background-color: #fcc56c;
+  border: 2px solid #faa61a;
+}
