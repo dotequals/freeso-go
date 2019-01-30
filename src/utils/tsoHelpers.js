@@ -41,7 +41,7 @@ const tsoInstallDir = async () => {
 }
 
 const hasTso = async () => {
-  let localInstall = fs.existsSync(`${app.getAppPath()}${path.sep}data${path.sep}The Sims`);
+  let localInstall = fs.existsSync(`${app.getAppPath()}${path.sep}data${path.sep}The Sims Online`);
 
   if (!localInstall && os.platform() === 'win32') {
     const installPath = await getRegistry();

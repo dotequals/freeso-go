@@ -1,5 +1,7 @@
 .default {
-  padding: 1rem;
+  align-items: center;
+  display: flex;
+  padding: 1rem 1.25rem;
   position: relative;
 }
 

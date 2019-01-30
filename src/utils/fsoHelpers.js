@@ -61,11 +61,12 @@ const launchFso = async (useVolcanic, _3d, useDx) => {
 
   let spawnRef;
   if (_platform === 'win32') {
-    spawnRef = spawn(useVolcanic ? 'Volcanic.exe' : 'FreeSO.exe', [_3d ? '-3d' : '', useDx ? '-dx' : null],
+    spawnRef = spawn(useVolcanic ? 'Volcanic.exe' : 'FreeSO.exe', [_3d ? '-3d' : null, useDx ? '-dx' : null],
     {
       cwd,
     }
     );
+    console.log(spawnRef);
   } else {
     spawnRef = spawn(_3d ? 'freeso3d.command' : 'freeso.command',
     {

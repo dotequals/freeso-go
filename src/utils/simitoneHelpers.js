@@ -30,17 +30,18 @@ const launchSimitone = async (useVolcanic, _3d, useDx) => {
 
   let spawnRef;
   if (_platform === 'win32') {
-    spawnRef = spawn('Simitone.Windows.exe', [_3d ? '-3d' : ''],
+    spawnRef = spawn('Simitone.Windows.exe', [_3d ? '-3d' : null],
     {
       cwd,
     }
     );
   } else {
-    spawnRef = spawn('mono Simitone.Windows.exe', [_3d ? '-3d' : ''],
+    spawnRef = spawn('mono Simitone.Windows.exe', [_3d ? '-3d' : null],
     {
       cwd,
     }
     );
+    spawnRef.unref();
   }
 
   spawnRef.on('error', (error) => {

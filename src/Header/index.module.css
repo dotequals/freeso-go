@@ -1,5 +1,9 @@
+.default {
+  position: relative;
+}
+
 .title {
-  font-weight: lighter;
+  font-weight: normal;
   font-size: 1.8rem;
-  margin: 1.4rem 0 0.75rem;
+  margin: 1.4rem 0 1.5rem;
 }

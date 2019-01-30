@@ -18,7 +18,7 @@ class Sidebar extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      items: ['Home', 'Installers', 'Downloads', 'Settings', 'Advanced', 'About'],
+      items: ['Home', 'Installers', 'Settings', 'Advanced', 'About'],
       games: [],
     }
 
@@ -61,18 +61,19 @@ class Sidebar extends PureComponent {
   launchGame(e) {
     e.preventDefault();
     const { button } = e;
+    const { _3d, graphics } = this.props;
 
     const isFso = /freeso/i.test(e.target.textContent);
     if (isFso) {
-      // TODO connect redux store of settings
       // Should alert for volcanic like current launcher
-      launchFso(button === 0 ? false : true, true, false);
+      launchFso(button === 0 ? false : true, _3d, graphics === 'DirectX');
     } else {
-      launchSimitone(button === 0 ? false : true, true, true);
+      launchSimitone(button === 0 ? false : true, _3d, graphics === 'DirectX');
     }
   }
 
   render() {
+    const { accent } = this.props;
     const { items, games } = this.state;
     let active = this.props.location.pathname;
     active = active === '/' ? '/home' : active.toLowerCase();
@@ -80,7 +81,7 @@ class Sidebar extends PureComponent {
     const renderItems = items.map((item) => <SidebarItem key={item} name={item} active={`/${item.toLowerCase()}` === active ? true : false} onClick={this.changeRoute} isGame={false} />);
     return (
       <nav className={styles.default}>
-        <Logo className={styles.logo} />
+        <Logo className={accent === '#3faced' ? 'logo' : 'logo accent'} />
         {renderGames}
         {renderItems}
       </nav>

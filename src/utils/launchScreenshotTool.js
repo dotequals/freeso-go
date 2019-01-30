@@ -30,10 +30,15 @@ const launchScreenshotTool = async () => {
     exec(`open -a ${app}`);
     // shell.openExternal('https://support.apple.com/en-us/HT201361');
   } else {
-    const osInfo = await sysInfo.osInfo();
-    const { distro } = osInfo;
-    const encodeDistro = distro.replace(' ', '+');
-    shell.openExternal(`https://google.com?q=how+to+take+a+screenshot+on+${encodeDistro}`);
+    exec('gnome-screenshot -i', async (err) => {
+      if (err) {
+        const osInfo = await sysInfo.osInfo();
+        const { distro } = osInfo;
+        const encodeDistro = distro.replace(' ', '+');
+        shell.openExternal(`https://google.com/search?q=how+to+take+a+screenshot+on+${encodeDistro}`);
+      }
+    });
+    
   }
 }
 

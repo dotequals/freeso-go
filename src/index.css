@@ -22,7 +22,7 @@
   --foreground-translucent-dark: #ffffff80;
 
   --border-dark: #363636;
-  --highlight-dark: #ffffff03;
+  --highlight-dark: #ffffff33;
 
   /* Light Variables */
   --background-light: #fff;
@@ -51,11 +51,7 @@
 }
 
 ::-webkit-scrollbar {
-  width: 2px;
-}
-
-::-webkit-scrollbar:hover {
-  width: 1rem;
+  width: 3px;
 }
 
 ::-webkit-scrollbar-track {
@@ -106,7 +102,6 @@ button {
 }
 
 button:hover {
-  /* background: var(--accent); */
   border-color: var(--accent);
   color: var(--accent);
 }
@@ -126,9 +121,24 @@ a:hover {
   color: var(--foreground);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+.logo {
+  display: block;
+  height: auto;
+  margin: 1rem 3.25rem 1.5rem;
+  width: 60%;
+}
+
+#free {
+  fill: url(#b);
+}
+
+#so {
+  fill: url(#a);
+}
+
+.accent #free,
+.accent #so {
+  fill: var(--accent);
 }
 
 .nonToggle {
@@ -163,10 +173,16 @@ code {
   top: -2px;
 }
 
+div.chrome-picker.picker {
+  margin-top: 1rem;
+  font-family: inherit !important;
+}
+
 select {
   appearance: none;
   background-color: transparent;
   border: 2px solid var(--foreground-translucent);
+  border-radius: 0;
   box-sizing: border-box;
   color: var(--foreground);
   display: block;
@@ -234,6 +250,11 @@ option:focus {
 .emphasis {
   font-size: 1rem;
   margin-bottom: 1rem;
+}
+
+.note {
+  color: var(--accent);
+  margin-top: 1rem;
 }
 
 .clearList {

@@ -6,14 +6,9 @@
   line-height: 1.2rem;
   outline: none;
   overflow-wrap: break-word;
-  padding: 0.5rem 0;
+  padding: 0 0 0.5rem;
   resize: none;
   width: 100%;
-}
-
-.note {
-  color: var(--accent);
-  margin-top: 1rem;
 }
 
 .profileButtons {
@@ -24,7 +19,12 @@
 .filePathsGroup {
   align-items: flex-start;
   display: flex;
+  flex: 1;
   flex-direction: column;
+}
+
+.fileButtonSpinner {
+  display: flex;
 }
 
 .filePathsGroupText {

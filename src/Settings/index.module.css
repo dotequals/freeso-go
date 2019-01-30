@@ -7,3 +7,18 @@
   display: flex;
   margin-top: 1rem;
 }
+
+.pickerParent {
+  display: flex;
+  justify-content: center;
+  width: 17.5rem;
+}
+
+.pickerParent div.chrome-picker {
+  
+}
+
+.picker {
+  margin-top: 1rem;
+  font-family: inherit !important;
+}

@@ -1,0 +1,7 @@
+.default {
+  fill: var(--foreground);
+  height: 1.125rem;
+  margin-right: 1rem;
+  stroke: var(--foreground);
+  width: 1.125rem;
+}

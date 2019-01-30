@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 
 import Header from '../Header';
 import InfoPanel from '../InfoPanel';
@@ -8,13 +9,13 @@ import Scrollable from '../Scrollable';
 
 import isRunningAsAdmin from '../utils/isRunningAsAdmin';
 import launchScreenshotTool from '../utils/launchScreenshotTool';
+import launchDataFolder from '../utils/launchDataFolder';
 import { ts1InstallPath } from '../utils/ts1Helpers';
 import { tsoInstallDir } from '../utils/tsoHelpers';
 import { fsoInstallPath } from '../utils/fsoHelpers';
 import { simitonePath } from '../utils/simitoneHelpers';
 
 import styles from './index.module.css';
-
 
 const sysInfo = window.nodeRequire('systeminformation');
 const clipboardy = window.nodeRequire('clipboardy');
@@ -28,8 +29,9 @@ class Advanced extends PureComponent {
     super(props);
     this.state = {
       copied: false,
-      profile: '',
       includeFilePaths: false,
+      loading: false,
+      profile: '',
     };
 
     this.copied = React.createRef();
@@ -51,10 +53,12 @@ class Advanced extends PureComponent {
   }
 
   async buildProfile() {
+    const { _3d, graphics } = this.props;
+    console.log(this.props);
     const cpu = await sysInfo.cpu();
     const mem = await sysInfo.mem();
     const os = await sysInfo.osInfo();
-    const graphics = await sysInfo.graphics();
+    const gpus = await sysInfo.graphics();
 
     const ts1Dir = await ts1InstallPath();
     const tsoDir = await tsoInstallDir();
@@ -62,9 +66,9 @@ class Advanced extends PureComponent {
     const fsoDir = await fsoInstallPath();
 
     const ram = bytesToGB(mem.total);
-    let gpus = '';
-    graphics.controllers.forEach((gpu, index) => {
-      gpus += `GPU #${index + 1}: ${gpu.model} VRAM: ${kbToGB(gpu.vram)}GB\n`;
+    let gpuText = '';
+    gpus.controllers.forEach((gpu, index) => {
+      gpuText += `GPU #${index + 1}: ${gpu.model} VRAM: ${kbToGB(gpu.vram)}GB\n`;
     });
     const isAdmin = await isRunningAsAdmin();
 
@@ -88,23 +92,22 @@ Registry Value? ${fsoDir.isGlobal ? 'Yes' : `${fsoDir.value ? 'No' : 'N/A'}`}`;
     }
 
     const profile = 
-`${isAdmin ? 'Running' : 'Not running'} FreeSO Go as Administrator
+`${isAdmin ? 'Running' : 'Not running'} FreeSO Go as ${os.platform === 'win32' ? 'Administrator' : 'root'}
 
 CPU: ${cpu.speed}GHz ${cpu.cores} core ${cpu.manufacturer} ${cpu.brand}
 RAM: ${ram}GB
 OS: ${os.distro} ${os.release} (${os.arch === 'x64' ? '64 bit' : '32 bit'})
-${gpus}
+${gpuText}
+Graphics Mode: ${graphics}
+3D Mode: ${_3d ? 'Enabled' : 'Disabled'}
+
 ${tsoText}
 
 ${fsoText}
 
 ${ts1Text}
 
-${simitoneText}
-
-Graphics Mode:
-3D Mode:
-`;
+${simitoneText}`.trim();
   
     return profile;
   };
@@ -122,28 +125,28 @@ Graphics Mode:
   }
 
   async requestProfile() {
+    this.setState({ copied: false, loading: true, profile: '' });
     const copied = this.copied.current;
     const textarea = this.textarea.current;
     copied.style.visibility = 'hidden';
     textarea.style.display = 'none';
-    this.setState({ copied: false, profile: '' });
 
     const profile = await this.buildProfile();
     
-    this.setState({ profile });
+    this.setState({ profile, loading: false });
     textarea.style.display = 'inline-block';
     textarea.style.height = `${this.textarea.current.scrollHeight}px`;
   }
 
   render() {
-    const { includeFilePaths, profile } = this.state;
-    const filePathWarning = (<div className={styles.note}>
+    const { includeFilePaths, loading, profile } = this.state;
+    const filePathWarning = (<div className="note">
       Note: This will include the locations of various game dependencies on your computer in the system profile. These paths may contain sensitive information such as your real name and aren't always needed when troubleshooting.
     </div>);
     const copyProfile = (<button onClick={this.copyProfile}>Copy Profile</button>);
     return (
       <Container>
-        <Header title="Advanced" />
+        <Header title="Advanced" loading={loading} />
         <Scrollable>
           <Main>
             <textarea ref={this.textarea} className={styles.profile} value={profile} readOnly />
@@ -154,8 +157,8 @@ Graphics Mode:
                   <input className="nonToggle" type="checkbox" name="includeFilePaths" id="includeFilePaths" onChange={this.toggleFilePaths} checked={includeFilePaths} />
                   <label htmlFor="includeFilePaths"> Include File Paths?</label>
                 </div>
-                
               </div>
+
               <div className={styles.copyGroup}>
                 {profile ? copyProfile : ''}
                 <div ref={this.copied} className={styles.copied}>Copied!</div>
@@ -170,6 +173,11 @@ Graphics Mode:
               <li className="link">
                 <button className="buttonLink" onClick={launchScreenshotTool}>
                   Take a Screenshot
+                </button>
+              </li>
+              <li className="link">
+                <button className="buttonLink" onClick={launchDataFolder}>
+                  Open FreeSO Go Data Folder
                 </button>
               </li>
               <li className="link">
@@ -193,4 +201,11 @@ Graphics Mode:
   } 
 }
 
-export default Advanced;
+const mapStateToProps = state => (
+  {
+    _3d: state.settings._3d,
+    graphics: state.settings.graphics,
+  }
+);
+
+export default connect(mapStateToProps)(Advanced);
