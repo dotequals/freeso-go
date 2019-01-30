@@ -1,12 +1,7 @@
 import React, { PureComponent } from 'react';
 import TitleBarButton from './TitleBarButton';
 
-// const { remote } = window.nodeRequire('electron');
-
-const titleBarButtonOrder = {
-  darwin: ['close', 'minimize', 'maximize'],
-  win32: ['close', 'maximize', 'minimize'].reverse(),
-};
+import styles from './index.module.css';
 
 class TitleBarButtonGroup extends PureComponent {
   constructor(props) {
@@ -29,17 +24,18 @@ class TitleBarButtonGroup extends PureComponent {
   }
 
   minimize() {
-    console.log('hit minimize');
     const { remote } = this.props;
     remote.getCurrentWindow().minimize();
   }
 
   render() {
-    const { platform } = this.props.remote.process;
-    const buttonOrder = platform === 'darwin' ? titleBarButtonOrder.darwin : titleBarButtonOrder.win32;
-    const titleBarButtons = buttonOrder.map((button) => <TitleBarButton key={button} type={button} event={this[button]} />);
+    const { remote } = this.props;
+    const { platform } = remote.process;
+    const buttonOrder = ['minimize', 'maximize', 'close'];
+    const titleBarButtons = buttonOrder.map((button) => <TitleBarButton key={button} platform={platform} type={button} event={this[button]} />);
+
     return (
-      <div>
+      <div className={styles.default}>
         {titleBarButtons}
       </div>
     )

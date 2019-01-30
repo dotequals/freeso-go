@@ -1,52 +1,116 @@
+/* Shared styles */
+
 .default {
-  border-radius: 50%;
-  box-sizing: border-box;
+  align-items: center;
+  color: var(--foreground);
   composes: clearButton from '../../../index.css';
-  display: inline-block;
-  height: 1.25rem;
-  margin: 0.25rem;
-  mask: url(../../../assets/images/freeso-icon.svg);
-  mask: none;
-  width: 1.25rem;
+  display: flex;
+  
+  justify-content: center;
+  
   -webkit-app-region: no-drag;
 }
 
 .default:hover {
-  animation: push 0.3s linear;
+  color: var(--foreground);
 }
 
-.close-dark {
+.minimize {
   composes: default;
-  background-color: #f04747;
-  border: 2px solid #f58989;
 }
 
-.close-light {
-  composes: default;
-  background-color: #f58989;
-  border: 2px solid #f04747;
+.minimize::after {
+  content: '\2013';
 }
 
-.maximize-dark {
+.maximize {
   composes: default;
-  background-color: #43b581;
-  border: 2px solid #87cfaf;
 }
 
-.maximize-light {
-  composes: default;
-  background-color: #87cfaf;
-  border: 2px solid #43b581;
+.maximize::after {
+  content: '\25fb';
 }
 
-.minimize-dark {
-  composes: default;
-  background-color: #faa61a;
-  border: 2px solid #fcc56c;
+.minimize:hover,
+.maximize:hover {
+  background-color: var(--highlight);
 }
 
-.minimize-light {
+.close {
   composes: default;
-  background-color: #fcc56c;
-  border: 2px solid #faa61a;
+}
+
+.close::after {
+  content: '\2715';
+}
+
+/* Windows specific additions */
+
+.win-minimize {
+  composes: minimize;
+  height: 1.875rem;
+  width: 2.875rem;
+}
+
+.win-maximize {
+  composes: maximize;
+  height: 1.875rem;
+  width: 2.875rem;
+}
+
+.win-maximize:disabled {
+  color: var(--foreground-translucent);
+}
+
+.win-maximize:hover:disabled {
+  background-color: var(--background);;
+}
+
+.win-close {
+  composes: close;
+  height: 1.875rem;
+  width: 2.875rem;
+}
+
+.win-close:hover {
+  background-color: #d71526;
+}
+
+/* Linux specific additions */
+
+.linux-minimize,
+.linux-maximize,
+.linux-close {
+  background-color: var(--highlight);
+  border-radius: 50%;
+  color: var(--background);
+  font-size: 0.8rem;
+  margin-left: 0.25rem;
+  margin-top: 0.5rem;
+  height: 1.25rem;
+  width: 1.25rem;
+}
+
+.linux-minimize {
+  composes: minimize;
+}
+
+.linux-maximize {
+  composes: maximize;
+}
+
+.linux-minimize:hover,
+.linux-maximize:hover {
+  background-color: var(--foreground-translucent);
+}
+
+.linux-close {
+  background-color: #d71526;
+  color: var(--background);
+  composes: close;
+  margin-right: 0.5rem;
+}
+
+.linux-close:hover {
+  color: var(--foreground);
 }

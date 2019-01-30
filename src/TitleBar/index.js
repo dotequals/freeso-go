@@ -4,13 +4,14 @@ import TitleBarButtonGroup from './TitleBarButtonGroup';
 import styles from './index.module.css';
 
 const { remote } = window.nodeRequire('electron');
+const { process } = remote;
 
-const TitleBar = (props) => {
-  const {platform} = remote.process;
-  // console.log(remote);
+const TitleBar = () => {
+  const platform = process.platform;
+  const renderButtonGroup = platform !== 'darwin' ? <TitleBarButtonGroup remote={remote} /> : '';
   return (
-    <div className={platform === 'darwin' ? styles.start : styles.end}>
-      <TitleBarButtonGroup remote={remote} />
+    <div className={styles.end}>
+      {renderButtonGroup}
     </div>
   );
 };

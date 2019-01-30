@@ -115,9 +115,6 @@ class App extends Component {
             <Route exact path="/settings" component={Settings} />
             <Route exact path="/advanced" component={Advanced} />
             <Route exact path="/about" component={About} />
-            <p>
-              <button onClick={this.toggleColors}>Toggle Theme</button>
-            </p>
           </div>
         </div>
       </div>

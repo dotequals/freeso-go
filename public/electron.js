@@ -12,7 +12,7 @@ createWindow = () => {
     height: 768,
     minHeight: 768,
     minWidth: 1024,
-    titleBarStyle: 'hidden',
+    titleBarStyle: 'hidden-inset',
     transparent: true,
 		webPreferences: {
       experimentalFeatures: true,
