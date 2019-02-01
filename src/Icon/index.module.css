@@ -5,3 +5,11 @@
   stroke: var(--foreground);
   width: 1.125rem;
 }
+
+.big {
+  fill: var(--accent);
+  height: 4.375rem;
+  margin-right: 1rem;
+  stroke: var(--accent);
+  width: 4.375rem;
+}

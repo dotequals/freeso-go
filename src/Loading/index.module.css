@@ -171,25 +171,25 @@
 }
 
 .child:nth-child(1) {
-  animation: first 4s infinite;
+  animation: first 3.5s infinite;
 }
 
 .child:nth-child(2) {
-  animation: second 4s infinite;
-  animation-delay: 0.3s;
+  animation: second 3.5s infinite;
+  animation-delay: 0.1s;
 }
 
 .child:nth-child(3) {
-  animation: third 4s infinite;
-  animation-delay: 0.6s;
+  animation: third 3.5s infinite;
+  animation-delay: 0.2s;
 }
 
 .child:nth-child(4) {
-  animation: fourth 4s infinite;
-  animation-delay: 0.9s;
+  animation: fourth 3.5s infinite;
+  animation-delay: 0.4s;
 }
 
 .child:nth-child(5) {
-  animation: fifth 4s infinite;
-  animation-delay: 1.2s;
+  animation: fifth 3.5s infinite;
+  animation-delay: 0.6s;
 }

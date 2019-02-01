@@ -1,58 +1,117 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 import Header from '../Header';
+import Icon from '../Icon';
+import NixInstallers from './NixInstallers';
+import WindowsInstallers from './WindowsInstallers';
+
+import { fsoInstallPath } from '../utils/fsoHelpers';
+import { tsoInstallDir } from '../utils/tsoHelpers';
+
+import styles from './index.module.css';
 
 const fs = window.nodeRequire('fs');
+const path = window.nodeRequire('path');
 const { exec } = window.nodeRequire('child_process');
-const registry = window.nodeRequire('winreg');
+const { platform } = window.nodeRequire('os');
+const { remote } = window.nodeRequire('electron');
+const { app } = remote;
 
-// HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full
-// Version REG_SZ 4.7.03190
+class Installers extends PureComponent {
+  constructor(props) {
+    super(props);
 
-const Installers = () => {
-  exec('NET SESSION', (_, __, se) => se.length === 0 ? console.log('admin') : console.log('not admin'));
-
-  const dotNet = new registry({
-    hive: registry.HKLM,
-    key: '\\Software\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full'
-  });
-
-  // const dotNet = new registry({
-  //   hive: RegistryValueType.HKCU,
-  //   key: '\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize'
-  // });
-
-  // 
-  let dotNetInstalled = false;
-  dotNet.values((err, items) => {
-    if (err) {
-      console.log(err);
-    } else {
-      items.forEach((item) => {
-        if (item.name === 'Release') {
-          // Newer .NET releases are backwards compatible so only need this value to be at 4.6 or higher
-          // https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/how-to-determine-which-versions-are-installed#to-find-net-framework-versions-by-querying-the-registry-in-code-net-framework-45-and-later
-          dotNetInstalled = Number.parseInt(item.value) >= 393297;
-          console.log(`.NET? ${dotNetInstalled}`);
-        }
-      });
+    this.state = {
+      fsoInstallDir: '',
+      hasTso: false,
+      hasFso: false,
+      tsoInstallDir: '',
     }
-  });
+  }
 
-  console.log(`.NET? ${dotNetInstalled}`);
+  async componentDidMount() {
+    const tsoInstall = await tsoInstallDir();
+    const fsoInstall = await fsoInstallPath();
 
-  // const theSimsOnline = new registry({
-    
-  // });
+    this.setState({
+      fsoInstallDir: fsoInstall.value,
+      hasFso: Boolean(fsoInstall.value),
+      hasTso: Boolean(tsoInstall.value),
+      tsoInstallDir: tsoInstall.value,
+    });
+  }
 
-  const windowsPath = 'C:\\Windows\\';
-  // returned true, but only needed for OGL :thinking:
-  console.log(fs.existsSync(`${windowsPath}SysWOW64\\OpenAL32.dll`) || fs.existsSync(`${windowsPath}System32\\OpenAL32.dll`))
-  return (
-    <div>
-      <Header title="Installers" />
-    </div>
-  );
+  renderPlatformInstallers() {
+    const _platform = platform();
+
+    if (_platform === 'win32') {
+      return <WindowsInstallers />;
+    } else {
+      return <NixInstallers />;
+    }
+  }
+
+  render () {
+    const { fsoInstallDir, hasFso, hasTso, tsoInstallDir } = this.state;
+    const platformInstallers = this.renderPlatformInstallers();
+    return (
+      <div>
+        <Header title="Installers" />
+        {platformInstallers}
+        <div className={styles.installGroup}>
+          <Icon name="TheSimsOnline" className="big" />
+          <div className={styles.installText}>
+            <h3 className="firstHeading">The Sims Online</h3>
+            {
+              hasTso ? (
+              <div className="subHeading">
+                You have The Sims Online installed. <br />
+                {tsoInstallDir}
+              </div>
+              ) : (
+                <button>
+                  Install The Sims Online
+                </button>
+              )
+            }
+          </div>
+        </div>
+        <div className={styles.installGroup}>
+          <Icon name="FsoOutline" className="big" />
+          <div className={styles.installText}>
+            <h3 className="firstHeading">FreeSO</h3>
+            {
+              hasFso ? (
+              <div className="subHeading">
+                You have FreeSO installed. <br />
+                {fsoInstallDir}
+              </div>
+              ) : (
+                <button>
+                  Install FreeSO
+                </button>
+              )
+            }
+          </div>
+        </div>
+        <div className={styles.installGroup}>
+          <Icon name="RemeshPackage" className="big" />
+          <div className={styles.installText}>
+            <h3 className="firstHeading">Remesh Package</h3>
+            <div className="subHeading">
+              Latest Available: {new Date().toLocaleString()}
+            </div>
+            <div className="">
+              Latest Installed: Never
+            </div>
+          </div>
+          <div className={styles.reinstall}>
+            <button>Install</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 };
 
 export default Installers;

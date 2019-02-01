@@ -22,9 +22,6 @@ class Sidebar extends PureComponent {
       games: [],
     }
 
-    // Can't seem to add this one to the individual elements
-    window.addEventListener('contextmenu', this.launchGame);
-
     hasTs1().then((installed) => {
       if (installed) {
         const simitone = hasSimitone();
@@ -61,9 +58,8 @@ class Sidebar extends PureComponent {
   launchGame(e) {
     e.preventDefault();
     const { button } = e;
-    const { _3d, graphics } = this.props;
-
     const isFso = /freeso/i.test(e.target.textContent);
+    const { _3d, graphics } = this.props;
     if (isFso) {
       // Should alert for volcanic like current launcher
       launchFso(button === 0 ? false : true, _3d, graphics === 'DirectX');
@@ -77,7 +73,7 @@ class Sidebar extends PureComponent {
     const { items, games } = this.state;
     let active = this.props.location.pathname;
     active = active === '/' ? '/home' : active.toLowerCase();
-    const renderGames = games.map((game) => <SidebarItem key={game} name={game} onClick={this.launchGame} isGame={true} />);
+    const renderGames = games.map((game) => <SidebarItem key={game} name={game} onClick={this.launchGame} isGame={true} onContextMenu={this.launchGame} />);
     const renderItems = items.map((item) => <SidebarItem key={item} name={item} active={`/${item.toLowerCase()}` === active ? true : false} onClick={this.changeRoute} isGame={false} />);
     return (
       <nav className={styles.default}>

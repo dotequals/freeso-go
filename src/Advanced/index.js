@@ -54,7 +54,7 @@ class Advanced extends PureComponent {
 
   async buildProfile() {
     const { _3d, graphics } = this.props;
-    console.log(this.props);
+
     const cpu = await sysInfo.cpu();
     const mem = await sysInfo.mem();
     const os = await sysInfo.osInfo();
@@ -94,7 +94,7 @@ Registry Value? ${fsoDir.isGlobal ? 'Yes' : `${fsoDir.value ? 'No' : 'N/A'}`}`;
     const profile = 
 `${isAdmin ? 'Running' : 'Not running'} FreeSO Go as ${os.platform === 'win32' ? 'Administrator' : 'root'}
 
-CPU: ${cpu.speed}GHz ${cpu.cores} core ${cpu.manufacturer} ${cpu.brand}
+CPU: ${cpu.speed}GHz ${cpu.manufacturer} ${cpu.brand} (${cpu.physicalCores} physical core${cpu.physicalCores === 1 ? '' : 's'})
 RAM: ${ram}GB
 OS: ${os.distro} ${os.release} (${os.arch === 'x64' ? '64 bit' : '32 bit'})
 ${gpuText}

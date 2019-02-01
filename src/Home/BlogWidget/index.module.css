@@ -1,0 +1,15 @@
+.body {
+  display: inline;
+}
+
+.blogHeading {
+  margin-bottom: 0.25rem;
+}
+
+.authorDate {
+  margin-bottom: 1rem;
+}
+
+.readMore {
+  white-space: nowrap;
+}

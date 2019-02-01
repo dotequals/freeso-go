@@ -14,11 +14,15 @@
   width: 17.5rem;
 }
 
-.pickerParent div.chrome-picker {
-  
-}
-
 .picker {
   margin-top: 1rem;
   font-family: inherit !important;
+}
+
+.center {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
 }

@@ -1,0 +1,22 @@
+.installGroup:first-child {
+  margin-top: 0;
+}
+
+.installGroup {
+  display: flex;
+  margin-top: 3rem;
+}
+
+.installText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.reinstall {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  margin-right: 5rem;
+}

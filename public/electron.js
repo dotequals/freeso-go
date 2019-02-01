@@ -12,9 +12,10 @@ createWindow = () => {
     height: 768,
     minHeight: 768,
     minWidth: 1024,
-    titleBarStyle: 'hidden-inset',
+    titleBarStyle: 'hidden',
     transparent: true,
 		webPreferences: {
+      webSecurity: false,
       experimentalFeatures: true,
 			nodeIntegration: true,
 			preload: __dirname + path.sep + 'preload.js',

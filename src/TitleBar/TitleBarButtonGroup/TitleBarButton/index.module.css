@@ -73,7 +73,8 @@
 }
 
 .win-close:hover {
-  background-color: #d71526;
+  background-color: #e81123;
+  color: #fff;
 }
 
 /* Linux specific additions */
@@ -105,7 +106,7 @@
 }
 
 .linux-close {
-  background-color: #d71526;
+  background-color: #e81123;
   color: var(--background);
   composes: close;
   margin-right: 0.5rem;

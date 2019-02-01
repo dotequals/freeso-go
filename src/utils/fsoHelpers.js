@@ -66,9 +66,8 @@ const launchFso = async (useVolcanic, _3d, useDx) => {
       cwd,
     }
     );
-    console.log(spawnRef);
   } else {
-    spawnRef = spawn(_3d ? 'freeso3d.command' : 'freeso.command',
+    spawnRef = spawn(_3d ? './freeso3d.command' : './freeso.command',
     {
       cwd,
     }

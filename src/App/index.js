@@ -13,6 +13,8 @@ import TitleBar from '../TitleBar';
 
 
 import styles from './index.module.css';
+import { requestForumData } from '../redux/forum';
+import { requestBlogData } from '../redux/blog';
 
 class App extends Component {
   constructor(props) {
@@ -20,6 +22,18 @@ class App extends Component {
     const { accent, darkTheme } = props; 
     this.setAccent(accent);
     darkTheme ? this.setDarkMode() : this.setLightMode();
+  }
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(requestForumData());
+    dispatch(requestBlogData());
+
+    // Users can manually refresh, but let's update daily for now
+    setInterval(() => {
+      dispatch(requestForumData());
+      dispatch(requestBlogData());
+    }, 8.64e7);
   }
 
   componentDidUpdate(prevProps) {
@@ -110,7 +124,7 @@ class App extends Component {
         <div className={styles.content}>
           <Sidebar _3d={_3d} accent={accent} graphics={graphics} />
           <div className={styles.main}>
-            <Route exact path="/" component={() => <Home accent={accent} darkTheme={darkTheme} />} />
+            <Route exact path="/" component={Home} />
             <Route exact path="/installers" component={Installers} />
             <Route exact path="/settings" component={Settings} />
             <Route exact path="/advanced" component={Advanced} />

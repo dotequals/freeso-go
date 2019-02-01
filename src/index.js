@@ -1,30 +1,37 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import createSagaMiddleware from 'redux-saga';
 import { Provider } from 'react-redux';
-import { devToolsEnhancer } from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 import App from './App';
 
 import { loadState, saveState } from './localStore';
 import indexReducer from './redux/indexReducer';
+import indexSaga from './redux/indexSaga';
 import * as serviceWorker from './serviceWorker';
 
 import 'normalize.css';
 import './index.css';
 
+const sagaMiddleware = createSagaMiddleware();
 const persistedState = loadState();
 const store = createStore(
   indexReducer,
   persistedState,
-  devToolsEnhancer(),
+  composeWithDevTools(applyMiddleware(sagaMiddleware)),
 );
 
 store.subscribe(() => {
-  // Save the whole store for now
-  saveState(store.getState());
-})
+  const state = store.getState();
+  saveState({
+    settings: state.settings,
+  });
+});
+
+sagaMiddleware.run(indexSaga);
 
 ReactDOM.render(
   <Provider store={store}>

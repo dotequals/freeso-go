@@ -9,6 +9,9 @@
 
 ## Linux
 
+## *NIX
+- Simitone needs to be run as root the first time is that error being handled?
+
 ## All
 - What features are available as a non-elevated user?
 - What features are available as an elevated user?

@@ -25,6 +25,7 @@
   ],
   "dependencies": {
     "bluebird": "^3.5.3",
+    "cabarc": "^0.3.0",
     "clipboardy": "^1.2.3",
     "connected-react-router": "^6.2.2",
     "electron-is-dev": "^1.0.1",
@@ -39,6 +40,7 @@
     "react-twitter-embed": "^2.0.4",
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.7",
+    "redux-saga": "^1.0.0",
     "systeminformation": "^3.54.0",
     "winreg": "^1.2.4"
   },

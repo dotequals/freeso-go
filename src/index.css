@@ -199,6 +199,12 @@ select:hover {
   border-color: var(--foreground);
 }
 
+select:disabled,
+select:disabled:hover {
+  border-color: var(--foreground-translucent);
+  color: var(--foreground-translucent);
+}
+
 select::after {
   content: 'W';
   color: var(--foreground);
@@ -247,6 +253,15 @@ option:focus {
   margin-top: 0;
 }
 
+.subHeading {
+  color: var(--accent);
+  margin-top: -1rem;
+}
+
+.subText {
+  margin-top: -1rem;
+}
+
 .emphasis {
   font-size: 1rem;
   margin-bottom: 1rem;
@@ -255,6 +270,10 @@ option:focus {
 .note {
   color: var(--accent);
   margin-top: 1rem;
+}
+
+.highlight {
+  color: var(--accent);
 }
 
 .clearList {
@@ -270,4 +289,8 @@ option:focus {
 
 .link {
   margin-bottom: 0.5rem;
+}
+
+#tso-background {
+  fill: var(--background);
 }

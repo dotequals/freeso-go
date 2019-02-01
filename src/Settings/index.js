@@ -10,6 +10,7 @@ import Main from '../Main';
 import Scrollable from '../Scrollable';
 
 import { toggle3d, toggleDarkMode, changeGraphicsMode, changeAccentColor } from '../redux/settings';
+import { fsoInstallPath } from '../utils/fsoHelpers';
 
 import styles from './index.module.css';
 
@@ -17,6 +18,10 @@ import 'react-toggle/style.css';
 import './toggle.css';
 
 const { platform } = window.nodeRequire('os');
+const fs = window.nodeRequire('fs');
+const path = window.nodeRequire('path');
+const { remote } = window.nodeRequire('electron');
+const { app } = remote
 
 const settings = {
   'Graphics Mode': 'This allows you to change which graphics API is used when running a game.\n\nOpenGL is cross platform and although it may not be as performant as DirectX, it can sometimes be more compatible with older hardware.\n\nSoftware Mode isn\'t GPU accelerated so although it will work on very old hardware, its performance is very slow.',
@@ -25,8 +30,9 @@ const settings = {
   'Accent Color': 'Get just the right pop of color with one of the predefined colors or input a custom color!',
 }
 
-const accentHex = ['#3faced', '#acb8e8', '#9966cc', '#e6ae25', '#b31b1b'];
-const accentNames = ['So Blue', 'Rip in Periwinkle', 'Architect Amethyst', 'Aquila Ananas Jaune', 'Maria Manicura Roja'];
+// Architect Amethyst #9966cc
+const accentHex = ['#3faced', '#7c83bc', '#937E57', '#e6ae25', '#b31b1b'];
+const accentNames = ['So Blue', 'Rip in Periwinkle', 'Architect Antique Bronze', 'Aquila Ananas Jaune', 'Maria Manicura Roja'];
 const graphicsModes = ['OpenGL', 'DirectX', 'Software'];
 
 class Settings extends PureComponent {
@@ -71,15 +77,38 @@ class Settings extends PureComponent {
     }
   }
 
-  dispatchGraphics(e) {
+  async dispatchGraphics(e) {
     const { dispatch, graphics } = this.props;
     const { target } = e;
     const { value } = target;
 
+    // Don't need to check platform here because combo box is disabled
     if (graphics !== 'Software' && value === 'Software') {
+      const fsoDir = await fsoInstallPath();
+      await fs.copyFile(`${app.getAppPath()}${path.sep}bin${path.sep}dxtn.dll`, `${fsoDir.value}${path.sep}dxtn.dll`, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+      await fs.copyFile(`${app.getAppPath()}${path.sep}bin${path.sep}opengl32.dll`, `${fsoDir.value}${path.sep}opengl32.dll`, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
       dispatch(changeGraphicsMode(value));
       dispatch(toggle3d(false));
     } else if (graphics === 'Software' && value !== 'Software') {
+      const fsoDir = await fsoInstallPath();
+      await fs.unlink(`${fsoDir.value}${path.sep}dxtn.dll`, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+      await fs.unlink(`${fsoDir.value}${path.sep}opengl32.dll`, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
       // Changing from Software
       dispatch(changeGraphicsMode(value));
     } else {
@@ -90,7 +119,11 @@ class Settings extends PureComponent {
   render() {
     const { _3d, accent, darkTheme, dispatch, graphics } = this.props;
     const { settingDetailsText, showCustom } = this.state;
-    const renderGraphicsModes = graphicsModes.map(mode => <option key={mode} value={mode} disabled={mode === 'DirectX' && platform() !== 'win32'}>{mode}</option>);
+    const _platform = platform();
+    const renderGraphicsModes = graphicsModes.map(mode => <option key={mode} value={mode}>{mode}</option>);
+    // DirectX requires Windows
+    // Software rendering not on Windows requires a version of MESA that forces software rendering (out of scope for this project)
+    const unixNote = _platform !== 'win32' ? <div className="note">Note: OpenGL is the only graphics mode for this platform.</div> : '';
     const softwareNote = 'Note: 3D Mode is disabled when using Software Mode';
     const renderAccents = accentNames.map((name, index) => <option key={name} value={accentHex[index]}>{name}</option>);
     return (
@@ -101,9 +134,10 @@ class Settings extends PureComponent {
             <h3 className="firstHeading">FreeSO &amp; Simitone Settings</h3>
             <div className={styles.setting} onMouseEnter={this.updateDetails} onMouseLeave={this.updateDetails} data-setting="Graphics Mode">
               Graphics Mode
-              <select value={graphics} onChange={this.dispatchGraphics}>
+              <select value={graphics} onChange={this.dispatchGraphics} disabled={_platform !== 'win32'}>
                 {renderGraphicsModes}
               </select>
+              {unixNote}
             </div>
             <div className={styles.setting} onMouseEnter={this.updateDetails} onMouseLeave={this.updateDetails} data-setting="3D Mode">
               3D Mode
@@ -155,8 +189,9 @@ class Settings extends PureComponent {
             
           </Main>
           <InfoPanel>
-            <div className="emphasis">{settingDetailsText ? 'Additional Details' : ''}</div>
-             <div ref={this.settingDetails} dangerouslySetInnerHTML={{ __html: settingDetailsText }}>
+            <div className={styles.center}>
+              <div className="emphasis">{settingDetailsText ? 'Additional Details' : ''}</div>
+              <div ref={this.settingDetails} dangerouslySetInnerHTML={{ __html: settingDetailsText }} />
             </div>
           </InfoPanel>
         </Scrollable>
