@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import Toggle from 'react-toggle';
 import { ChromePicker } from 'react-color';
 import { connect } from 'react-redux';
+import Select from 'react-select';
 
 import Container from '../Container';
 import Header from '../Header';
@@ -31,6 +32,14 @@ const settings = {
 }
 
 // Architect Amethyst #9966cc
+const accents = [
+  { label: 'So Blue', value: '#3faced'},
+  { label: 'Rip in Periwinkle', value: '#7c83bc'},
+  { label: 'Architect Antique Bronze', value: '#937e57'},
+  { label: 'Aquila Ananas Jaune', value: '#e6ae25'},
+  { label: '#b31b1b', value: 'Maria Manicura Roja'},
+  { label: 'Custom...', value: 'custom'},
+];
 const accentHex = ['#3faced', '#7c83bc', '#937E57', '#e6ae25', '#b31b1b'];
 const accentNames = ['So Blue', 'Rip in Periwinkle', 'Architect Antique Bronze', 'Aquila Ananas Jaune', 'Maria Manicura Roja'];
 const graphicsModes = ['OpenGL', 'DirectX', 'Software'];
@@ -58,7 +67,7 @@ class Settings extends PureComponent {
       const textWithBreaks = settings[setting].replace(/\n/g, '<br />');
       this.setState({ settingDetailsText: textWithBreaks });
     } else if (type === 'mouseleave') {
-      this.setState({ settingDetailsText: '' });
+      // this.setState({ settingDetailsText: '' });
     } 
   }
 
@@ -175,6 +184,14 @@ class Settings extends PureComponent {
             </div>
             <div className={styles.setting} onMouseEnter={this.updateDetails} onMouseLeave={this.updateDetails} data-setting="Accent Color">
               Accent Color
+              <Select
+                onChange={this.dispatchAccent}
+                options={
+                  accentNames.map((name, index) => ({ value: accentHex[index], label: name}))
+                    .concat([{ value: 'custom', label: 'Custom'}])
+                }
+                value={accentHex.includes(accent) ? accent : 'custom'}
+              />
               <select value={accentHex.includes(accent) ? accent : 'custom'} onChange={this.dispatchAccent}>
                 {renderAccents}
                 <option value="custom">Custom</option>

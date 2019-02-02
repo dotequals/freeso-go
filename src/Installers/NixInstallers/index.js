@@ -4,7 +4,7 @@ import Icon from '../../Icon';
 
 import styles from '../index.module.css';
 
-const { execSync } = window.nodeRequire('child_process');
+const { exec } = window.nodeRequire('child_process');
 const { platform } = window.nodeRequire('os');
 
 class NixInstallers extends PureComponent {
@@ -14,13 +14,21 @@ class NixInstallers extends PureComponent {
     this.state = {
       monoInstalled: false,
     }
+
+    this.checkMono = this.checkMono.bind(this);
   }
 
   componentDidMount() {
-    const mono = execSync('which mono');
+    this.checkMono();
+  }
 
-    this.setState({
-      monoInstalled: Boolean(mono),
+  checkMono() {
+    const { setCoreDependencies, setLoading } = this.props;
+    setLoading(true);
+    exec('which mono', (error) => {
+      this.setState({ monoInstalled: !error });
+      setCoreDependencies(!error);
+      setLoading(false);
     });
   }
 
@@ -38,15 +46,18 @@ class NixInstallers extends PureComponent {
             {
               monoInstalled ? (
                 <div className="subHeading">
-                  Installed! You have mono installed.
+                  mono is installed.
                 </div>
               ) : (
-                <div className="subText">
-                  Please install {mono} manually following&nbsp;
-                  <a href={`https://www.mono-project.com/download/stable/#download-${_platform === 'darwin' ? 'mac' : 'lin'}`} target="_blank" rel="noopener noreferrer">
-                    these instructions
-                  </a>
-                  .
+                <div>
+                  <div className="subText">
+                    Please install {mono} manually following&nbsp;
+                    <a href={`https://www.mono-project.com/download/stable/#download-${_platform === 'darwin' ? 'mac' : 'lin'}`} target="_blank" rel="noopener noreferrer">
+                      these instructions
+                    </a>
+                    .
+                  </div>
+                  <button style={{ marginTop: '1rem' }} onClick={this.checkMono}>Verify</button>
                 </div>
               )
             }

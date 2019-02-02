@@ -68,7 +68,9 @@ class Advanced extends PureComponent {
     const ram = bytesToGB(mem.total);
     let gpuText = '';
     gpus.controllers.forEach((gpu, index) => {
-      gpuText += `GPU #${index + 1}: ${gpu.model} VRAM: ${kbToGB(gpu.vram)}GB\n`;
+      if (gpu.model && gpu.vram >= 0) {
+        gpuText += `GPU #${index + 1}: ${gpu.model} VRAM: ${kbToGB(gpu.vram)}GB\n`;
+      }
     });
     const isAdmin = await isRunningAsAdmin();
 

@@ -99,11 +99,16 @@ button {
   font: inherit;
   outline: inherit;
   padding: 0.35rem 1rem;
+  white-space: nowrap;
 }
 
 button:hover {
   border-color: var(--accent);
   color: var(--accent);
+}
+
+button + button {
+  margin-left: 1rem;
 }
 
 a,
@@ -256,10 +261,12 @@ option:focus {
 .subHeading {
   color: var(--accent);
   margin-top: -1rem;
+  word-break: break-all;
 }
 
 .subText {
   margin-top: -1rem;
+  word-break: break-all;
 }
 
 .emphasis {

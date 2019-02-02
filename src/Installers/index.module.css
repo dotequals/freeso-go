@@ -9,14 +9,22 @@
 
 .installText {
   display: flex;
+  flex: 1;
   flex-direction: column;
   justify-content: center;
+  margin-right: 1rem;
+}
+
+.reinstallable {
+  display: flex;
+  flex: 1;
 }
 
 .reinstall {
-  align-items: center;
+  align-items: flex-start;
   display: flex;
   flex: 1;
   justify-content: flex-end;
-  margin-right: 5rem;
+  margin-left: 2rem;
+  margin-top: -1rem;
 }
