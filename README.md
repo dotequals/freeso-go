@@ -13,10 +13,9 @@ A cross-platform launcher for [FreeSO](https://github.com/riperiperi/FreeSO) wri
 - 🐞 Helps with debugging FreeSO issues
 
 ## Getting Started
-1. Ensure you have the [dependencies](https://github.com/desktop/registry-js/blob/master/docs/index.md#setup) required for [registry-js](https://www.npmjs.com/package/registry-js)
-3. `git clone https://repolink`
-4. `cd repolink && npm i`
-5. `npm start`
+1. `git clone https://github.com/dotequals/freeso-go`
+2. `cd freeso-go && npm install`
+3. `npm start`
 
 ## Packaging
 TODO

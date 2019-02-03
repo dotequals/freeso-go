@@ -279,6 +279,10 @@ div.chrome-picker.picker {
   border: 2px solid var(--foreground);
 }
 
+.Dropdown-disabled .Dropdown-placeholder:hover {
+  border: 2px solid var(--foreground-translucent);
+}
+
 .is-open .Dropdown-control {
   visibility: hidden;
 }

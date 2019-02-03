@@ -151,9 +151,6 @@ class Settings extends PureComponent {
             <div className={styles.setting} onMouseEnter={this.updateDetails} onMouseLeave={this.updateDetails} data-setting="Graphics Mode">
               Graphics Mode
               <Dropdown options={graphicsModes} value={graphics} onChange={this.dispatchGraphics} disabled={_platform !== 'win32'} />
-              {/* <select value={graphics} onChange={this.dispatchGraphics} disabled={_platform !== 'win32'}>
-                {renderGraphicsModes}
-              </select> */}
               {unixNote}
             </div>
             <div className={styles.setting} onMouseEnter={this.updateDetails} onMouseLeave={this.updateDetails} data-setting="3D Mode">
