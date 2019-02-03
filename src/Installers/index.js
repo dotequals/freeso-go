@@ -15,7 +15,9 @@ import { tsoInstallDir } from '../utils/tsoHelpers';
 import styles from './index.module.css';
 import { requestRemeshData } from '../redux/remesh';
 
-const fs = window.nodeRequire('fs');
+const { promisify } = window.nodeRequire('util');
+const fs = window.nodeRequire('fs-extra');
+const yauzl = window.nodeRequire('yauzl');
 const request = window.nodeRequire('request');
 const progress = window.nodeRequire('request-progress');
 const path = window.nodeRequire('path');
@@ -44,7 +46,8 @@ class Installers extends PureComponent {
     this.setHasTso = this.setHasTso.bind(this);
     this.setHasFso = this.setHasFso.bind(this);
     this.setLoading = this.setLoading.bind(this);
-    this.installRemesh = this.installRemesh.bind(this);
+    this.installRemeshPackage = this.installRemeshPackage.bind(this);
+    this.fetchRemeshPackage = this.fetchRemeshPackage.bind(this);
     this.renderPlatformInstallers = this.renderPlatformInstallers.bind(this);
   }
 
@@ -90,8 +93,53 @@ class Installers extends PureComponent {
   setLoading(isLoading) {
     this.setState({ loading: isLoading });
   }
+  
+  async installRemeshPackage() {
+    const rmdir = promisify(fs.remove);
+    // Remove current folder
+    const { fsoInstallDir } = this.state;
+    // TODO error handle
+    // await rmdir(`${fsoInstallDir}${path.sep}Content${path.sep}MeshReplace${path.sep}`);
+    
+    console.log(yauzl);
+    // Unzip, move, and rename inner folder of release
+    yauzl.open(`${app.getAppPath()}${path.sep}tmp${path.sep}MeshReplace.zip`, { lazyEntries: true}, (err, zipfile) => {
+      if (err) {
+        throw err;
+      }
+      // const stream = fs.createWriteStream(`${app.getAppPath()}${path.sep}tmp${path.sep}MeshReplace`);
+      // zipfile.readEntry();
+      // zipfile.on('entry', (entry) => {
+      //   if (/\/$/.test(entry.fileName)) {
+      //     mkdirp(entry.fileName, () => {
+      //       if (err) {
+      //         throw err;
+      //       }
+      //       zipfile.readEntry();
+      //     });
+      //   } else {
+      //     zipfile.openReadStream(entry, (err, readStream) => {
+      //       if (err) {
+      //         throw err;
+      //       }
+      //       readStream.on('end', () => {
+      //         console.log('file end');
 
-  installRemesh() {
+      //         zipfile.readEntry();
+      //       });
+      //       console.log(entry.fileName);
+      //       // readStream.pipe(`C:\Users\Michael\Desktop\LaunchSO\tmp\MeshReplace`);
+      //       readStream.pipe(stream);
+      //     });
+      //   }
+      // });
+    });
+
+    // dispatch setInstalled
+    this.setLoading(false);
+  }
+
+  fetchRemeshPackage() {
     const { remeshAvailableUrl } = this.props;
     const options = {
       url: remeshAvailableUrl,
@@ -110,7 +158,8 @@ class Installers extends PureComponent {
       console.log(error);
     })
     .on('end', () => {
-      this.setLoading(false);
+      this.installRemeshPackage();
+      // this.setLoading(false);
     })
     .pipe(fs.createWriteStream(`${app.getAppPath()}${path.sep}tmp${path.sep}MeshReplace.zip`));
   }
@@ -223,7 +272,7 @@ class Installers extends PureComponent {
                           </div>
                         </div>
                         <div className={styles.reinstall}>
-                          <button onClick={this.installRemesh}>Install Remesh Package</button>
+                          <button onClick={this.fetchRemeshPackage}>Install Remesh Package</button>
                         </div>
                       </div>
                     </div>

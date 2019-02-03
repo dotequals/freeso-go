@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import Toggle from 'react-toggle';
 import { ChromePicker } from 'react-color';
 import { connect } from 'react-redux';
-import Select from 'react-select';
+import Dropdown from 'react-dropdown';
 
 import Container from '../Container';
 import Header from '../Header';
@@ -37,11 +37,19 @@ const accents = [
   { label: 'Rip in Periwinkle', value: '#7c83bc'},
   { label: 'Architect Antique Bronze', value: '#937e57'},
   { label: 'Aquila Ananas Jaune', value: '#e6ae25'},
-  { label: '#b31b1b', value: 'Maria Manicura Roja'},
+  { label: 'Maria Manicura Roja', value: '#b31b1b'},
   { label: 'Custom...', value: 'custom'},
 ];
-const accentHex = ['#3faced', '#7c83bc', '#937E57', '#e6ae25', '#b31b1b'];
-const accentNames = ['So Blue', 'Rip in Periwinkle', 'Architect Antique Bronze', 'Aquila Ananas Jaune', 'Maria Manicura Roja'];
+
+const findAccentValue = (accent) => {
+  for (let i = 0; i < accents.length; i += 1) {
+    if (accents[i].value === (accent || '').toLowerCase()) {
+      return accents[i];
+    }
+  }
+  return accents[accents.length - 1];
+}
+
 const graphicsModes = ['OpenGL', 'DirectX', 'Software'];
 
 class Settings extends PureComponent {
@@ -50,7 +58,7 @@ class Settings extends PureComponent {
 
     const { accent } = props;
     this.state = {
-      showCustom: !accentHex.includes(accent),
+      showCustom: findAccentValue(accent).value === 'custom',
       settingDetailsText: '',
     };
 
@@ -67,29 +75,30 @@ class Settings extends PureComponent {
       const textWithBreaks = settings[setting].replace(/\n/g, '<br />');
       this.setState({ settingDetailsText: textWithBreaks });
     } else if (type === 'mouseleave') {
-      // this.setState({ settingDetailsText: '' });
+      this.setState({ settingDetailsText: '' });
     } 
   }
 
   dispatchAccent(e) {
     const { dispatch } = this.props;
-    const { target } = e;
+    const { value } = e;
 
-    if (target && target.value === 'custom') {
+    console.log(e);
+
+    if (value === 'custom') {
       dispatch(changeAccentColor('#367abb'));
       this.setState({ showCustom: true });
-    } else if (target && target.localName === 'select') {
-      dispatch(changeAccentColor(e.target.value));
+    } else if (value) {
+      dispatch(changeAccentColor(value));
       this.setState({ showCustom: false });
-    } else if (e.hex) {
+    } else {
       dispatch(changeAccentColor(e.hex));
     }
   }
 
   async dispatchGraphics(e) {
     const { dispatch, graphics } = this.props;
-    const { target } = e;
-    const { value } = target;
+    const { value } = e;
 
     // Don't need to check platform here because combo box is disabled
     if (graphics !== 'Software' && value === 'Software') {
@@ -129,12 +138,10 @@ class Settings extends PureComponent {
     const { _3d, accent, darkTheme, dispatch, graphics } = this.props;
     const { settingDetailsText, showCustom } = this.state;
     const _platform = platform();
-    const renderGraphicsModes = graphicsModes.map(mode => <option key={mode} value={mode}>{mode}</option>);
     // DirectX requires Windows
     // Software rendering not on Windows requires a version of MESA that forces software rendering (out of scope for this project)
     const unixNote = _platform !== 'win32' ? <div className="note">Note: OpenGL is the only graphics mode for this platform.</div> : '';
     const softwareNote = 'Note: 3D Mode is disabled when using Software Mode';
-    const renderAccents = accentNames.map((name, index) => <option key={name} value={accentHex[index]}>{name}</option>);
     return (
       <Container>
         <Header title="Settings" />
@@ -143,9 +150,10 @@ class Settings extends PureComponent {
             <h3 className="firstHeading">FreeSO &amp; Simitone Settings</h3>
             <div className={styles.setting} onMouseEnter={this.updateDetails} onMouseLeave={this.updateDetails} data-setting="Graphics Mode">
               Graphics Mode
-              <select value={graphics} onChange={this.dispatchGraphics} disabled={_platform !== 'win32'}>
+              <Dropdown options={graphicsModes} value={graphics} onChange={this.dispatchGraphics} disabled={_platform !== 'win32'} />
+              {/* <select value={graphics} onChange={this.dispatchGraphics} disabled={_platform !== 'win32'}>
                 {renderGraphicsModes}
-              </select>
+              </select> */}
               {unixNote}
             </div>
             <div className={styles.setting} onMouseEnter={this.updateDetails} onMouseLeave={this.updateDetails} data-setting="3D Mode">
@@ -184,22 +192,11 @@ class Settings extends PureComponent {
             </div>
             <div className={styles.setting} onMouseEnter={this.updateDetails} onMouseLeave={this.updateDetails} data-setting="Accent Color">
               Accent Color
-              <Select
-                onChange={this.dispatchAccent}
-                options={
-                  accentNames.map((name, index) => ({ value: accentHex[index], label: name}))
-                    .concat([{ value: 'custom', label: 'Custom'}])
-                }
-                value={accentHex.includes(accent) ? accent : 'custom'}
-              />
-              <select value={accentHex.includes(accent) ? accent : 'custom'} onChange={this.dispatchAccent}>
-                {renderAccents}
-                <option value="custom">Custom</option>
-              </select>
+              <Dropdown options={accents} value={findAccentValue(accent || '')} onChange={this.dispatchAccent} />
               <div className={styles.pickerParent}>
               {
                  showCustom ? <ChromePicker className="picker" color={accent} disableAlpha={true} onChange={this.dispatchAccent} /> : ''
-              } 
+              }
               </div>
             </div>
 

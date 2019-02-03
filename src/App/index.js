@@ -119,7 +119,7 @@ class App extends Component {
   render() {
     const { _3d, accent, darkTheme, graphics } = this.props;
     return (
-      <div className={styles.default}>
+      <div className={`${styles.default} ${darkTheme ? 'dark' : 'light'}`}>
         <TitleBar />
         <div className={styles.content}>
           <Sidebar _3d={_3d} accent={accent} graphics={graphics} />

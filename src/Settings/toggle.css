@@ -35,6 +35,7 @@
 
 .styledToggle.react-toggle:hover .react-toggle-track {
   border-color: var(--foreground);
+  background-color: transparent;
 }
 
 .styledToggle.react-toggle--checked .react-toggle-track {
@@ -47,6 +48,10 @@
   background-color: var(--foreground);
   left: 1.8125rem;
   top: 0.3125rem;
+}
+
+.light .styledToggle.react-toggle--checked .react-toggle-thumb {
+  background-color: #fff;
 }
 
 .styledToggle.react-toggle--checked:hover .react-toggle-track {

@@ -131,12 +131,13 @@ ${simitoneText}`.trim();
     const copied = this.copied.current;
     const textarea = this.textarea.current;
     copied.style.visibility = 'hidden';
-    textarea.style.display = 'none';
+    textarea.style.height = 0;
+    textarea.style.paddingBottom = 0;
 
     const profile = await this.buildProfile();
     
     this.setState({ profile, loading: false });
-    textarea.style.display = 'inline-block';
+    textarea.style.paddingBottom = '0.5rem';
     textarea.style.height = `${this.textarea.current.scrollHeight}px`;
   }
 

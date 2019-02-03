@@ -11,7 +11,7 @@ const ForumWidget = (props) => {
     <ul key="links" className="list">
     {
       [...items].map((item, index) => {
-        if (index <= 5) {
+        if (index < 5) {
           const title = item.querySelector('title').textContent;
           return (
             <li className="link" key={title}>

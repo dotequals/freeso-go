@@ -183,54 +183,6 @@ div.chrome-picker.picker {
   font-family: inherit !important;
 }
 
-select {
-  appearance: none;
-  background-color: transparent;
-  border: 2px solid var(--foreground-translucent);
-  border-radius: 0;
-  box-sizing: border-box;
-  color: var(--foreground);
-  display: block;
-  margin-top: 0.5rem;
-  outline: none;
-  padding: 0.25rem 0.6rem;
-  position: relative;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 17.5rem;
-}
-
-select:hover {
-  border-color: var(--foreground);
-}
-
-select:disabled,
-select:disabled:hover {
-  border-color: var(--foreground-translucent);
-  color: var(--foreground-translucent);
-}
-
-select::after {
-  content: 'W';
-  color: var(--foreground);
-  top: 0;
-  right: 0;
-  position: absolute;
-}
-
-option {
-  background-color: var(--background);
-  outline: none;
-}
-
-option:hover {
-  background-color: var(--accent);
-}
-
-option:focus {
-  outline: none;
-}
-
 .clearButton {
   background: none;
   border: none;
@@ -300,4 +252,62 @@ option:focus {
 
 #tso-background {
   fill: var(--background);
+}
+
+.Dropdown-control {
+  position: relative;
+  width: 17.5rem;
+}
+
+.Dropdown-arrow-wrapper::after {
+  content: '\02c5';
+  /* background: url('./assets/images/arrow.svg'); */
+  position: absolute;
+  right: 0.1rem;
+  top: 0.4rem;
+  height: 20px;
+  width: 20px;
+}
+
+.Dropdown-placeholder {
+  border: 2px solid var(--foreground-translucent);
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.6rem;
+}
+
+.Dropdown-placeholder:hover {
+  border: 2px solid var(--foreground);
+}
+
+.is-open .Dropdown-control {
+  visibility: hidden;
+}
+
+.Dropdown-menu {
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  box-sizing: border-box;
+  margin-top: -1.875rem;
+  padding: 0.5rem 0;
+  width: 17.5rem;
+}
+
+.Dropdown-option {
+  background-color: var(--background);
+  padding: 0.4rem 0.6rem;
+  margin-bottom: 0.2rem;
+  position: relative;
+}
+
+.Dropdown-option:hover {
+  background-color: var(--background-translucent);
+}
+
+.Dropdown-option.is-selected {
+  background-color: var(--accent);
+}
+
+.Dropdown-option.is-selected:hover {
+  background-color: var(--background-translucent);
+  color: var(--accent);
 }
