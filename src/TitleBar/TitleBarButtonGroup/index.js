@@ -7,6 +7,10 @@ class TitleBarButtonGroup extends PureComponent {
   constructor(props) {
     super(props);
 
+    this.state = {
+      maximized: false,
+    }
+
     this.close = this.close.bind(this);
     this.maximize = this.maximize.bind(this);
     this.minimize = this.minimize.bind(this);
@@ -19,8 +23,15 @@ class TitleBarButtonGroup extends PureComponent {
 
   maximize() {
     const { remote } = this.props;
+    const { maximized } = this.state;
     const currentWindow = remote.getCurrentWindow();
-    currentWindow.isMaximized() ? currentWindow.unmaximize() : currentWindow.maximize();
+    if (!maximized) {
+      currentWindow.maximize();
+      this.setState({ maximized: true });
+    } else {
+      currentWindow.unmaximize();
+      this.setState({ maximized: false });
+    }
   }
 
   minimize() {

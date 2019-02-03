@@ -6,7 +6,7 @@ const TitleBarButton = (props) => {
   const uiStyle = platform === 'win32' ? 'win' : 'linux';
 
   return (
-    <button className={styles[`${uiStyle}-${type}`]} onClick={event} disabled={platform === 'win32' && type === 'maximize'} />
+    <button className={styles[`${uiStyle}-${type}`]} onClick={event} disabled={platform === '' && type === 'maximize'} />
   );
 };
 
