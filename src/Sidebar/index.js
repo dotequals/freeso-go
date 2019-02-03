@@ -57,9 +57,17 @@ class Sidebar extends PureComponent {
 
   launchGame(e) {
     e.preventDefault();
-    const { button } = e;
+
+    const { button, target } = e;
     const isFso = /freeso/i.test(e.target.textContent);
     const { _3d, graphics } = this.props;
+    const divNode = target.nodeName === 'SPAN' || target.nodeName === 'SVG' ? target.parentElement : target;
+
+    divNode.classList.add(styles.launching);
+    setTimeout(() => {
+      divNode.classList.remove(styles.launching);
+    }, 1.5e3);
+
     if (isFso) {
       // Should alert for volcanic like current launcher
       launchFso(button === 0 ? false : true, _3d, graphics === 'DirectX');

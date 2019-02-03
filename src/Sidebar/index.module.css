@@ -5,3 +5,7 @@
   width: 20rem;
   padding-top: 2rem;
 }
+
+.launching::before {
+  opacity: 1;
+}

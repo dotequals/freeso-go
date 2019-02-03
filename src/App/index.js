@@ -15,13 +15,28 @@ import TitleBar from '../TitleBar';
 import styles from './index.module.css';
 import { requestForumData } from '../redux/forum';
 import { requestBlogData } from '../redux/blog';
+import { toggleDarkMode, toggleUserSet } from '../redux/settings';
+import { darkModeListener, isSystemDarkMode } from '../utils/darkModeHelpers';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    const { accent, darkTheme } = props; 
+    const { accent, darkTheme, dispatch, userSet } = props; 
     this.setAccent(accent);
-    darkTheme ? this.setDarkMode() : this.setLightMode();
+
+    if (!userSet) {
+      isSystemDarkMode().then((isDark) => {
+        isDark ? this.setDarkMode() : this.setLightMode();
+        dispatch(toggleDarkMode(isDark));
+      });
+    } else {
+      darkTheme ? this.setDarkMode() : this.setLightMode();
+      isSystemDarkMode().then((isDark) => {
+        dispatch(toggleUserSet(!(darkTheme === isDark)));
+      });
+    }
+
+    darkModeListener(dispatch, toggleDarkMode);
   }
 
   componentDidMount() {
@@ -142,6 +157,7 @@ const mapStateToProps = state => (
     accent: state.settings.accent,
     darkTheme: state.settings.darkTheme,
     graphics: state.settings.graphics,
+    userSet: state.settings.userSet,
   }
 );
 

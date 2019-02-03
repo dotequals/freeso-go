@@ -10,8 +10,9 @@ import InfoPanel from '../InfoPanel';
 import Main from '../Main';
 import Scrollable from '../Scrollable';
 
-import { toggle3d, toggleDarkMode, changeGraphicsMode, changeAccentColor } from '../redux/settings';
+import { toggle3d, toggleDarkMode, toggleUserSet, changeGraphicsMode, changeAccentColor } from '../redux/settings';
 import { fsoInstallPath } from '../utils/fsoHelpers';
+import { isSystemDarkMode } from '../utils/darkModeHelpers';
 
 import styles from './index.module.css';
 
@@ -63,6 +64,7 @@ class Settings extends PureComponent {
     };
 
     this.updateDetails = this.updateDetails.bind(this);
+    this.dispatchDarkTheme = this.dispatchDarkTheme.bind(this);
     this.dispatchAccent = this.dispatchAccent.bind(this);
     this.dispatchGraphics = this.dispatchGraphics.bind(this);
   }
@@ -77,6 +79,14 @@ class Settings extends PureComponent {
     } else if (type === 'mouseleave') {
       this.setState({ settingDetailsText: '' });
     } 
+  }
+
+  async dispatchDarkTheme(e) {
+    const { darkTheme, dispatch } = this.props;
+    const systemPref = await isSystemDarkMode();
+
+    dispatch(toggleDarkMode(!darkTheme));
+    dispatch(toggleUserSet(systemPref === darkTheme));
   }
 
   dispatchAccent(e) {
@@ -181,7 +191,7 @@ class Settings extends PureComponent {
                   className="styledToggle"
                   checked={darkTheme}
                   icons={false}
-                  onChange={() => dispatch(toggleDarkMode(!darkTheme))}
+                  onChange={this.dispatchDarkTheme}
                   onMouseEnter={this.updateDetails} 
                   onMouseLeave={this.updateDetails} />
                   {darkTheme ? 'On' : 'Off'}
