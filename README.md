@@ -1,8 +1,14 @@
 # FreeSO Go (working title)
-
 A cross-platform launcher for [FreeSO](https://github.com/riperiperi/FreeSO) written with electron.
 
-## Goals
+### Known Issues
+- (Windows) Frameless, transparent windows have issues with unmaximizing. All the [GitHub issues](https://github.com/electron/electron/issues?utf8=%E2%9C%93&q=unmaximize+frameless) seem to die and get closed.
+- (macOS & Linux) Closing FreeSO by clicking the title bar button will cause the process to stay open and potentially hang. It must then be Force Quit via Activity/System Monitor.
+
+#### Linux Support
+Many distros may be compatible, but I will only be ensuring compatibility with Ubuntu LTS using GNOME. If minor changes can be made to support other distros they may be accomadated, but it'd be better to fork for any larger specific changes.
+
+### Goals
 - 🚀 Powered by [React](https://reactjs.org/)
 - 💻 Cross platform
 - ↔ Responsive and scalable

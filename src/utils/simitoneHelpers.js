@@ -39,6 +39,7 @@ const launchSimitone = async (useVolcanic, _3d, useDx) => {
     spawnRef = spawn('mono Simitone.Windows.exe', [_3d ? '-3d' : null],
     {
       cwd,
+      shell: true,
     }
     );
     spawnRef.unref();
