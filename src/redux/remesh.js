@@ -52,6 +52,7 @@ export default function reducer(state = initialState, action={}) {
 export const requestRemeshData = () => ({ type: REQUEST_REMESH_DATA });
 export const errorRemeshData = data => ({ type: ERROR_REMESH_DATA, data });
 export const recieveRemeshData = data => ({ type: RECEIVE_REMESH_DATA, data });
+export const setInstalledDate = data => ({ type: SET_INSTALLED_DATE, data });
 
 const owner = 'dotequals';
 const repo = 'freeso-remesh-package';

@@ -9,19 +9,17 @@ import NixInstallers from './NixInstallers';
 import Scrollable from '../Scrollable';
 import WindowsInstallers from './WindowsInstallers';
 
+import { requestRemeshData, setInstalledDate } from '../redux/remesh';
 import { fsoInstallPath } from '../utils/fsoHelpers';
 import { tsoInstallDir } from '../utils/tsoHelpers';
+import extract from '../utils/zipHelpers';
 
 import styles from './index.module.css';
-import { requestRemeshData } from '../redux/remesh';
 
-const { promisify } = window.nodeRequire('util');
 const fs = window.nodeRequire('fs-extra');
-const yauzl = window.nodeRequire('yauzl');
 const request = window.nodeRequire('request');
 const progress = window.nodeRequire('request-progress');
 const path = window.nodeRequire('path');
-const { exec } = window.nodeRequire('child_process');
 const { platform } = window.nodeRequire('os');
 const { remote } = window.nodeRequire('electron');
 const { app } = remote;
@@ -95,51 +93,21 @@ class Installers extends PureComponent {
   }
   
   async installRemeshPackage() {
-    const rmdir = promisify(fs.remove);
-    // Remove current folder
     const { fsoInstallDir } = this.state;
-    // TODO error handle
-    // await rmdir(`${fsoInstallDir}${path.sep}Content${path.sep}MeshReplace${path.sep}`);
+    const { dispatch, remeshAvailable } = this.props;
+    const target = `${fsoInstallDir}${path.sep}Content${path.sep}MeshReplace${path.sep}`;
     
-    console.log(yauzl);
-    // Unzip, move, and rename inner folder of release
-    yauzl.open(`${app.getAppPath()}${path.sep}tmp${path.sep}MeshReplace.zip`, { lazyEntries: true}, (err, zipfile) => {
-      if (err) {
-        throw err;
-      }
-      // const stream = fs.createWriteStream(`${app.getAppPath()}${path.sep}tmp${path.sep}MeshReplace`);
-      // zipfile.readEntry();
-      // zipfile.on('entry', (entry) => {
-      //   if (/\/$/.test(entry.fileName)) {
-      //     mkdirp(entry.fileName, () => {
-      //       if (err) {
-      //         throw err;
-      //       }
-      //       zipfile.readEntry();
-      //     });
-      //   } else {
-      //     zipfile.openReadStream(entry, (err, readStream) => {
-      //       if (err) {
-      //         throw err;
-      //       }
-      //       readStream.on('end', () => {
-      //         console.log('file end');
-
-      //         zipfile.readEntry();
-      //       });
-      //       console.log(entry.fileName);
-      //       // readStream.pipe(`C:\Users\Michael\Desktop\LaunchSO\tmp\MeshReplace`);
-      //       readStream.pipe(stream);
-      //     });
-      //   }
-      // });
+    await extract({ 
+      sourceName: 'MeshReplace.zip',
+      extractedName: 'dotequals-freeso-remesh-package',
+      target,
     });
 
-    // dispatch setInstalled
+    dispatch(setInstalledDate(remeshAvailable));
     this.setLoading(false);
   }
 
-  fetchRemeshPackage() {
+  async fetchRemeshPackage() {
     const { remeshAvailableUrl } = this.props;
     const options = {
       url: remeshAvailableUrl,
@@ -149,6 +117,8 @@ class Installers extends PureComponent {
     };
     console.log(remeshAvailableUrl);
     this.setLoading(true);
+    const tmpPath = `${app.getAppPath()}${path.sep}tmp${path.sep}`;
+    await fs.ensureDir(tmpPath);
     progress(request(options), { throttle: 1e3 })
     .on('progress', (state) => {
       // console.log('Progress...');
@@ -161,7 +131,7 @@ class Installers extends PureComponent {
       this.installRemeshPackage();
       // this.setLoading(false);
     })
-    .pipe(fs.createWriteStream(`${app.getAppPath()}${path.sep}tmp${path.sep}MeshReplace.zip`));
+    .pipe(fs.createWriteStream(`${tmpPath}MeshReplace.zip`));
   }
 
   renderPlatformInstallers() {
@@ -179,6 +149,9 @@ class Installers extends PureComponent {
     const { remeshAvailable, remeshInstalled } = this.props;
     const { coreDependencies, fsoInstallDir, globalFso, globalTso, hasFso, hasTso, loading, tsoInstallDir } = this.state;
     const platformInstallers = this.renderPlatformInstallers();
+
+    let remeshButtonVerb = remeshAvailable === remeshInstalled ? 'Reinstall' : 'Install';
+    remeshButtonVerb = ((remeshAvailable && remeshInstalled) && (new Date(remeshAvailable) > new Date(remeshInstalled))) ? 'Update' : remeshButtonVerb;
     // const remeshAvailable = new Date();
     // const remeshInstalled = new Date(Date.now() - 8.64e7);
 
@@ -265,14 +238,14 @@ class Installers extends PureComponent {
                       <div className={styles.reinstallable}>
                         <div>
                           <div className="subText">
-                            Latest Available: <span className="highlight">{remeshAvailableString}</span>
+                          <span className={remeshButtonVerb === 'Update' ? 'highlight' : ''}>Latest Available: {remeshAvailableString}</span>
                           </div>
                           <div className="">
-                            Latest Installed: <span className="highlight">{remeshInstalledString}</span>
+                            Latest Installed: {remeshInstalledString}
                           </div>
                         </div>
                         <div className={styles.reinstall}>
-                          <button onClick={this.fetchRemeshPackage}>Install Remesh Package</button>
+                          <button onClick={this.fetchRemeshPackage}>{remeshButtonVerb} Remesh Package</button>
                         </div>
                       </div>
                     </div>

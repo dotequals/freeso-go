@@ -28,6 +28,7 @@ store.subscribe(() => {
   const state = store.getState();
   saveState({
     settings: state.settings,
+    remesh: state.remesh,
   });
 });
 
