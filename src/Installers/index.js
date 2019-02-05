@@ -98,8 +98,9 @@ class Installers extends PureComponent {
     const target = `${fsoInstallDir}${path.sep}Content${path.sep}MeshReplace${path.sep}`;
     
     await extract({ 
-      sourceName: 'MeshReplace.zip',
       extractedName: 'dotequals-freeso-remesh-package',
+      move: true,
+      sourceName: 'MeshReplace.zip',
       target,
     });
 
