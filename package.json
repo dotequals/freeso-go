@@ -45,7 +45,7 @@
     "redux-saga": "^1.0.1",
     "request": "^2.88.0",
     "request-progress": "^3.0.0",
-    "systeminformation": "^4.0.4",
+    "systeminformation": "^4.0.8",
     "winreg": "^1.2.4"
   },
   "devDependencies": {
