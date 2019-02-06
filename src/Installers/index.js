@@ -9,6 +9,7 @@ import NixInstallers from './NixInstallers';
 import Scrollable from '../Scrollable';
 import WindowsInstallers from './WindowsInstallers';
 
+import fetchReleases from '../utils/api/fetchReleases';
 import { requestRemeshData, setInstalledDate } from '../redux/remesh';
 import { fsoInstallPath } from '../utils/fsoHelpers';
 import { tsoInstallDir } from '../utils/tsoHelpers';
@@ -16,6 +17,8 @@ import extract from '../utils/zipHelpers';
 
 import styles from './index.module.css';
 
+const { execSync } = window.nodeRequire('child_process');
+const { EventEmitter } = window.nodeRequire('events');
 const fs = window.nodeRequire('fs-extra');
 const request = window.nodeRequire('request');
 const progress = window.nodeRequire('request-progress');
@@ -23,6 +26,7 @@ const path = window.nodeRequire('path');
 const { platform } = window.nodeRequire('os');
 const { remote } = window.nodeRequire('electron');
 const { app } = remote;
+const installEmitter = new EventEmitter();
 
 class Installers extends PureComponent {
   constructor(props) {
@@ -44,8 +48,12 @@ class Installers extends PureComponent {
     this.setHasTso = this.setHasTso.bind(this);
     this.setHasFso = this.setHasFso.bind(this);
     this.setLoading = this.setLoading.bind(this);
-    this.installRemeshPackage = this.installRemeshPackage.bind(this);
+    this.fetchTso = this.fetchTso.bind(this);
+    this.installTso = this.installTso.bind(this);
+    this.fetchFso = this.fetchFso.bind(this);
+    this.installFso = this.installFso.bind(this);
     this.fetchRemeshPackage = this.fetchRemeshPackage.bind(this);
+    this.installRemeshPackage = this.installRemeshPackage.bind(this);
     this.renderPlatformInstallers = this.renderPlatformInstallers.bind(this);
   }
 
@@ -135,6 +143,126 @@ class Installers extends PureComponent {
     .pipe(fs.createWriteStream(`${tmpPath}MeshReplace.zip`));
   }
 
+  async installTso() {
+    const target = `${app.getAppPath()}${path.sep}data${path.sep}The Sims Online`;
+    // console.log('before extraction');
+    
+    await extract({ 
+      emitter: installEmitter,
+      extractedName: 'TSO_Installer_v1.1239.1.0',
+      move: false,
+      sourceName: 'TSO_Installer_v1.1239.1.0.zip',
+      target,
+      isTso: true,
+    });
+
+    const customSource = `${app.getAppPath()}${path.sep}tmp${path.sep}The Sims Online`;
+    installEmitter.on('tsoZipExtracted', async () => {
+      await extract({ 
+        customSource,
+        emitter: installEmitter,
+        extractedName: 'The Sims Online',
+        move: false,
+        sourceName: `TSO_Installer_v1.1239.1.0${path.sep}Data1.cab`,
+        target,
+      });
+      this.setLoading(false);
+    });
+
+    const patcher = `${app.getAppPath()}${path.sep}bin${path.sep}TSO-Version-Patcher`;
+    installEmitter.on('tsoCabsExtracted', async () => {
+      execSync(`${platform() !== 'win32' ? 'mono ' : ''}TSOVersionPatcherF.exe 1239toNI.tsop "${customSource}"`, {
+        cwd: patcher,
+        shell: true,
+      });
+      // Move The Sims Online to data
+      fs.move(customSource, target);
+      const tsoFiles = `${app.getAppPath()}${path.sep}tmp${path.sep}TSO_Installer_v1.1239.1.0`;
+      // Remove TSO_Installer_v1.1239.1.0
+      fs.remove(tsoFiles);
+      // Remove TSO_Installer_v1.1239.1.0.zip
+      fs.remove(`${tsoFiles}.zip`);
+      this.setLoading(false);
+    });
+
+    console.log('after extraction');
+
+    
+  }
+
+  async fetchTso() {
+    this.setLoading(true);
+
+    const tmpPath = `${app.getAppPath()}${path.sep}tmp${path.sep}`;
+    const tsoUrl = 'http://ia801903.us.archive.org/tarview.php?tar=/33/items/Fileplanet_dd_042006/Fileplanet_dd_042006.tar&file=042006/TSO_Installer_v1.1239.1.0.zip';
+    await fs.ensureDir(tmpPath);
+    progress(request(tsoUrl), { throttle: 1e3 })
+    .on('progress', (state) => {
+      // console.log('Progress...');
+      console.log(state);
+    })
+    .on('error', (error) => {
+      console.log(error);
+    })
+    .on('end', () => {
+      this.installTso();
+      // this.setLoading(false);
+    })
+    .pipe(fs.createWriteStream(`${tmpPath}TSO_Installer_v1.1239.1.0.zip`));
+  }
+
+  async installFso() {
+    // const { dispatch, remeshAvailable } = this.props;
+    const target = `${app.getAppPath()}${path.sep}data${path.sep}FreeSO`;
+    
+    await extract({ 
+      extractedName: 'Release',
+      move: true,
+      sourceName: 'FreeSO.zip',
+      target,
+    });
+
+    this.setLoading(false);
+  }
+
+  async fetchFso() {
+    this.setLoading(true);
+
+    const releases = await fetchReleases('dotequals', 'FreeSO');
+    const { assets } = releases[0];
+    const release = platform() === 'win32' ? 'FreeSO.zip' : 'FreeSO-darwin-linux.zip';
+    const tmpPath = `${app.getAppPath()}${path.sep}tmp${path.sep}`;
+    let browserDownload = '';
+    for (let i = 0; i < assets.length; i += 1) {
+      if (assets[i].name === release) {
+        browserDownload = assets[i].browser_download_url;
+      } 
+    }
+
+    const options = {
+      url: browserDownload,
+      headers: {
+        'User-Agent': 'dotequals/freeso-go',
+      }
+    };
+
+    await fs.ensureDir(tmpPath);
+    progress(request(options), { throttle: 1e3 })
+    .on('progress', (state) => {
+      // console.log('Progress...');
+      console.log(state);
+    })
+    .on('error', (error) => {
+      console.log(error);
+    })
+    .on('end', () => {
+      this.installFso();
+      // this.setLoading(false);
+    })
+    .pipe(fs.createWriteStream(`${tmpPath}FreeSO.zip`));
+    
+  }
+
   renderPlatformInstallers() {
     const { graphics } = this.props;
     const _platform = platform();
@@ -191,7 +319,7 @@ class Installers extends PureComponent {
                         </div>
                       ) : (
                         <div>
-                          <button>
+                          <button onClick={this.fetchTso}>
                             Install The Sims Online
                           </button>
                           <button onClick={this.setHasTso}>
@@ -220,7 +348,7 @@ class Installers extends PureComponent {
                       </div>
                       ) : (
                         <div>
-                          <button>
+                          <button onClick={this.fetchFso}>
                             Install FreeSO
                           </button>
                           <button onClick={this.setHasFso}>
