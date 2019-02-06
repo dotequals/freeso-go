@@ -9,15 +9,19 @@ const getRegistryValue = async (hive, key, entry) => {
 
   promisifyAll(genericRegistry);
 
-  let registryEntries = await genericRegistry.valuesAsync();
-  let value = '';
-  registryEntries.forEach((item) => {
-    if (item.name === entry) {
-      value = item.value;
-    }
-  });
+  try {
+    let registryEntries = await genericRegistry.valuesAsync();
+    let value = '';
+    registryEntries.forEach((item) => {
+      if (item.name === entry) {
+        value = item.value;
+      }
+    });
 
-  return value;
+    return value;
+  } catch (e) {
+    return undefined;
+  }
 }
 
 export {
