@@ -7,6 +7,8 @@ const getRegistryValue = async (hive, key, entry) => {
     key: key
   });
 
+  // util.promisify isn't enough for this one
+  // https://github.com/fresc81/node-winreg/issues/38
   promisifyAll(genericRegistry);
 
   try {

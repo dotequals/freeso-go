@@ -1,13 +1,13 @@
-const Promise = window.nodeRequire('bluebird');
-const exec = Promise.promisify(window.nodeRequire('child_process').exec);
-// const { exec } = window.nodeRequire('child_process');
+const { promisify } = window.nodeRequire('util');
 const { platform } = window.nodeRequire('os');
+const exec = promisify(window.nodeRequire('child_process').exec);
 
 const isRunningAsAdmin = async () => {
   const _platform = platform();
   if (_platform === 'win32') {
     try {
-      await exec('NET SESSION');
+      const test = await exec('NET SESSION');
+      window.test = test;
       return true;
     } catch (error) {
       return false;
