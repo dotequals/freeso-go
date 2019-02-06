@@ -2,14 +2,14 @@ const { shell } = window.nodeRequire('electron');
 const { exec } = window.nodeRequire('child_process');
 const path = window.nodeRequire('path');
 const os = window.nodeRequire('os');
-const fs = window.nodeRequire('fs');
+const { existsSync } = window.nodeRequire('fs-extra');
 const sysInfo = window.nodeRequire('systeminformation');
 
 const launchScreenshotTool = async () => {
   const platform = os.platform();
 
   if (platform === 'win32') {
-    const hasPowershell = fs.existsSync(`C:${path.sep}Windows${path.sep}System32${path.sep}WindowsPowerShell${path.sep}v1.0${path.sep}powershell.exe`);
+    const hasPowershell = existsSync(`C:${path.sep}Windows${path.sep}System32${path.sep}WindowsPowerShell${path.sep}v1.0${path.sep}powershell.exe`);
     if (hasPowershell) {
       exec('powershell.exe -Command Get-AppxPackage -Name Microsoft.ScreenSketch', (_, sto) =>{
         if (sto) {

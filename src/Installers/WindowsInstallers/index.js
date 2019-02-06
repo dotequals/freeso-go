@@ -6,13 +6,11 @@ import { getRegistryValue } from '../../utils/registryHelpers';
 
 import styles from '../index.module.css';
 
-const fs = window.nodeRequire('fs');
+const { access, constants } = window.nodeRequire('fs-extra');
 const path = window.nodeRequire('path');
 const { exec } = window.nodeRequire('child_process');
-const Promise = window.nodeRequire('bluebird');
 const { remote } = window.nodeRequire('electron');
 const { app } = remote;
-const access = Promise.promisify(fs.access);
 
 const dotNetRegistry = '\\Software\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full';
 const { windir } = remote.process.env;
@@ -53,7 +51,7 @@ class WindowsInstallers extends PureComponent {
     setLoading(true);
     this.setLoading = setLoading;
     let openAlInstalled;
-    await access(openAlPath, fs.constants.F_OK)
+    await access(openAlPath, constants.F_OK)
       .then(() => openAlInstalled = true)
       .catch(() => { openAlInstalled = false });
 

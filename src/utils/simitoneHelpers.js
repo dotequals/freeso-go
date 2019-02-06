@@ -1,4 +1,4 @@
-const fs = window.nodeRequire('fs');
+const { existsSync } = window.nodeRequire('fs-extra');
 const path = window.nodeRequire('path');
 const { spawn } = window.nodeRequire('child_process');
 const { platform } = window.nodeRequire('os');
@@ -8,7 +8,7 @@ const { app } = remote;
 const localPath = `${app.getAppPath()}${path.sep}data${path.sep}Simitone`;
 
 const hasSimitone = () => {
-  let localInstall = fs.existsSync(localPath);
+  let localInstall = existsSync(localPath);
   
   return localInstall;
 }

@@ -20,7 +20,7 @@ import 'react-toggle/style.css';
 import './toggle.css';
 
 const { platform } = window.nodeRequire('os');
-const fs = window.nodeRequire('fs');
+const { copy, remove } = window.nodeRequire('fs-extra');
 const path = window.nodeRequire('path');
 const { remote } = window.nodeRequire('electron');
 const { app } = remote
@@ -113,12 +113,12 @@ class Settings extends PureComponent {
     // Don't need to check platform here because combo box is disabled
     if (graphics !== 'Software' && value === 'Software') {
       const fsoDir = await fsoInstallPath();
-      await fs.copyFile(`${app.getAppPath()}${path.sep}bin${path.sep}dxtn.dll`, `${fsoDir.value}${path.sep}dxtn.dll`, (err) => {
+      await copy(`${app.getAppPath()}${path.sep}bin${path.sep}dxtn.dll`, `${fsoDir.value}${path.sep}dxtn.dll`, (err) => {
         if (err) {
           console.log(err);
         }
       });
-      await fs.copyFile(`${app.getAppPath()}${path.sep}bin${path.sep}opengl32.dll`, `${fsoDir.value}${path.sep}opengl32.dll`, (err) => {
+      await copy(`${app.getAppPath()}${path.sep}bin${path.sep}opengl32.dll`, `${fsoDir.value}${path.sep}opengl32.dll`, (err) => {
         if (err) {
           console.log(err);
         }
@@ -127,12 +127,12 @@ class Settings extends PureComponent {
       dispatch(toggle3d(false));
     } else if (graphics === 'Software' && value !== 'Software') {
       const fsoDir = await fsoInstallPath();
-      await fs.unlink(`${fsoDir.value}${path.sep}dxtn.dll`, (err) => {
+      await remove(`${fsoDir.value}${path.sep}dxtn.dll`, (err) => {
         if (err) {
           console.log(err);
         }
       });
-      await fs.unlink(`${fsoDir.value}${path.sep}opengl32.dll`, (err) => {
+      await remove(`${fsoDir.value}${path.sep}opengl32.dll`, (err) => {
         if (err) {
           console.log(err);
         }

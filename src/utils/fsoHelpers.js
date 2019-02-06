@@ -1,7 +1,7 @@
 import { getRegistryValue } from './registryHelpers';
 
 const path = window.nodeRequire('path');
-const fs = window.nodeRequire('fs');
+const { existsSync } = window.nodeRequire('fs-extra');
 const { remote } = window.nodeRequire('electron');
 const os = window.nodeRequire('os');
 const { spawn } = window.nodeRequire('child_process');
@@ -23,7 +23,7 @@ const getRegistry = async () => {
 }
 
 const fsoInstallPath = async () => {
-  let localInstall = fs.existsSync(localPath);
+  let localInstall = existsSync(localPath);
   if (localInstall) {
     return {
       isGlobal: !localInstall,
@@ -43,7 +43,7 @@ const fsoInstallPath = async () => {
 }
 
 const hasFso = async () => {
-  let localInstall = fs.existsSync(localPath);
+  let localInstall = existsSync(localPath);
 
   if (!localInstall && os.platform() === 'win32') {
     const installPath = await getRegistry();

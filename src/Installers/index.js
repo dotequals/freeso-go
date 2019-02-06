@@ -19,7 +19,7 @@ import styles from './index.module.css';
 
 const { execSync } = window.nodeRequire('child_process');
 const { EventEmitter } = window.nodeRequire('events');
-const fs = window.nodeRequire('fs-extra');
+const { createWriteStream, ensureDir, move, remove } = window.nodeRequire('fs-extra');
 const request = window.nodeRequire('request');
 const progress = window.nodeRequire('request-progress');
 const path = window.nodeRequire('path');
@@ -127,7 +127,7 @@ class Installers extends PureComponent {
     console.log(remeshAvailableUrl);
     this.setLoading(true);
     const tmpPath = `${app.getAppPath()}${path.sep}tmp${path.sep}`;
-    await fs.ensureDir(tmpPath);
+    await ensureDir(tmpPath);
     progress(request(options), { throttle: 1e3 })
     .on('progress', (state) => {
       // console.log('Progress...');
@@ -140,7 +140,7 @@ class Installers extends PureComponent {
       this.installRemeshPackage();
       // this.setLoading(false);
     })
-    .pipe(fs.createWriteStream(`${tmpPath}MeshReplace.zip`));
+    .pipe(createWriteStream(`${tmpPath}MeshReplace.zip`));
   }
 
   async installTso() {
@@ -175,19 +175,13 @@ class Installers extends PureComponent {
         cwd: patcher,
         shell: true,
       });
-      // Move The Sims Online to data
-      fs.move(customSource, target);
+
+      move(customSource, target);
       const tsoFiles = `${app.getAppPath()}${path.sep}tmp${path.sep}TSO_Installer_v1.1239.1.0`;
-      // Remove TSO_Installer_v1.1239.1.0
-      fs.remove(tsoFiles);
-      // Remove TSO_Installer_v1.1239.1.0.zip
-      fs.remove(`${tsoFiles}.zip`);
+      remove(tsoFiles);
+      remove(`${tsoFiles}.zip`);
       this.setLoading(false);
-    });
-
-    console.log('after extraction');
-
-    
+    });    
   }
 
   async fetchTso() {
@@ -195,7 +189,7 @@ class Installers extends PureComponent {
 
     const tmpPath = `${app.getAppPath()}${path.sep}tmp${path.sep}`;
     const tsoUrl = 'http://ia801903.us.archive.org/tarview.php?tar=/33/items/Fileplanet_dd_042006/Fileplanet_dd_042006.tar&file=042006/TSO_Installer_v1.1239.1.0.zip';
-    await fs.ensureDir(tmpPath);
+    await ensureDir(tmpPath);
     progress(request(tsoUrl), { throttle: 1e3 })
     .on('progress', (state) => {
       // console.log('Progress...');
@@ -208,7 +202,7 @@ class Installers extends PureComponent {
       this.installTso();
       // this.setLoading(false);
     })
-    .pipe(fs.createWriteStream(`${tmpPath}TSO_Installer_v1.1239.1.0.zip`));
+    .pipe(createWriteStream(`${tmpPath}TSO_Installer_v1.1239.1.0.zip`));
   }
 
   async installFso() {
@@ -246,7 +240,7 @@ class Installers extends PureComponent {
       }
     };
 
-    await fs.ensureDir(tmpPath);
+    await ensureDir(tmpPath);
     progress(request(options), { throttle: 1e3 })
     .on('progress', (state) => {
       // console.log('Progress...');
@@ -259,7 +253,7 @@ class Installers extends PureComponent {
       this.installFso();
       // this.setLoading(false);
     })
-    .pipe(fs.createWriteStream(`${tmpPath}FreeSO.zip`));
+    .pipe(createWriteStream(`${tmpPath}FreeSO.zip`));
     
   }
 

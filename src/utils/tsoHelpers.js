@@ -1,7 +1,7 @@
 import { getRegistryValue } from './registryHelpers';
 
 const path = window.nodeRequire('path');
-const fs = window.nodeRequire('fs');
+const { existsSync } = window.nodeRequire('fs-extra');
 const { remote } = window.nodeRequire('electron');
 const { app } = remote;
 const os = window.nodeRequire('os');
@@ -21,7 +21,7 @@ const getRegistry = async () => {
 }
 
 const tsoInstallDir = async () => {
-  let localInstall = fs.existsSync(localPath);
+  let localInstall = existsSync(localPath);
   if (localInstall) {
     return {
       isGlobal: !localInstall,
@@ -41,7 +41,7 @@ const tsoInstallDir = async () => {
 }
 
 const hasTso = async () => {
-  let localInstall = fs.existsSync(`${app.getAppPath()}${path.sep}data${path.sep}The Sims Online`);
+  let localInstall = existsSync(`${app.getAppPath()}${path.sep}data${path.sep}The Sims Online`);
 
   if (!localInstall && os.platform() === 'win32') {
     const installPath = await getRegistry();
