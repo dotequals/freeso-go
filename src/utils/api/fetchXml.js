@@ -5,7 +5,7 @@ const fetchXml = async (url) => {
 
     return text;
   } catch (error) {
-    throw (error);
+    throw error;
   }
 };
 

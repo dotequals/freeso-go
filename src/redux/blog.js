@@ -49,7 +49,7 @@ export function* getBlogData() {
     yield put(receiveBlogData(data));
   } catch (error) {
     console.log(error);
-    yield put(errorBlogData(error));
+    yield put(errorBlogData(error.message));
   }
 }
 

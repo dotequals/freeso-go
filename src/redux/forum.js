@@ -49,7 +49,7 @@ export function* getForumData() {
     yield put(receiveForumData(data));
   } catch (error) {
     console.log(error);
-    yield put(errorForumData(error));
+    yield put(errorForumData(error.message));
   }
 }
 

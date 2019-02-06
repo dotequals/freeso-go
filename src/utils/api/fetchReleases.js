@@ -6,7 +6,7 @@ const fetchReleases = async (owner, repo) => {
 
     return json;
   } catch (error) {
-    throw (error);
+    throw error;
   }
 };
 

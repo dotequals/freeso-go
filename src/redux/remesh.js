@@ -63,7 +63,7 @@ export function* getRemeshData() {
     yield put(recieveRemeshData(data));
   } catch (error) {
     console.log(error);
-    yield put(errorRemeshData(error));
+    yield put(errorRemeshData(error.message));
   }
 }
 
