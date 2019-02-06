@@ -1,26 +1,26 @@
-const { remote } = window.nodeRequire('electron');
-const path = window.nodeRequire('path');
+import rootDirectory from './rootDirectory';
+
+const { join } = window.nodeRequire('path');
 const { ensureDir, move, readdirSync, remove } = window.nodeRequire('fs-extra')
 const _7bin = window.nodeRequire('7zip-bin');
 const { extractFull } = window.nodeRequire('node-7z');
 
-const { app } = remote;
 const pathTo7Zip = _7bin.path7za;
-const source = `${app.getAppPath()}${path.sep}tmp${path.sep}`;
+const source = join(rootDirectory(), 'tmp');
 
 const moveFolder = async ({ sourceName, extractedName, target }) => {
   const regex = new RegExp(extractedName, 'i');
   const folderWithHash = readdirSync(source).filter(file => regex.test(file));
 
   await remove(target);
-  await move(`${source}${folderWithHash[0]}`, `${target}`);
-  await remove(`${source}${sourceName}`);
+  await move(join(source, folderWithHash[0]), target);
+  await remove(join(source, sourceName));
 }
 
 const extract = async ({ customSource, emitter, sourceName, extractedName, target, move, isTso = false }) => {
 
   await ensureDir(source);
-  const zip = extractFull(`${source}${sourceName}`, customSource || source, {
+  const zip = extractFull(join(source, sourceName), customSource || source, {
     $bin: pathTo7Zip,
     recursive: true,
   });

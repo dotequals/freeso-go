@@ -1,11 +1,12 @@
-const path = window.nodeRequire('path');
+import rootDirectory from './rootDirectory';
+
+const { join } = window.nodeRequire('path');
 const { exec } = window.nodeRequire('child_process');
 const { platform } = window.nodeRequire('os');
 const { remote } = window.nodeRequire('electron');
-const { app } = remote;
 
 const launchDataFolder = () => {
-  const cwd = `${app.getAppPath()}${path.sep}data`;
+  const cwd = join(rootDirectory(), 'data');
   const _platform = platform();
 
   if (_platform === 'win32') {

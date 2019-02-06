@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -17,6 +17,7 @@ import { requestForumData } from '../redux/forum';
 import { requestBlogData } from '../redux/blog';
 import { toggleDarkMode, toggleUserSet } from '../redux/settings';
 import { darkModeListener, isSystemDarkMode } from '../utils/darkModeHelpers';
+import { toggleOnlineStatus } from '../redux/system';
 
 const { platform } = window.nodeRequire('os');
 const { remote } = window.nodeRequire('electron');
@@ -40,6 +41,15 @@ class App extends Component {
     }
 
     darkModeListener(dispatch, toggleDarkMode);
+    if (window) {
+      console.log(window.navigator.onLine);
+      dispatch(toggleOnlineStatus(window.navigator.onLine));
+    }
+
+    window.addEventListener('online', () => dispatch(toggleOnlineStatus(true)));
+    window.addEventListener('offline', () => dispatch(toggleOnlineStatus(false)));
+
+    window.remote = remote;
   }
 
   componentDidMount() {
@@ -145,11 +155,13 @@ class App extends Component {
         <div className={styles.content}>
           <Sidebar _3d={_3d} accent={accent} graphics={graphics} />
           <div className={styles.main}>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/installers" component={Installers} />
-            <Route exact path="/settings" component={Settings} />
-            <Route exact path="/advanced" component={Advanced} />
-            <Route exact path="/about" component={About} />
+            <Switch>
+              <Route exact path="/installers" component={Installers} />
+              <Route exact path="/settings" component={Settings} />
+              <Route exact path="/advanced" component={Advanced} />
+              <Route exact path="/about" component={About} />
+              <Route component={Home} />
+            </Switch>
           </div>
         </div>
       </div>

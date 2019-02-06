@@ -5,12 +5,12 @@ import Icon from '../../Icon';
 import { getRegistryValue } from '../../utils/registryHelpers';
 
 import styles from '../index.module.css';
+import rootDirectory from '../../utils/rootDirectory';
 
 const { access, constants } = window.nodeRequire('fs-extra');
-const path = window.nodeRequire('path');
+const { join } = window.nodeRequire('path');
 const { exec } = window.nodeRequire('child_process');
 const { remote } = window.nodeRequire('electron');
-const { app } = remote;
 
 const dotNetRegistry = '\\Software\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full';
 const { windir } = remote.process.env;
@@ -60,7 +60,7 @@ class WindowsInstallers extends PureComponent {
   }
 
   installDotNet() {
-    exec(`${app.getAppPath()}${path.sep}bin${path.sep}NDP46-KB3045560-Web.exe`, (error) => {
+    exec(join(rootDirectory(), 'bin', 'NDP46-KB3045560-Web.exe'), (error) => {
       if (error) {
         console.log(error);
       }
@@ -68,7 +68,7 @@ class WindowsInstallers extends PureComponent {
   }
 
   installOpenAl() {
-    exec(`${app.getAppPath()}${path.sep}bin${path.sep}oalinst.exe`, (error) => {
+    exec(join(rootDirectory(), 'bin', 'oalinst.exe'), (error) => {
       if (error) {
         console.log(error);
       }

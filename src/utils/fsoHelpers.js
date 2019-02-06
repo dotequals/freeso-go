@@ -1,6 +1,7 @@
 import { getRegistryValue } from './registryHelpers';
+import rootDirectory from './rootDirectory';
 
-const path = window.nodeRequire('path');
+const { join } = window.nodeRequire('path');
 const { existsSync } = window.nodeRequire('fs-extra');
 const { remote } = window.nodeRequire('electron');
 const os = window.nodeRequire('os');
@@ -10,7 +11,7 @@ const { app } = remote;
 const { arch, platform } = os;
 
 const fsoRegistry = `\\Software\\${arch() === 'x64' ? 'WOW6432Node\\' : ''}Rhys Simpson\\FreeSO`;
-const localPath = `${app.getAppPath()}${path.sep}data${path.sep}FreeSO`;
+const localPath = join(rootDirectory(), 'data', 'FreeSO');
 
 const getRegistry = async () => {
   const value = await getRegistryValue(

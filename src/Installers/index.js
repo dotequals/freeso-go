@@ -14,6 +14,7 @@ import { requestRemeshData, setInstalledDate } from '../redux/remesh';
 import { fsoInstallPath } from '../utils/fsoHelpers';
 import { tsoInstallDir } from '../utils/tsoHelpers';
 import extract from '../utils/zipHelpers';
+import rootDirectory from '../utils/rootDirectory';
 
 import styles from './index.module.css';
 
@@ -22,7 +23,7 @@ const { EventEmitter } = window.nodeRequire('events');
 const { createWriteStream, ensureDir, move, remove } = window.nodeRequire('fs-extra');
 const request = window.nodeRequire('request');
 const progress = window.nodeRequire('request-progress');
-const path = window.nodeRequire('path');
+const { join } = window.nodeRequire('path');
 const { platform } = window.nodeRequire('os');
 const { remote } = window.nodeRequire('electron');
 const { app } = remote;
@@ -103,7 +104,7 @@ class Installers extends PureComponent {
   async installRemeshPackage() {
     const { fsoInstallDir } = this.state;
     const { dispatch, remeshAvailable } = this.props;
-    const target = `${fsoInstallDir}${path.sep}Content${path.sep}MeshReplace${path.sep}`;
+    const target = join(fsoInstallDir, 'Content', 'MeshReplace');
     
     await extract({ 
       extractedName: 'dotequals-freeso-remesh-package',
@@ -126,7 +127,7 @@ class Installers extends PureComponent {
     };
     console.log(remeshAvailableUrl);
     this.setLoading(true);
-    const tmpPath = `${app.getAppPath()}${path.sep}tmp${path.sep}`;
+    const tmpPath = join(rootDirectory(), 'tmp');
     await ensureDir(tmpPath);
     progress(request(options), { throttle: 1e3 })
     .on('progress', (state) => {
@@ -140,11 +141,11 @@ class Installers extends PureComponent {
       this.installRemeshPackage();
       // this.setLoading(false);
     })
-    .pipe(createWriteStream(`${tmpPath}MeshReplace.zip`));
+    .pipe(createWriteStream(join(tmpPath, 'MeshReplace.zip')));
   }
 
   async installTso() {
-    const target = `${app.getAppPath()}${path.sep}data${path.sep}The Sims Online`;
+    const target = join(rootDirectory(), 'data', 'The Sims Online');
     // console.log('before extraction');
     
     await extract({ 
@@ -156,20 +157,20 @@ class Installers extends PureComponent {
       isTso: true,
     });
 
-    const customSource = `${app.getAppPath()}${path.sep}tmp${path.sep}The Sims Online`;
+    const customSource = join(rootDirectory(), 'tmp', 'The Sims Online');
     installEmitter.on('tsoZipExtracted', async () => {
       await extract({ 
         customSource,
         emitter: installEmitter,
         extractedName: 'The Sims Online',
         move: false,
-        sourceName: `TSO_Installer_v1.1239.1.0${path.sep}Data1.cab`,
+        sourceName: join('TSO_Installer_v1.1239.1.0', 'Data1.cab'),
         target,
       });
       this.setLoading(false);
     });
 
-    const patcher = `${app.getAppPath()}${path.sep}bin${path.sep}TSO-Version-Patcher`;
+    const patcher = join(rootDirectory(), 'bin', 'TSO-Version-Patcher');
     installEmitter.on('tsoCabsExtracted', async () => {
       execSync(`${platform() !== 'win32' ? 'mono ' : ''}TSOVersionPatcherF.exe 1239toNI.tsop "${customSource}"`, {
         cwd: patcher,
@@ -177,7 +178,7 @@ class Installers extends PureComponent {
       });
 
       move(customSource, target);
-      const tsoFiles = `${app.getAppPath()}${path.sep}tmp${path.sep}TSO_Installer_v1.1239.1.0`;
+      const tsoFiles = join(rootDirectory(), 'tmp', 'TSO_Installer_v1.1239.1.0');
       remove(tsoFiles);
       remove(`${tsoFiles}.zip`);
       this.setLoading(false);
@@ -187,7 +188,7 @@ class Installers extends PureComponent {
   async fetchTso() {
     this.setLoading(true);
 
-    const tmpPath = `${app.getAppPath()}${path.sep}tmp${path.sep}`;
+    const tmpPath = join(rootDirectory(), 'tmp');
     const tsoUrl = 'http://ia801903.us.archive.org/tarview.php?tar=/33/items/Fileplanet_dd_042006/Fileplanet_dd_042006.tar&file=042006/TSO_Installer_v1.1239.1.0.zip';
     await ensureDir(tmpPath);
     progress(request(tsoUrl), { throttle: 1e3 })
@@ -202,12 +203,12 @@ class Installers extends PureComponent {
       this.installTso();
       // this.setLoading(false);
     })
-    .pipe(createWriteStream(`${tmpPath}TSO_Installer_v1.1239.1.0.zip`));
+    .pipe(createWriteStream(join(tmpPath, 'TSO_Installer_v1.1239.1.0.zip')));
   }
 
   async installFso() {
     // const { dispatch, remeshAvailable } = this.props;
-    const target = `${app.getAppPath()}${path.sep}data${path.sep}FreeSO`;
+    const target = join(rootDirectory(), 'data', 'FreeSO');
     
     await extract({ 
       extractedName: 'Release',
@@ -225,7 +226,7 @@ class Installers extends PureComponent {
     const releases = await fetchReleases('dotequals', 'FreeSO');
     const { assets } = releases[0];
     const release = platform() === 'win32' ? 'FreeSO.zip' : 'FreeSO-darwin-linux.zip';
-    const tmpPath = `${app.getAppPath()}${path.sep}tmp${path.sep}`;
+    const tmpPath = join(rootDirectory(), 'tmp');
     let browserDownload = '';
     for (let i = 0; i < assets.length; i += 1) {
       if (assets[i].name === release) {
@@ -253,7 +254,7 @@ class Installers extends PureComponent {
       this.installFso();
       // this.setLoading(false);
     })
-    .pipe(createWriteStream(`${tmpPath}FreeSO.zip`));
+    .pipe(createWriteStream(join(tmpPath, 'FreeSO.zip')));
     
   }
 

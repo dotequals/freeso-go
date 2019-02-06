@@ -13,6 +13,7 @@ import Scrollable from '../Scrollable';
 import { toggle3d, toggleDarkMode, toggleUserSet, changeGraphicsMode, changeAccentColor } from '../redux/settings';
 import { fsoInstallPath } from '../utils/fsoHelpers';
 import { isSystemDarkMode } from '../utils/darkModeHelpers';
+import rootDirectory from '../utils/rootDirectory';
 
 import styles from './index.module.css';
 
@@ -21,7 +22,7 @@ import './toggle.css';
 
 const { platform } = window.nodeRequire('os');
 const { copy, remove } = window.nodeRequire('fs-extra');
-const path = window.nodeRequire('path');
+const { join } = window.nodeRequire('path');
 const { remote } = window.nodeRequire('electron');
 const { app } = remote
 
@@ -113,12 +114,12 @@ class Settings extends PureComponent {
     // Don't need to check platform here because combo box is disabled
     if (graphics !== 'Software' && value === 'Software') {
       const fsoDir = await fsoInstallPath();
-      await copy(`${app.getAppPath()}${path.sep}bin${path.sep}dxtn.dll`, `${fsoDir.value}${path.sep}dxtn.dll`, (err) => {
+      await copy(join(rootDirectory(), 'bin', 'dxtn.dll'), join(fsoDir.value, 'dxtn.dll'), (err) => {
         if (err) {
           console.log(err);
         }
       });
-      await copy(`${app.getAppPath()}${path.sep}bin${path.sep}opengl32.dll`, `${fsoDir.value}${path.sep}opengl32.dll`, (err) => {
+      await copy(join(rootDirectory(), 'bin', 'opengl32.dll'), join(fsoDir.value, 'opengl32.dll'), (err) => {
         if (err) {
           console.log(err);
         }
@@ -127,12 +128,12 @@ class Settings extends PureComponent {
       dispatch(toggle3d(false));
     } else if (graphics === 'Software' && value !== 'Software') {
       const fsoDir = await fsoInstallPath();
-      await remove(`${fsoDir.value}${path.sep}dxtn.dll`, (err) => {
+      await remove(join(fsoDir.value, 'dxtn.dll'), (err) => {
         if (err) {
           console.log(err);
         }
       });
-      await remove(`${fsoDir.value}${path.sep}opengl32.dll`, (err) => {
+      await remove(join(fsoDir.value, 'opengl32.dll'), (err) => {
         if (err) {
           console.log(err);
         }

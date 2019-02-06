@@ -1,11 +1,13 @@
+import rootDirectory from './rootDirectory';
+
 const { existsSync } = window.nodeRequire('fs-extra');
-const path = window.nodeRequire('path');
+const { join } = window.nodeRequire('path');
 const { spawn } = window.nodeRequire('child_process');
 const { platform } = window.nodeRequire('os');
 const { remote } = window.nodeRequire('electron');
 const { app } = remote;
 
-const localPath = `${app.getAppPath()}${path.sep}data${path.sep}Simitone`;
+const localPath = join(rootDirectory(), 'data', 'Simitone');
 
 const hasSimitone = () => {
   let localInstall = existsSync(localPath);

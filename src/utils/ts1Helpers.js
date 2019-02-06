@@ -1,6 +1,7 @@
 import { getRegistryValue } from './registryHelpers';
+import rootDirectory from './rootDirectory';
 
-const path = window.nodeRequire('path');
+const { join } = window.nodeRequire('path');
 const { existsSync } = window.nodeRequire('fs-extra');
 const { remote } = window.nodeRequire('electron');
 const { app } = remote;
@@ -8,7 +9,7 @@ const os = window.nodeRequire('os');
 
 const { arch } = os;
 const ts1Registry = `\\Software\\${arch() === 'x64' ? 'WOW6432Node\\' : ''}Maxis\\The Sims`;
-const localPath = `${app.getAppPath()}${path.sep}data${path.sep}The Sims`;
+const localPath = join(rootDirectory(), 'data', 'The Sims');
 
 const getRegistry = async () => {
   const value = await getRegistryValue(
