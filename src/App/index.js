@@ -18,6 +18,9 @@ import { requestBlogData } from '../redux/blog';
 import { toggleDarkMode, toggleUserSet } from '../redux/settings';
 import { darkModeListener, isSystemDarkMode } from '../utils/darkModeHelpers';
 
+const { platform } = window.nodeRequire('os');
+const { remote } = window.nodeRequire('electron');
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -133,6 +136,9 @@ class App extends Component {
 
   render() {
     const { _3d, accent, darkTheme, graphics } = this.props;
+    if (platform() === 'darwin') {
+      remote.getCurrentWindow().setVibrancy(darkTheme ? 'dark' : 'medium-light');
+    }
     return (
       <div className={`${styles.default} ${darkTheme ? 'dark' : 'light'}`}>
         <TitleBar />

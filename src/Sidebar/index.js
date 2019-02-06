@@ -14,6 +14,8 @@ import styles from './index.module.css';
 
 import { ReactComponent as Logo } from '../assets/images/freeso.svg';
 
+const { platform } = window.nodeRequire('os');
+
 class Sidebar extends PureComponent {
   constructor(props) {
     super(props);
@@ -84,7 +86,7 @@ class Sidebar extends PureComponent {
     const renderGames = games.map((game) => <SidebarItem key={game} name={game} onClick={this.launchGame} isGame={true} onContextMenu={this.launchGame} />);
     const renderItems = items.map((item) => <SidebarItem key={item} name={item} active={`/${item.toLowerCase()}` === active ? true : false} onClick={this.changeRoute} isGame={false} />);
     return (
-      <nav className={styles.default}>
+      <nav className={platform() === 'darwin' ? styles.default : styles.withColor}>
         <Logo className={accent === '#3faced' ? 'logo' : 'logo accent'} />
         {renderGames}
         {renderItems}

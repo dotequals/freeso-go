@@ -30,6 +30,7 @@ export const darkModeListener = (dispatch, toggleDarkMode) => {
       'AppleInterfaceThemeChangedNotification',
       async () => {
         const isDark = await isSystemDarkMode();
+        remote.getCurrentWindow().setVibrancy(isDark ? 'dark' : 'medium-light');
         dispatch(toggleDarkMode(isDark));
       }
     );
