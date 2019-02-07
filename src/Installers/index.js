@@ -25,8 +25,6 @@ const request = window.nodeRequire('request');
 const progress = window.nodeRequire('request-progress');
 const { join } = window.nodeRequire('path');
 const { platform } = window.nodeRequire('os');
-const { remote } = window.nodeRequire('electron');
-const { app } = remote;
 const installEmitter = new EventEmitter();
 
 class Installers extends PureComponent {

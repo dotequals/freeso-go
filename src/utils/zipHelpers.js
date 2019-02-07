@@ -1,12 +1,30 @@
 import rootDirectory from './rootDirectory';
 
+const { remote } = window.nodeRequire('electron');
 const { join } = window.nodeRequire('path');
 const { ensureDir, move, readdirSync, remove } = window.nodeRequire('fs-extra')
-const _7bin = window.nodeRequire('7zip-bin');
+// const _7bin = window.nodeRequire('7zip-bin');
 const { extractFull } = window.nodeRequire('node-7z');
 
-const pathTo7Zip = _7bin.path7za;
 const source = join(rootDirectory(), 'tmp');
+
+// Recreation of 7zip-bin because executables aren't being included in builds
+// https://www.npmjs.com/package/7zip-bin
+const getPath = () => {
+  const { process } = remote;
+  const _7zip = join(rootDirectory(), 'bin', '7zip');
+
+  if (process.env.USE_SYSTEM_7ZA) {
+    return '7za';
+  }
+  if (process.platform === 'darwin') {
+    return join(_7zip, 'mac', '7za');
+  } else if (process.platform === 'win32') {
+    return join(_7zip, 'win', process.arch, '7za.exe');
+  } else {
+    return join(_7zip, 'linux', process.arch, '7za');
+  }
+}
 
 const moveFolder = async ({ sourceName, extractedName, target }) => {
   const regex = new RegExp(extractedName, 'i');
@@ -18,10 +36,9 @@ const moveFolder = async ({ sourceName, extractedName, target }) => {
 }
 
 const extract = async ({ customSource, emitter, sourceName, extractedName, target, move, isTso = false }) => {
-
   await ensureDir(source);
   const zip = extractFull(join(source, sourceName), customSource || source, {
-    $bin: pathTo7Zip,
+    $bin: getPath(),
     recursive: true,
   });
 

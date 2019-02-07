@@ -23,8 +23,6 @@ import './toggle.css';
 const { platform } = window.nodeRequire('os');
 const { copy, remove } = window.nodeRequire('fs-extra');
 const { join } = window.nodeRequire('path');
-const { remote } = window.nodeRequire('electron');
-const { app } = remote
 
 const settings = {
   'Graphics Mode': 'This allows you to change which graphics API is used when running a game.\n\nOpenGL is cross platform and although it may not be as performant as DirectX, it can sometimes be more compatible with older hardware.\n\nSoftware Mode isn\'t GPU accelerated so although it will work on very old hardware, its performance is very slow.',

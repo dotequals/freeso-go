@@ -3,8 +3,6 @@ import rootDirectory from './rootDirectory';
 
 const { join } = window.nodeRequire('path');
 const { existsSync } = window.nodeRequire('fs-extra');
-const { remote } = window.nodeRequire('electron');
-const { app } = remote;
 const os = window.nodeRequire('os');
 
 const { arch } = os;

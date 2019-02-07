@@ -3,11 +3,9 @@ import rootDirectory from './rootDirectory';
 
 const { join } = window.nodeRequire('path');
 const { existsSync } = window.nodeRequire('fs-extra');
-const { remote } = window.nodeRequire('electron');
 const os = window.nodeRequire('os');
 const { spawn } = window.nodeRequire('child_process');
 
-const { app } = remote;
 const { arch, platform } = os;
 
 const fsoRegistry = `\\Software\\${arch() === 'x64' ? 'WOW6432Node\\' : ''}Rhys Simpson\\FreeSO`;

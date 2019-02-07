@@ -42,7 +42,6 @@ class App extends Component {
 
     darkModeListener(dispatch, toggleDarkMode);
     if (window) {
-      console.log(window.navigator.onLine);
       dispatch(toggleOnlineStatus(window.navigator.onLine));
     }
 

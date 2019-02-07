@@ -4,8 +4,6 @@ const { existsSync } = window.nodeRequire('fs-extra');
 const { join } = window.nodeRequire('path');
 const { spawn } = window.nodeRequire('child_process');
 const { platform } = window.nodeRequire('os');
-const { remote } = window.nodeRequire('electron');
-const { app } = remote;
 
 const localPath = join(rootDirectory(), 'data', 'Simitone');
 

@@ -24,7 +24,6 @@
     "not op_mini all"
   ],
   "dependencies": {
-    "7zip-bin": "^4.1.0",
     "bluebird": "^3.5.3",
     "clipboardy": "^1.2.3",
     "electron-is-dev": "^1.0.1",
@@ -32,9 +31,9 @@
     "fs-extra": "^7.0.1",
     "node-7z": "^1.0.1",
     "normalize.css": "^8.0.1",
-    "react": "^16.7.0",
+    "react": "^16.8.1",
     "react-color": "^2.17.0",
-    "react-dom": "^16.7.0",
+    "react-dom": "^16.8.1",
     "react-dropdown": "^1.6.4",
     "react-redux": "^6.0.0",
     "react-router-dom": "^4.3.1",
@@ -67,6 +66,9 @@
       "buildResources": "build",
       "output": "dist"
     },
+    "extraFiles": [
+      "bin"
+    ],
     "win": {
       "target": "portable",
       "icon": "public/icon.png"

@@ -7,7 +7,6 @@ const initialState = {
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
     case TOGGLE_ONLINE_STATUS:
-      console.log(action);
       return {
         ...state,
         online: action.data,
