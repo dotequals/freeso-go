@@ -63,36 +63,39 @@ const launchFso = async (useVolcanic, _3d, useDx) => {
     spawnRef = spawn(useVolcanic ? 'Volcanic.exe' : 'FreeSO.exe', [_3d ? '-3d' : null, useDx ? '-dx' : null],
     {
       cwd,
+      detached: true,
     }
     );
   } else {
     spawnRef = spawn(_3d ? './freeso3d.command' : './freeso.command',
     {
       cwd,
+      detached: true,
     }
     );
   }
 
+  spawnRef.unref();
+
   spawnRef.on('error', (error) => {
-    console.log(error);
+    console.log(`${error}`);
   });
 
   spawnRef.on('data', (data) => {
-    console.log(data);
+    console.log(`${data}`);
   });
 
   spawnRef.stdout.on('data', (data) => {
-    console.log(data);
+    console.log(`${data}`);
   });
 
   spawnRef.stderr.on('data', (data) => {
-    console.log(data);
+    console.log(`${data}`);
   });
 
   spawnRef.on('close', (code) => {
-    console.log(code);
+    console.log(`Simitone exited with code ${code}`);
   });
-
 }
 
 export {

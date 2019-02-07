@@ -33,20 +33,39 @@ const launchSimitone = async (useVolcanic, _3d, useDx) => {
     spawnRef = spawn('Simitone.Windows.exe', [_3d ? '-3d' : null],
     {
       cwd,
+      detached: true,
     }
     );
   } else {
     spawnRef = spawn('mono Simitone.Windows.exe', [_3d ? '-3d' : null],
     {
       cwd,
+      detached: true,
       shell: true,
     }
     );
-    spawnRef.unref();
   }
 
+  spawnRef.unref();
+
   spawnRef.on('error', (error) => {
-    console.log(error);
+    console.log(`${error}`);
+  });
+
+  spawnRef.on('data', (data) => {
+    console.log(`${data}`);
+  });
+
+  spawnRef.stdout.on('data', (data) => {
+    console.log(`${data}`);
+  });
+
+  spawnRef.stderr.on('data', (data) => {
+    console.log(`${data}`);
+  });
+
+  spawnRef.on('close', (code) => {
+    console.log(`Simitone exited with code ${code}`);
   });
 }
 
