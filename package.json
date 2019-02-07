@@ -1,7 +1,7 @@
 {
-  "name": "launchso",
+  "name": "freeso-go",
   "version": "0.1.0",
-  "description": "FreeSO Launcher made with Electron",
+  "description": "Cross-platform FreeSO launcher made with Electron",
   "private": true,
   "author": "dotequals <strdotequals@gmail.com>",
   "license": "MPL-2.0",
@@ -12,7 +12,8 @@
     "dev": "react-scripts start",
     "start": "concurrently \"cross-env BROWSER=none react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
     "pack": "electron-builder --dir",
-    "dist": "npx build --x64 --win --c.extraMetadata.main=build/electron.js -p always"
+    "dist": "npx build --ia32 --x64 -w --c.extraMetadata.main=build/electron.js -p always",
+    "dist-mac": "npx build --x64 -m --c.extraMetadata.main=build/electron.js -p never"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -28,6 +29,7 @@
     "clipboardy": "^1.2.3",
     "electron-is-dev": "^1.0.1",
     "enzyme": "^3.8.0",
+    "fix-path": "^2.1.0",
     "fs-extra": "^7.0.1",
     "mousetrap": "^1.6.2",
     "node-7z": "^1.0.1",
@@ -70,9 +72,14 @@
     "extraFiles": [
       "bin"
     ],
-    "win": {
-      "target": "portable",
+    "mac": {
+      "target": "dmg",
       "icon": "public/icon.png"
+    },
+    "win": {
+      "artifactName": "${productName}-${arch}-v${version}.exe",
+      "icon": "public/icon.png",
+      "target": "portable"
     }
   }
 }

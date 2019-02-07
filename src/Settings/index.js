@@ -92,8 +92,6 @@ class Settings extends PureComponent {
     const { dispatch } = this.props;
     const { value } = e;
 
-    console.log(e);
-
     if (value === 'custom') {
       dispatch(changeAccentColor('#367abb'));
       this.setState({ showCustom: true });

@@ -3,7 +3,6 @@ import rootDirectory from './rootDirectory';
 const { remote } = window.nodeRequire('electron');
 const { join } = window.nodeRequire('path');
 const { ensureDir, move, readdirSync, remove } = window.nodeRequire('fs-extra')
-// const _7bin = window.nodeRequire('7zip-bin');
 const { extractFull } = window.nodeRequire('node-7z');
 
 const source = join(rootDirectory(), 'tmp');
@@ -56,7 +55,6 @@ const extract = async ({ customSource, emitter, sourceName, extractedName, targe
       emitter.emit('tsoCabsExtracted');
     }
     if (move) {
-      console.log('hit end');
       moveFolder({ sourceName, extractedName, target });
     }
   });

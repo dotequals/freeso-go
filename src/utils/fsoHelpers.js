@@ -94,7 +94,7 @@ const launchFso = async (useVolcanic, _3d, useDx) => {
   });
 
   spawnRef.on('close', (code) => {
-    console.log(`Simitone exited with code ${code}`);
+    console.log(`FreeSO exited with code ${code}`);
   });
 }
 

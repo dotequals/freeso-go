@@ -3,6 +3,7 @@ const { app, BrowserWindow, shell, ipcMain, TouchBar } = require('electron');
 
 const path = require('path');
 const isDev = require('electron-is-dev');
+const fixPath = require('fix-path');
 
 let mainWindow;
 
@@ -73,6 +74,12 @@ createWindow = () => {
     });
 	});
 };
+
+// Finder launched applications don't get the same path a user does
+// Without this mono will fail to be found
+if (process.platform === 'darwin') {
+  fixPath();
+}
 
 app.on('ready', () => {
 	createWindow();
