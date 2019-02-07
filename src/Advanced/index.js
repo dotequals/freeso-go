@@ -44,7 +44,7 @@ class Advanced extends PureComponent {
   }
 
   openDevTools() {
-    remote.getCurrentWindow().openDevTools({ mode: 'undocked' })
+    remote.getCurrentWindow().openDevTools({ mode: 'undocked' });
   }
 
   toggleFilePaths() {

@@ -1,5 +1,5 @@
 const { app, BrowserWindow, shell, ipcMain, TouchBar } = require('electron');
-const { TouchBarButton, TouchBarLabel, TouchBarSpacer } = TouchBar;
+// const { TouchBarButton, TouchBarLabel, TouchBarSpacer } = TouchBar;
 
 const path = require('path');
 const isDev = require('electron-is-dev');

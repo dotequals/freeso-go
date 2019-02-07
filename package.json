@@ -29,6 +29,7 @@
     "electron-is-dev": "^1.0.1",
     "enzyme": "^3.8.0",
     "fs-extra": "^7.0.1",
+    "mousetrap": "^1.6.2",
     "node-7z": "^1.0.1",
     "normalize.css": "^8.0.1",
     "react": "^16.8.1",

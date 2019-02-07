@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import Mousetrap from 'mousetrap';
 
 import About from '../About';
 import Advanced from '../Advanced';
@@ -10,7 +11,6 @@ import Installers from '../Installers';
 import Settings from '../Settings';
 import Sidebar from '../Sidebar';
 import TitleBar from '../TitleBar';
-
 
 import styles from './index.module.css';
 import { requestForumData } from '../redux/forum';
@@ -53,6 +53,15 @@ class App extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
+    const mainWindow = remote.getCurrentWindow();
+
+    Mousetrap.bind(['command+r', 'ctrl+r'], () => mainWindow.reload());
+    if (process.platform === 'darwin') {
+      Mousetrap.bind('command+alt+i', () => mainWindow.openDevTools({ mode: 'undocked' }));
+    } else {
+      Mousetrap.bind('ctrl+shift+i', () => mainWindow.openDevTools({ mode: 'undocked' }));
+    }
+
     dispatch(requestForumData());
     dispatch(requestBlogData());
 
