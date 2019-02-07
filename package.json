@@ -12,8 +12,9 @@
     "dev": "react-scripts start",
     "start": "concurrently \"cross-env BROWSER=none react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
     "pack": "electron-builder --dir",
-    "dist": "npx build --ia32 --x64 -w --c.extraMetadata.main=build/electron.js -p always",
-    "dist-mac": "npx build --x64 -m --c.extraMetadata.main=build/electron.js -p never"
+    "dist": "npx build --ia32 --x64 --win --c.extraMetadata.main=build/electron.js",
+    "dist-mac": "npx build --x64 --mac --c.extraMetadata.main=build/electron.js",
+    "dist-linux": "npx build --x64 --linux --c.extraMetadata.main=build/electron.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -72,8 +73,17 @@
     "extraFiles": [
       "bin"
     ],
+    "linux": {
+      "category": "game",
+      "icon": "public/icon.png",
+      "synopsis": "Cross-platform FreeSO launcher made with Electron",
+      "systemIntegration": "doNotAsk",
+      "target": "AppImage"
+    },
     "mac": {
-      "target": "dmg",
+      "category": "public.app-category.game",
+      "darkModeSupport": true,
+      "target": "zip",
       "icon": "public/icon.png"
     },
     "win": {

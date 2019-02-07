@@ -56,7 +56,7 @@ class App extends Component {
     const mainWindow = remote.getCurrentWindow();
 
     Mousetrap.bind(['command+r', 'ctrl+r'], () => mainWindow.reload());
-    if (process.platform === 'darwin') {
+    if (platform() === 'darwin') {
       Mousetrap.bind('command+alt+i', () => mainWindow.openDevTools({ mode: 'undocked' }));
     } else {
       Mousetrap.bind('ctrl+shift+i', () => mainWindow.openDevTools({ mode: 'undocked' }));
