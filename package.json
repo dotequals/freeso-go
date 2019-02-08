@@ -63,6 +63,9 @@
   },
   "build": {
     "appId": "org.freeso.go",
+    "appImage": {
+      "systemIntegration": "doNotAsk"
+    },
     "asar": true,
     "compression": "normal",
     "productName": "FreeSO Go",
@@ -70,14 +73,10 @@
       "buildResources": "build",
       "output": "dist"
     },
-    "extraFiles": [
-      "bin"
-    ],
     "linux": {
       "category": "game",
       "icon": "public/icon.png",
       "synopsis": "Cross-platform FreeSO launcher made with Electron",
-      "systemIntegration": "doNotAsk",
       "target": "AppImage"
     },
     "mac": {

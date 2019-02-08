@@ -17,9 +17,7 @@ createWindow = () => {
     transparent: true,
 		webPreferences: {
       webSecurity: false,
-      experimentalFeatures: true,
 			nodeIntegration: true,
-			preload: __dirname + path.sep + 'preload.js',
 		},
 		width: 1024,
   });

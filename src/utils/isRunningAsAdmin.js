@@ -6,15 +6,15 @@ const isRunningAsAdmin = async () => {
   const _platform = platform();
   if (_platform === 'win32') {
     try {
-      const test = await exec('NET SESSION');
-      window.test = test;
+      await exec('NET SESSION');
       return true;
     } catch (error) {
       return false;
     }
   } else {
     const user = await exec('whoami');
-    return user === 'root';
+    // Ubuntu seems to be appending a newline :unamused:
+    return user === 'root' || user === 'root\n';
   }
 };
 

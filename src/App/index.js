@@ -55,11 +55,12 @@ class App extends Component {
     const { dispatch } = this.props;
     const mainWindow = remote.getCurrentWindow();
 
-    Mousetrap.bind(['command+r', 'ctrl+r'], () => mainWindow.reload());
     if (platform() === 'darwin') {
       Mousetrap.bind('command+alt+i', () => mainWindow.openDevTools({ mode: 'undocked' }));
     } else {
       Mousetrap.bind('ctrl+shift+i', () => mainWindow.openDevTools({ mode: 'undocked' }));
+      // The window transparency dies on macOS when you reload this way
+      Mousetrap.bind(['command+r', 'ctrl+r'], () => mainWindow.reload());
     }
 
     dispatch(requestForumData());

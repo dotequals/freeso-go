@@ -82,7 +82,7 @@ class Sidebar extends PureComponent {
     const { accent } = this.props;
     const { items, games } = this.state;
     let active = this.props.location.pathname;
-    active = active === '/' ? '/home' : active.toLowerCase();
+    active = (/index.html/.test(active) || active === '/') ? '/home' : active.toLowerCase();
     const renderGames = games.map((game) => <SidebarItem key={game} name={game} onClick={this.launchGame} isGame={true} onContextMenu={this.launchGame} />);
     const renderItems = items.map((item) => <SidebarItem key={item} name={item} active={`/${item.toLowerCase()}` === active ? true : false} onClick={this.changeRoute} isGame={false} />);
     return (
