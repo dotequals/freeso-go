@@ -221,7 +221,7 @@ class Installers extends PureComponent {
   async fetchFso() {
     this.setLoading(true);
 
-    const releases = await fetchReleases('dotequals', 'FreeSO');
+    const releases = await fetchReleases('dotequals', 'FreeSO-LTR');
     const { assets } = releases[0];
     const release = platform() === 'win32' ? 'FreeSO.zip' : 'FreeSO-darwin-linux.zip';
     const tmpPath = join(rootDirectory(), 'tmp');

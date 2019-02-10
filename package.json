@@ -74,7 +74,6 @@
       "output": "dist"
     },
     "linux": {
-      "category": "game",
       "icon": "public/icon.png",
       "synopsis": "Cross-platform FreeSO launcher made with Electron",
       "target": "AppImage"
