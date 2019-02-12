@@ -35,10 +35,6 @@ const moveFolder = async ({ sourceName, extractedName, target }) => {
 }
 
 const extract = async ({ customSource, emitter, sourceName, extractedName, target, move, isTso = false }) => {
-  console.log(`source: ${customSource || source}`);
-  console.log(`sourceName: ${sourceName}`);
-  console.log(`getPath: ${getPath()}`);
-  console.log(`move: ${move} target: ${target}`);
   await ensureDir(source);
   const zip = extractFull(join(source, sourceName), customSource || source, {
     $bin: getPath(),
