@@ -208,8 +208,9 @@ class Installers extends PureComponent {
     // const { dispatch, remeshAvailable } = this.props;
     const target = join(rootDirectory(), 'data', 'FreeSO');
     
-    await extract({ 
-      extractedName: 'Release',
+    await extract({
+      customSource: join(rootDirectory(), 'tmp', 'FreeSO'), 
+      extractedName: 'FreeSO',
       move: true,
       sourceName: 'FreeSO.zip',
       target,
