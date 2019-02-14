@@ -14,6 +14,7 @@ import { requestForumData } from '../redux/forum';
 import styles from './index.module.css';
 import BlogWidget from './BlogWidget';
 import { requestBlogData } from '../redux/blog';
+import Offline from '../Offline';
 
 class Home extends PureComponent {
   constructor(props) {
@@ -29,7 +30,7 @@ class Home extends PureComponent {
   }
 
   render() {
-    const { accent, blogData, blogLoading, blogUpdate, darkTheme, forumData, forumLoading, forumUpdate } = this.props;
+    const { accent, blogData, blogLoading, blogUpdate, darkTheme, forumData, forumLoading, forumUpdate, online } = this.props;
 
     let forumDocument;
     let blogDocument;
@@ -56,7 +57,8 @@ class Home extends PureComponent {
       </div>
     ) : '';
 
-    return (
+    return !online ? (<Offline />) :
+    (
       <Container>
         <Header title="Home" loading={blogLoading || forumLoading} />
         <Scrollable>
@@ -117,6 +119,7 @@ const mapStateToProps = state => (
     forumError: state.forum.error,
     forumLoading: state.forum.loading,
     forumUpdate: state.forum.lastUpdate,
+    online: state.system.online,
   }
 );
 

@@ -17,6 +17,7 @@ import extract from '../utils/zipHelpers';
 import rootDirectory from '../utils/rootDirectory';
 
 import styles from './index.module.css';
+import Offline from '../Offline';
 
 const { execSync } = window.nodeRequire('child_process');
 const { EventEmitter } = window.nodeRequire('events');
@@ -269,7 +270,7 @@ class Installers extends PureComponent {
   }
 
   render () {
-    const { remeshAvailable, remeshInstalled } = this.props;
+    const { online, remeshAvailable, remeshInstalled } = this.props;
     const { coreDependencies, fsoInstallDir, globalFso, globalTso, hasFso, hasTso, loading, tsoInstallDir } = this.state;
     const platformInstallers = this.renderPlatformInstallers();
 
@@ -286,100 +287,101 @@ class Installers extends PureComponent {
     }
     const remeshAvailableString = remeshAvailable ? new Date(remeshAvailable).toLocaleString([], options) : 'N/A';
     const remeshInstalledString = remeshInstalled ? new Date(remeshInstalled).toLocaleString([], options) : 'Not Installed';
-    return (
-      <Container>
-        <Header title="Installers" loading={loading} />
-        <Scrollable>
-          <Main>
-            {platformInstallers}
-            {
-              coreDependencies ? (
-                <Fragment>
+    return !online ? (<Offline />) :
+      (
+        <Container>
+          <Header title="Installers" loading={loading} />
+          <Scrollable>
+            <Main>
+              {platformInstallers}
+              {
+                coreDependencies ? (
+                  <Fragment>
+                    <div className={styles.installGroup}>
+                    <Icon name="TheSimsOnline" className="big" />
+                    <div className={styles.installText}>
+                      <h3 className="firstHeading">The Sims Online</h3>
+                      {
+                        hasTso ? (
+                          <div className={styles.reinstallable}>
+                            <div className="subHeading">
+                              The Sims Online is installed. <br />
+                              {tsoInstallDir}
+                            </div>
+                            <div className={styles.reinstall}>
+                              <button>Reinstall</button>
+                              {globalTso ? <button>Make Local</button> : ''}
+                            </div>
+                          </div>
+                        ) : (
+                          <div>
+                            <button onClick={this.fetchTso}>
+                              Install The Sims Online
+                            </button>
+                            <button onClick={this.setHasTso}>
+                              Verify
+                            </button>
+                          </div>
+                        )
+                      }
+                    </div>
+                  </div>
                   <div className={styles.installGroup}>
-                  <Icon name="TheSimsOnline" className="big" />
-                  <div className={styles.installText}>
-                    <h3 className="firstHeading">The Sims Online</h3>
-                    {
-                      hasTso ? (
+                    <Icon name="FsoOutline" className="big" />
+                    <div className={styles.installText}>
+                      <h3 className="firstHeading">FreeSO</h3>
+                      {
+                        hasFso ? (
                         <div className={styles.reinstallable}>
                           <div className="subHeading">
-                            The Sims Online is installed. <br />
-                            {tsoInstallDir}
+                            FreeSO is installed. <br />
+                            {fsoInstallDir}
                           </div>
                           <div className={styles.reinstall}>
                             <button>Reinstall</button>
-                            {globalTso ? <button>Make Local</button> : ''}
+                            {globalFso ? <button>Make Local</button> : ''}
                           </div>
                         </div>
-                      ) : (
-                        <div>
-                          <button onClick={this.fetchTso}>
-                            Install The Sims Online
-                          </button>
-                          <button onClick={this.setHasTso}>
-                            Verify
-                          </button>
-                        </div>
-                      )
-                    }
+                        ) : (
+                          <div>
+                            <button onClick={this.fetchFso}>
+                              Install FreeSO
+                            </button>
+                            <button onClick={this.setHasFso}>
+                              Verify
+                            </button>
+                          </div>
+                        )
+                      }
+                    </div>
                   </div>
-                </div>
-                <div className={styles.installGroup}>
-                  <Icon name="FsoOutline" className="big" />
-                  <div className={styles.installText}>
-                    <h3 className="firstHeading">FreeSO</h3>
-                    {
-                      hasFso ? (
-                      <div className={styles.reinstallable}>
-                        <div className="subHeading">
-                          FreeSO is installed. <br />
-                          {fsoInstallDir}
-                        </div>
-                        <div className={styles.reinstall}>
-                          <button>Reinstall</button>
-                          {globalFso ? <button>Make Local</button> : ''}
-                        </div>
-                      </div>
-                      ) : (
-                        <div>
-                          <button onClick={this.fetchFso}>
-                            Install FreeSO
-                          </button>
-                          <button onClick={this.setHasFso}>
-                            Verify
-                          </button>
-                        </div>
-                      )
-                    }
-                  </div>
-                </div>
-                { hasFso ? (
-                  <div className={styles.installGroup}>
-                    <Icon name="RemeshPackage" className="big" />
-                    <div className={styles.installText}>
-                      <h3 className="firstHeading">Remesh Package</h3>
-                      <div className={styles.reinstallable}>
-                        <div>
-                          <div className="subText">
-                          <span className={remeshButtonVerb === 'Update' ? 'highlight' : ''}>Latest Available: {remeshAvailableString}</span>
+                  { hasFso ? (
+                    <div className={styles.installGroup}>
+                      <Icon name="RemeshPackage" className="big" />
+                      <div className={styles.installText}>
+                        <h3 className="firstHeading">Remesh Package</h3>
+                        <div className={styles.reinstallable}>
+                          <div>
+                            <div className="subText">
+                            <span className={remeshButtonVerb === 'Update' ? 'highlight' : ''}>Latest Available: {remeshAvailableString}</span>
+                            </div>
+                            <div className="">
+                              Latest Installed: {remeshInstalledString}
+                            </div>
                           </div>
-                          <div className="">
-                            Latest Installed: {remeshInstalledString}
+                          <div className={styles.reinstall}>
+                            <button onClick={this.fetchRemeshPackage}>{remeshButtonVerb} Remesh Package</button>
                           </div>
-                        </div>
-                        <div className={styles.reinstall}>
-                          <button onClick={this.fetchRemeshPackage}>{remeshButtonVerb} Remesh Package</button>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ) : '' }
-              </Fragment>
-              ) : ''
-            }
-          </Main>
-        </Scrollable>
-      </Container>
+                  ) : '' }
+                </Fragment>
+                ) : ''
+              }
+            </Main>
+          </Scrollable>
+        </Container>
     );
   }
 };
@@ -387,6 +389,7 @@ class Installers extends PureComponent {
 const mapStateToProps = state => (
   {
     graphics: state.settings.graphics,
+    online: state.system.online,
     remeshAvailable: state.remesh.available,
     remeshAvailableUrl: state.remesh.availableUrl,
     remeshInstalled: state.remesh.installed,
