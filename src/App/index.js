@@ -16,8 +16,13 @@ import styles from './index.module.css';
 import { requestForumData } from '../redux/forum';
 import { requestBlogData } from '../redux/blog';
 import { toggleDarkMode, toggleUserSet } from '../redux/settings';
+import { setFsoDir, setStDir, setTs1Dir, setTsoDir } from '../redux/installed';
 import { darkModeListener, isSystemDarkMode } from '../utils/darkModeHelpers';
 import { toggleOnlineStatus } from '../redux/system';
+import { fsoInstallPath } from '../utils/fsoHelpers';
+import { tsoInstallDir } from '../utils/tsoHelpers';
+import { ts1InstallPath } from '../utils/ts1Helpers';
+import { simitonePath } from '../utils/simitoneHelpers';
 
 const { platform } = window.nodeRequire('os');
 const { remote } = window.nodeRequire('electron');
@@ -45,10 +50,22 @@ class App extends Component {
       dispatch(toggleOnlineStatus(window.navigator.onLine));
     }
 
+    tsoInstallDir().then(pathObj => {
+      dispatch(setTsoDir(pathObj.value));
+    });
+
+    fsoInstallPath().then(pathObj => {
+      dispatch(setFsoDir(pathObj.value));
+    });
+
+    ts1InstallPath().then(pathObj => {
+      dispatch(setTs1Dir(pathObj.value));
+    });
+
+    dispatch(setStDir(simitonePath()));
+
     window.addEventListener('online', () => dispatch(toggleOnlineStatus(true)));
     window.addEventListener('offline', () => dispatch(toggleOnlineStatus(false)));
-
-    window.remote = remote;
   }
 
   componentDidMount() {

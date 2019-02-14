@@ -36,7 +36,9 @@ const tsoInstallDir = async () => {
     }
   }
   // Not found
-  return {};
+  return {
+    value: '',
+  };
 }
 
 const hasTso = async () => {

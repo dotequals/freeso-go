@@ -36,7 +36,9 @@ const ts1InstallPath = async () => {
     }
   }
   // Not found
-  return {};
+  return {
+    value: '',
+  };
 }
 
 const hasTs1 = async () => {

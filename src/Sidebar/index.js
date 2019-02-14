@@ -1,12 +1,9 @@
 import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import SidebarItem from './SidebarItem';
 
-import { hasTs1 } from '../utils/ts1Helpers';
-import { hasSimitone } from '../utils/simitoneHelpers';
-import { hasTso } from '../utils/tsoHelpers';
-import { hasFso } from '../utils/fsoHelpers';
 import { launchFso } from '../utils/fsoHelpers';
 import { launchSimitone } from '../utils/simitoneHelpers';
 
@@ -19,27 +16,6 @@ const { platform } = window.nodeRequire('os');
 class Sidebar extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      items: ['Home', 'Installers', 'Settings', 'Advanced', 'About'],
-      games: [],
-    }
-
-    hasTs1().then((installed) => {
-      if (installed) {
-        const simitone = hasSimitone();
-        if (simitone) {
-          this.setState({ games: ['Play Simitone'].concat(this.state.games) });
-        }
-      }
-    }).then(() => {
-      hasTso().then((installed) => {
-        if (installed) {
-          hasFso().then((fso) => {
-            this.setState({ games: ['Play FreeSO'].concat(this.state.games) });
-          });
-        }
-      });
-    });
 
     this.changeRoute = this.changeRoute.bind(this);
     this.launchGame = this.launchGame.bind(this);
@@ -79,8 +55,18 @@ class Sidebar extends PureComponent {
   }
 
   render() {
-    const { accent } = this.props;
-    const { items, games } = this.state;
+    const { accent, fsoDir, stDir, ts1Dir, tsoDir } = this.props;
+    const items = ['Home', 'Installers', 'Settings', 'Advanced', 'About'];
+    const games = [];
+
+    if (fsoDir && tsoDir) {
+      games.push('Play FreeSO');
+    }
+
+    if (stDir && ts1Dir) {
+      games.push('Play Simitone');
+    }
+
     let active = this.props.location.pathname;
     active = (/index.html/.test(active) || active === '/') ? '/home' : active.toLowerCase();
     const renderGames = games.map((game) => <SidebarItem key={game} name={game} onClick={this.launchGame} isGame={true} onContextMenu={this.launchGame} />);
@@ -95,4 +81,13 @@ class Sidebar extends PureComponent {
   }
 }
 
-export default withRouter(Sidebar);
+const mapStateToProps = state => (
+  {
+    fsoDir: state.installed.fsoDir,
+    stDir: state.installed.stDir,
+    ts1Dir: state.installed.ts1Dir,
+    tsoDir: state.installed.tsoDir,
+  }
+);
+
+export default withRouter(connect(mapStateToProps)(Sidebar));

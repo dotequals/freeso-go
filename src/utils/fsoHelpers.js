@@ -38,7 +38,9 @@ const fsoInstallPath = async () => {
     }
   }
   // Not found
-  return {};
+  return {
+    value: '',
+  };
 }
 
 const hasFso = async () => {
