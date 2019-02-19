@@ -55,15 +55,15 @@ class Sidebar extends PureComponent {
   }
 
   render() {
-    const { accent, fsoDir, stDir, ts1Dir, tsoDir } = this.props;
+    const { accent, fsoDir, fsoPerms, stDir, stPerms, ts1Dir, ts1Perms, tsoDir, tsoPerms } = this.props;
     const items = ['Home', 'Installers', 'Settings', 'Advanced', 'About'];
     const games = [];
 
-    if (fsoDir && tsoDir) {
+    if (fsoDir && tsoDir && fsoPerms && tsoPerms) {
       games.push('Play FreeSO');
     }
 
-    if (stDir && ts1Dir) {
+    if (stDir && ts1Dir && stPerms && ts1Perms) {
       games.push('Play Simitone');
     }
 
@@ -84,9 +84,15 @@ class Sidebar extends PureComponent {
 const mapStateToProps = state => (
   {
     fsoDir: state.installed.fsoDir,
+    fsoPerms: state.installed.fsoPerms,
+    goDir: state.installed.goDir,
+    goPerms: state.installed.goPerms,
     stDir: state.installed.stDir,
+    stPerms: state.installed.stPerms,
     ts1Dir: state.installed.ts1Dir,
+    ts1Perms: state.installed.ts1Perms,
     tsoDir: state.installed.tsoDir,
+    tsoPerms: state.installed.tsoPerms,
   }
 );
 

@@ -9,15 +9,16 @@ export const SET_TS1_DIR = 'SET_TS1_DIR';
 export const TOGGLE_ST_PERMS = 'TOGGLE_ST_PERMS';
 export const SET_ST_DIR = 'SET_ST_DIR';
 
+// Making these true isn't ideal, but checking permissions is slow on Windows.
 const initialState = {
   goDir: '',
-  goPerms: false,
+  goPerms: true,
   tsoDir: '',
-  tsoPerms: false,
+  tsoPerms: true,
   fsoDir: '',
-  fsoPerms: false,
+  fsoPerms: true,
   ts1Dir: '',
-  ts1Perms: false,
+  ts1Perms: true,
   stDir: '',
   // Needs to be installed locally, so always true
   stPerms: true,
@@ -58,7 +59,7 @@ export default function reducer(state = initialState, action = {}) {
     case TOGGLE_TS1_PERMS:
       return {
         ...state,
-        ts1Dir: action.data,
+        ts1Perms: action.data,
       };
     case SET_TS1_DIR:
       return {
