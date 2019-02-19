@@ -29,15 +29,15 @@
     "bluebird": "^3.5.3",
     "clipboardy": "^1.2.3",
     "electron-is-dev": "^1.0.1",
-    "enzyme": "^3.8.0",
+    "enzyme": "^3.9.0",
     "fix-path": "^2.1.0",
     "fs-extra": "^7.0.1",
     "mousetrap": "^1.6.2",
     "node-7z": "^1.1.0",
     "normalize.css": "^8.0.1",
-    "react": "^16.8.1",
+    "react": "^16.8.2",
     "react-color": "^2.17.0",
-    "react-dom": "^16.8.1",
+    "react-dom": "^16.8.2",
     "react-dropdown": "^1.6.4",
     "react-redux": "^6.0.0",
     "react-router-dom": "^4.3.1",
@@ -55,7 +55,7 @@
   "devDependencies": {
     "concurrently": "^4.1.0",
     "cross-env": "^5.2.0",
-    "electron": "^4.0.4",
+    "electron": "^4.0.5",
     "electron-builder": "^20.38.5",
     "electron-devtools-installer": "^2.2.4",
     "typescript": "^3.3.3",
@@ -75,12 +75,13 @@
       "output": "dist"
     },
     "linux": {
+      "category": "Game",
       "icon": "public/icon.png",
       "synopsis": "Cross-platform FreeSO launcher made with Electron",
       "target": "AppImage"
     },
     "mac": {
-      "category": "public.app-category.game",
+      "category": "public.app-category.games",
       "darkModeSupport": true,
       "target": "zip",
       "icon": "public/icon.png"
