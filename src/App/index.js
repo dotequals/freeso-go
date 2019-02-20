@@ -100,10 +100,12 @@ class App extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
+    const { app } = remote;
     const mainWindow = remote.getCurrentWindow();
 
     if (platform() === 'darwin') {
       Mousetrap.bind('command+alt+i', () => mainWindow.openDevTools({ mode: 'undocked' }));
+      Mousetrap.bind('command+h', () => app.show());
     } else {
       Mousetrap.bind('ctrl+shift+i', () => mainWindow.openDevTools({ mode: 'undocked' }));
       // The window transparency dies on macOS when you reload this way
