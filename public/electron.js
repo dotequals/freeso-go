@@ -79,6 +79,23 @@ if (process.platform === 'darwin') {
   fixPath();
 }
 
+// Fixes an issue where pinned shortcut opens multiple instances on Windows
+app.setAppUserModelId('org.freeso.go');
+const unlocked = app.requestSingleInstanceLock();
+
+if (!unlocked) {
+  app.quit();
+} else {
+  app.on('second-instance', () => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) {
+        mainWindow.restore();
+      }
+      mainWindow.focus();
+    }
+  });
+}
+
 app.on('ready', () => {
 	createWindow();
 });
