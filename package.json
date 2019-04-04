@@ -26,7 +26,7 @@
     "not op_mini all"
   ],
   "dependencies": {
-    "bluebird": "^3.5.3",
+    "bluebird": "^3.5.4",
     "clipboardy": "^1.2.3",
     "electron-is-dev": "^1.0.1",
     "fix-path": "^2.1.0",
