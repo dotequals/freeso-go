@@ -113,7 +113,7 @@ class WindowsInstallers extends PureComponent {
             ) : (
               <div>
                 <div className="subHeading">
-                  {graphics !== 'OpenGL' ? 'Note: OpenAL is not used when the graphics mode is set to DirectX.' : ''}
+                  {graphics !== 'OpenGL' ? 'OpenAL is not used when the graphics mode is set to DirectX.' : ''}
                 </div>
                 <button style={{ marginTop: '1rem' }} onClick={this.installOpenAl}>
                   Install OpenAL

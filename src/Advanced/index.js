@@ -144,7 +144,7 @@ ${simitoneText}`.trim();
   render() {
     const { includeFilePaths, loading, profile } = this.state;
     const filePathWarning = (<div className="note">
-      Note: This will include the locations of various game dependencies on your computer in the system profile. These paths may contain sensitive information such as your real name and aren't always needed when troubleshooting.
+      This will include the locations of various game dependencies on your computer in the system profile. These paths may contain sensitive information such as your real name and aren't always needed when troubleshooting.
     </div>);
     const copyProfile = (<button onClick={this.copyProfile}>Copy Profile</button>);
     return (

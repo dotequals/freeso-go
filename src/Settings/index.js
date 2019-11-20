@@ -26,17 +26,17 @@ const { join } = window.nodeRequire('path');
 
 const settings = {
   'Graphics Mode': 'This allows you to change which graphics API is used when running a game.\n\nOpenGL is cross platform and although it may not be as performant as DirectX, it can sometimes be more compatible with older hardware.\n\nSoftware Mode isn\'t GPU accelerated so although it will work on very old hardware, its performance is very slow.',
-  '3D Mode': 'The Sims & The Sims Online didn\'t have true 3D like later games in the series, but FreeSO & Simitone do!\n\nMake sure to download the Remesh package from the Installers tab regularly as it is updated often.',
+  '3D Mode': 'The Sims & The Sims Online didn\'t have true 3D like later games in the series, but FreeSO & Simitone do!\n\nWhen enabled, press F12 to swap between 3D and hybrid 2D.\n\nMake sure to download the Remesh package from the Installers tab regularly as it is updated often.',
   'Dark Mode': 'FreeSO Go tries to automatically enable dark mode based on operating system level preferences on platforms where available.\n\nIf you diverge from your OS preference, FreeSO Go will keep your preference until the next time they match up.',
   'Accent Color': 'Get just the right pop of color with one of the predefined colors or input a custom color!',
 }
 
-// Architect Amethyst #9966cc
 const accents = [
   { label: 'So Blue', value: '#3faced'},
   { label: 'Rip in Periwinkle', value: '#7c83bc'},
   { label: 'Architect Antique Bronze', value: '#937e57'},
   { label: 'Aquila Ananas Jaune', value: '#e6ae25'},
+  { label: 'Dotequals\' Drawers Pink', value: '#e96d8e'},
   { label: 'Maria Manicura Roja', value: '#b31b1b'},
   { label: 'Custom...', value: 'custom'},
 ];
@@ -147,8 +147,9 @@ class Settings extends PureComponent {
     const _platform = platform();
     // DirectX requires Windows
     // Software rendering not on Windows requires a version of MESA that forces software rendering (out of scope for this project)
-    const unixNote = _platform !== 'win32' ? <div className="note">Note: OpenGL is the only graphics mode for this platform.</div> : '';
-    const softwareNote = 'Note: 3D Mode is disabled when using Software Mode';
+    const unixNote = _platform !== 'win32' ? <div className="note">OpenGL is the only graphics mode for this platform.</div> : '';
+    const simitoneNote = _platform === 'win32' && graphics === 'Software' ? <div className="note">Software mode only affects FreeSO</div> : '';
+    const softwareNote = '3D features are disabled when using Software Mode';
     return (
       <Container>
         <Header title="Settings" />
@@ -159,9 +160,10 @@ class Settings extends PureComponent {
               Graphics Mode
               <Dropdown options={graphicsModes} value={graphics} onChange={this.dispatchGraphics} disabled={_platform !== 'win32'} />
               {unixNote}
+              {simitoneNote}
             </div>
             <div className={styles.setting} onMouseEnter={this.updateDetails} onMouseLeave={this.updateDetails} data-setting="3D Mode">
-              3D Mode
+              3D Features & Hybrid 2D
               <label className={styles.toggle} htmlFor="3d-mode" onMouseEnter={this.updateDetails} onMouseLeave={this.updateDetails} data-setting="3D Mode">
                 <Toggle
                   id="3d-mode"

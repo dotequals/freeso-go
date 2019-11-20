@@ -12,3 +12,11 @@
 .launching::before {
   opacity: 1;
 }
+
+.divider {
+  border-color: var(--foreground);
+  border-width: 0.5px;
+  margin: 0.5rem 0 0.5rem 1.25rem;
+  width: 17.5rem;
+  opacity: 0.5;
+}

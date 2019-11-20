@@ -75,6 +75,7 @@ class Sidebar extends PureComponent {
       <nav className={platform() === 'darwin' ? styles.default : styles.withColor}>
         <Logo className={accent === '#3faced' ? 'logo' : 'logo accent'} />
         {renderGames}
+        {games.length ? <hr className={styles.divider} /> : ''}
         {renderItems}
       </nav>
     );
