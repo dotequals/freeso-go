@@ -1,7 +1,9 @@
 export const TOGGLE_GO_PERMS ='TOGGLE_GO_PERMS';
 export const SET_GO_DIR = 'SET_GO_DIR';
+export const TOGGLE_TSO_GLOBAL = 'TOGGLE_TSO_GLOBAL';
 export const TOGGLE_TSO_PERMS = 'TOGGLE_TSO_PERMS';
 export const SET_TSO_DIR = 'SET_TSO_DIR';
+export const TOGGLE_FSO_GLOBAL = 'TOGGLE_FSO_GLOBAL';
 export const TOGGLE_FSO_PERMS = 'TOGGLE_FSO_PERMS';
 export const SET_FSO_DIR = 'SET_FSO_DIR';
 export const TOGGLE_TS1_PERMS = 'TOGGLE_TS1_PERMS';
@@ -14,8 +16,10 @@ const initialState = {
   goDir: '',
   goPerms: true,
   tsoDir: '',
+  tsoGlobal: false,
   tsoPerms: true,
   fsoDir: '',
+  fsoGlobal: false,
   fsoPerms: true,
   ts1Dir: '',
   ts1Perms: true,
@@ -36,6 +40,11 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         goDir: action.data,
       };
+    case TOGGLE_TSO_GLOBAL:
+      return {
+        ...state,
+        tsoGlobal: action.data,
+      };
     case TOGGLE_TSO_PERMS:
       return {
         ...state,
@@ -46,6 +55,11 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         tsoDir: action.data,
       };
+    case TOGGLE_FSO_GLOBAL:
+      return {
+        ...state,
+        fsoGlobal: action.data,
+      }
     case TOGGLE_FSO_PERMS:
       return {
         ...state,
@@ -83,8 +97,10 @@ export default function reducer(state = initialState, action = {}) {
 
 export const toggleGoPerms = data => ({ type: TOGGLE_GO_PERMS, data });
 export const setGoDir = data => ({ type: SET_GO_DIR, data });
+export const toggleTsoGlobal = data => ({ type: TOGGLE_TSO_GLOBAL, data });
 export const toggleTsoPerms = data => ({ type: TOGGLE_TSO_PERMS, data });
 export const setTsoDir = data => ({ type: SET_TSO_DIR, data });
+export const toggleFsoGlobal = data => ({ type: TOGGLE_FSO_GLOBAL, data });
 export const toggleFsoPerms = data => ({ type: TOGGLE_FSO_PERMS, data });
 export const setFsoDir = data => ({ type: SET_FSO_DIR, data });
 export const toggleTs1Perms = data => ({ type: TOGGLE_TS1_PERMS, data });

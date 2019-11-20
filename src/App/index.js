@@ -17,7 +17,7 @@ import styles from './index.module.css';
 import { requestForumData } from '../redux/forum';
 import { requestBlogData } from '../redux/blog';
 import { toggleDarkMode, toggleUserSet } from '../redux/settings';
-import { setFsoDir, setStDir, setTs1Dir, setTsoDir, setGoDir } from '../redux/installed';
+import { setFsoDir, setStDir, setTs1Dir, setTsoDir, setGoDir, toggleTsoGlobal, toggleFsoGlobal } from '../redux/installed';
 import { darkModeListener, isSystemDarkMode } from '../utils/darkModeHelpers';
 import { toggleOnlineStatus } from '../redux/system';
 import { fsoInstallPath } from '../utils/fsoHelpers';
@@ -56,6 +56,7 @@ class App extends Component {
 
     tsoInstallDir().then(pathObj => {
       dispatch(setTsoDir(pathObj.value));
+      dispatch(toggleTsoGlobal(pathObj.isGlobal));
       hasPermissions({
         dispatch,
         key: 'tsoPerms',
@@ -66,6 +67,7 @@ class App extends Component {
 
     fsoInstallPath().then(pathObj => {
       dispatch(setFsoDir(pathObj.value));
+      dispatch(toggleFsoGlobal(pathObj.isGlobal));
       hasPermissions({
         dispatch,
         key: 'fsoPerms',
