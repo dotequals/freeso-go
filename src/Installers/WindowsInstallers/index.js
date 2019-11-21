@@ -38,9 +38,10 @@ class WindowsInstallers extends PureComponent {
     const { setCoreDependencies, setLoading } = this.props;
     setLoading(true);
     const dotNetRelease = await getRegistryValue('HKLM', dotNetRegistry, 'Release');
-    // Newer .NET releases are backwards compatible so only need this value to be at 4.6 or higher
+    // Newer .NET releases are backwards compatible so only need this value to be at 4.5 or higher
+    // Simitone and Volcanic require 4.6.1 and FreeSO will eventually as well. Let's force that now since Electron supports Windows 7 and later
     // https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/how-to-determine-which-versions-are-installed#to-find-net-framework-versions-by-querying-the-registry-in-code-net-framework-45-and-later
-    const dotNetInstalled = dotNetRelease >= 393297;
+    const dotNetInstalled = dotNetRelease >= 394254;
     this.setState({ dotNetInstalled });
     setCoreDependencies(dotNetInstalled);
     setLoading(false);
@@ -60,7 +61,7 @@ class WindowsInstallers extends PureComponent {
   }
 
   installDotNet() {
-    exec(join(rootDirectory(), 'bin', 'NDP46-KB3045560-Web.exe'), (error) => {
+    exec(join(rootDirectory(), 'bin', 'NDP461-KB3102438-Web.exe'), (error) => {
       if (error) {
         console.log(error);
       }
@@ -87,7 +88,7 @@ class WindowsInstallers extends PureComponent {
             <h3 className="firstHeading">Microsoft .NET Framework</h3>
             {dotNetInstalled ? (
               <div className="subHeading">
-                .NET Framework 4.5 or later is installed.
+                .NET Framework 4.6.1 or later is installed.
               </div>
             ) : (
               <div>
