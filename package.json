@@ -54,7 +54,7 @@
   "devDependencies": {
     "concurrently": "^5.0.0",
     "cross-env": "^6.0.3",
-    "electron": "^4.0.5",
+    "electron": "^7.1.2",
     "electron-builder": "^21.2.0",
     "electron-devtools-installer": "^2.2.4",
     "version-bump-prompt": "^5.0.6",

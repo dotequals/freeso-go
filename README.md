@@ -24,6 +24,8 @@ Many distros may be compatible, but I will only be ensuring compatibility with U
 2. `cd freeso-go && npm install`
 3. `npm start`
 
+**Note: Due to [this issue](https://github.com/electron/electron/issues/19468) on Windows 10, you need to swap your color preference to Light before `npm start`**
+
 ## Packaging
 1. `npm run build`
 2. `npm run dist`
