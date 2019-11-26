@@ -1,38 +1,26 @@
-import { getRegistryValue } from './registryHelpers';
-
 const { remote } = window.nodeRequire('electron');
-const { process, systemPreferences } = remote;
-
+const { process } = remote;
 
 export const isDarkMode = () => {
   const style = getComputedStyle(document.body);
-
   return style.getPropertyValue('--background') === style.getPropertyValue('--background-dark');
 }
 
 export const isSystemDarkMode = async () => {
-  if (process.platform === 'darwin') {
-    return systemPreferences.isDarkMode();
-  } else if (process.platform === 'win32') {
-    // Dark mode: 0, Light mode: 1
-    const registry = await getRegistryValue('HKCU', '\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize', 'AppsUseLightTheme');
-    const asNumber = Number.parseInt(registry);
-    return asNumber === 0;
-  }
-
-  // Until linux has a standard OS variable
-  return false;
+  // TODO - Determine if this has a default for operating systems without a preference
+  const useDark = remote.nativeTheme.shouldUseDarkColors;
+  return useDark;
 }
 
 export const darkModeListener = (dispatch, toggleDarkMode) => {
-  if (process.platform === 'darwin') {
-    systemPreferences.subscribeNotification(
-      'AppleInterfaceThemeChangedNotification',
-      async () => {
-        const isDark = await isSystemDarkMode();
-        remote.getCurrentWindow().setVibrancy(isDark ? 'dark' : 'medium-light');
-        dispatch(toggleDarkMode(isDark));
+  remote.nativeTheme.on('updated', () => {
+    const useDark = remote.nativeTheme.shouldUseDarkColors;
+    const isDark = isSystemDarkMode();
+    if (isDark !== useDark) {
+      dispatch(toggleDarkMode(useDark));
+      if (process.platform === 'darwin') {
+        remote.getCurrentWindow().setVibrancy(useDark ? 'dark' : 'medium-light');
       }
-    );
   }
+  });
 }
