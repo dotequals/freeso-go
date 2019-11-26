@@ -18,8 +18,7 @@ import { simitonePath } from '../utils/simitoneHelpers';
 import styles from './index.module.css';
 
 const sysInfo = window.nodeRequire('systeminformation');
-const clipboardy = window.nodeRequire('clipboardy');
-const { remote } = window.nodeRequire('electron');
+const { clipboard, remote } = window.nodeRequire('electron');
 
 const bytesToGB = (bytes) => (Math.ceil(bytes / Math.pow(1024, 3)));
 const kbToGB = (kb) => (Math.ceil(kb / 1024));
@@ -117,7 +116,7 @@ ${simitoneText}`.trim();
   copyProfile() {
     const { profile } = this.state;
     const copied = this.copied.current;
-    clipboardy.writeSync(profile);
+    clipboard.writeText(profile);
     this.setState({ copied: true });
     copied.style.visibility = 'visible';
 
