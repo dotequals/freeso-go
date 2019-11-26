@@ -206,9 +206,6 @@ class App extends Component {
 
   render() {
     const { _3d, accent, darkTheme, fsoDir, fsoPerms, goPerms, stDir, stPerms, ts1Dir, ts1Perms, tsoDir, tsoPerms, graphics } = this.props;
-    if (platform() === 'darwin') {
-      remote.getCurrentWindow().setVibrancy(darkTheme ? 'dark' : 'medium-light');
-    }
     return (
       <div className={`${styles.default} ${darkTheme ? 'dark' : 'light'}`}>
         <TitleBar />

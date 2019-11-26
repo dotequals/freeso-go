@@ -1,5 +1,4 @@
 const { remote } = window.nodeRequire('electron');
-const { process } = remote;
 
 export const isDarkMode = () => {
   const style = getComputedStyle(document.body);
@@ -18,9 +17,6 @@ export const darkModeListener = (dispatch, toggleDarkMode) => {
     const isDark = isSystemDarkMode();
     if (isDark !== useDark) {
       dispatch(toggleDarkMode(useDark));
-      if (process.platform === 'darwin') {
-        remote.getCurrentWindow().setVibrancy(useDark ? 'dark' : 'medium-light');
-      }
   }
   });
 }
