@@ -91,6 +91,7 @@ const createWindow = () => {
       loadingScreen.close();
     }
     mainWindow.show();
+    
 
 		ipcMain.on('open-external-window', (event, arg) => {
 			shell.openExternal(arg);
@@ -102,6 +103,22 @@ const createWindow = () => {
 // Without this mono will fail to be found
 if (process.platform === 'darwin') {
   fixPath();
+}
+
+let myWindow = undefined;
+const hasLock = app.requestSingleInstanceLock();
+
+if (!hasLock) {
+  app.quit();
+} else {
+  app.on('second-instance', (e, commandLine, workingDirectory) => {
+    if (myWindow) {
+      if (myWindow.isMinimized()) {
+        myWindow.restore();
+      }
+      myWindow.focus();
+    }
+  });
 }
 
 app.on('ready', () => {
