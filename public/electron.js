@@ -5,16 +5,38 @@ const path = require('path');
 const isDev = require('electron-is-dev');
 const fixPath = require('fix-path');
 
+let loadingScreen;
 let mainWindow;
 
-createWindow = () => {
+const createLoadingScreen = () => {
+  loadingScreen = new BrowserWindow({
+    frame: false,
+    height: 300,
+    resizable: false,
+    transparent: true,
+    width: 300,
+  });
+
+  // This approach still requires you to reload from dev tools, but it's nicer than restarting npm
+  loadingScreen.loadURL(
+    isDev
+    ? 'http://localhost:3000/loading/index.html'
+    : `file://${path.join(__dirname, '../build/loading/index.html')}`
+  );
+  loadingScreen.once('closed', () => (loadingScreen = null));
+  loadingScreen.webContents.once('did-finish-load', () => loadingScreen.show());
+}
+
+const createWindow = () => {
 	mainWindow = new BrowserWindow({
     frame: false,
     height: 768,
     minHeight: 768,
     minWidth: 1024,
+    show: false,
     titleBarStyle: 'hiddenInset',
     transparent: true,
+    vibrancy: 'sidebar',
 		webPreferences: {
       webSecurity: false,
 			nodeIntegration: true,
@@ -25,7 +47,7 @@ createWindow = () => {
 	mainWindow.loadURL(
 		isDev
 			? 'http://localhost:3000'
-			: `file://${path.join(__dirname, '../build/index.html')}`,
+			: `file://${path.join(__dirname, '../build/index.html')}`
   );
 
 	if (isDev) {
@@ -64,7 +86,10 @@ createWindow = () => {
   // The launcher isn't multi-windowed so this is okay
   webContents.on('new-window', openBrowser);
 
-	mainWindow.once('ready-to-show', () => {
+	webContents.once('did-finish-load', () => {
+    if (loadingScreen) {
+      loadingScreen.close();
+    }
     mainWindow.show();
 
 		ipcMain.on('open-external-window', (event, arg) => {
@@ -80,7 +105,8 @@ if (process.platform === 'darwin') {
 }
 
 app.on('ready', () => {
-	createWindow();
+  createLoadingScreen();
+  createWindow();
 });
 
 app.on('window-all-closed', () => {
