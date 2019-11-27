@@ -31,7 +31,7 @@
     "fix-path": "^2.1.0",
     "fs-extra": "^8.1.0",
     "mousetrap": "^1.6.3",
-    "node-7z": "^2.0.3",
+    "node-7z": "^2.0.4",
     "normalize.css": "^8.0.1",
     "react": "^16.12.0",
     "react-color": "^2.17.3",
