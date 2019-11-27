@@ -1,13 +1,10 @@
-const { app, BrowserWindow, shell, ipcMain, TouchBar } = require('electron');
-// const { TouchBarButton, TouchBarLabel, TouchBarSpacer } = TouchBar;
-
 const path = require('path');
+const { app, BrowserWindow, shell, ipcMain, TouchBar } = require('electron');
 const isDev = require('electron-is-dev');
 const fixPath = require('fix-path');
+// const { TouchBarButton, TouchBarLabel, TouchBarSpacer } = TouchBar;
 
 let loadingScreen;
-let mainWindow;
-
 const createLoadingScreen = () => {
   loadingScreen = new BrowserWindow({
     frame: false,
@@ -25,8 +22,9 @@ const createLoadingScreen = () => {
   );
   loadingScreen.once('closed', () => (loadingScreen = null));
   loadingScreen.webContents.once('did-finish-load', () => loadingScreen.show());
-}
+};
 
+let mainWindow;
 const createWindow = () => {
 	mainWindow = new BrowserWindow({
     frame: false,
@@ -109,14 +107,17 @@ let myWindow = undefined;
 const hasLock = app.requestSingleInstanceLock();
 
 if (!hasLock) {
+  if (isDev) {
+    console.error('[ERROR] Single instance lock in use.');
+  }
   app.quit();
 } else {
-  app.on('second-instance', (e, commandLine, workingDirectory) => {
-    if (myWindow) {
-      if (myWindow.isMinimized()) {
-        myWindow.restore();
+  app.on('second-instance', () => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) {
+        mainWindow.restore();
       }
-      myWindow.focus();
+      mainWindow.focus();
     }
   });
 }
