@@ -11,10 +11,8 @@
     "build": "react-scripts build",
     "dev": "react-scripts start",
     "start": "concurrently \"cross-env BROWSER=none react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
-    "pack": "electron-builder --dir",
-    "dist": "npx build --ia32 --x64 --win --c.extraMetadata.main=build/electron.js",
-    "dist-mac": "npx build --x64 --mac --c.extraMetadata.main=build/electron.js",
-    "dist-linux": "npx build --x64 --linux --c.extraMetadata.main=build/electron.js"
+    "unpack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -44,7 +42,7 @@
     "redux-saga": "^1.1.3",
     "request": "^2.88.0",
     "request-progress": "^3.0.0",
-    "systeminformation": "^4.15.3",
+    "systeminformation": "^4.16.0",
     "winreg": "^1.2.4"
   },
   "devDependencies": {
@@ -58,9 +56,6 @@
   },
   "build": {
     "appId": "org.freeso.go",
-    "appImage": {
-      "systemIntegration": "doNotAsk"
-    },
     "asar": true,
     "compression": "normal",
     "productName": "FreeSO Go",
