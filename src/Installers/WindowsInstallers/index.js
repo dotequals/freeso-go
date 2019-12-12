@@ -85,7 +85,7 @@ class WindowsInstallers extends PureComponent {
         <div className={styles.installGroup}>
           <Icon name="DotNet" className="big" />
           <div className={styles.installText}>
-            <h3 className="firstHeading">Microsoft .NET Framework</h3>
+            <h3>Microsoft .NET Framework</h3>
             {dotNetInstalled ? (
               <div className="subHeading">
                 .NET Framework 4.6.1 or later is installed.
@@ -106,7 +106,7 @@ class WindowsInstallers extends PureComponent {
         <div className={styles.installGroup}>
           <Icon name="OpenAl" className="big" />
           <div className={styles.installText}>
-            <h3 className="firstHeading">OpenAL</h3>
+            <h3>OpenAL</h3>
             {openAlInstalled ? (
               <div className="subHeading">
                 OpenAL is installed.

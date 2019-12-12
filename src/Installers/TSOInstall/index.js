@@ -32,7 +32,7 @@ class TSOInstall extends Component {
   render () {
     return (
       <div className={styles.installText}>
-        <h3 className="firstHeading">The Sims Online</h3>
+        <h3>The Sims Online</h3>
         {
           tsoDir ? (
             <div className={styles.reinstallable}>

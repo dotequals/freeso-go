@@ -1,0 +1,10 @@
+.details {
+  align-items: flex-end;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.detailText {
+  font-size: 0.875rem;
+}

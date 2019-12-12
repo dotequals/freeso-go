@@ -23,9 +23,8 @@ const simitonePath = () => {
 
 // Volcanic doesn't exist yet, but I expect something similar
 // Simitone currently doesn't support switching via flag yet either
-const launchSimitone = async (useVolcanic, _3d, useDx) => {
-  const dir = await simitonePath();
-  const cwd = dir;
+const launchSimitone = async (stDir, useVolcanic, _3d, useDx) => {
+  const cwd = stDir;
   const _platform = platform();
 
   let spawnRef;

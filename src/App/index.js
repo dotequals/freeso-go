@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Mousetrap from 'mousetrap';
 
-import About from '../About';
-import Advanced from '../Advanced';
-import Home from '../Home';
-import Installers from '../Installers';
 import Permissions from '../Permissions';
-import Settings from '../Settings';
+import Routes from '../Routes';
 import Sidebar from '../Sidebar';
 import TitleBar from '../TitleBar';
 
@@ -213,13 +208,7 @@ class App extends Component {
           <Sidebar _3d={_3d} accent={accent} graphics={graphics} />
           <div className={styles.main}>
             <Permissions fsoDir={fsoDir} fsoPerms={fsoPerms} goPerms={goPerms} stDir={stDir} stPerms={stPerms} ts1Dir={ts1Dir} ts1Perms={ts1Perms} tsoDir={tsoDir} tsoPerms={tsoPerms} />
-            <Switch>
-              <Route exact path="/installers" component={Installers} />
-              <Route exact path="/settings" component={Settings} />
-              <Route exact path="/advanced" component={Advanced} />
-              <Route exact path="/about" component={About} />
-              <Route component={Home} />
-            </Switch>
+            <Routes />
           </div>
         </div>
       </div>

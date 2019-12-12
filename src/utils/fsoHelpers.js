@@ -55,9 +55,8 @@ const hasFso = async () => {
   }
 }
 
-const launchFso = async (useVolcanic, _3d, useDx) => {
-  const dir = await fsoInstallPath();
-  const cwd = dir.value;
+const launchFso = (fsoDir, useVolcanic, _3d, useDx) => {
+  const cwd = fsoDir;
   const _platform = platform();
 
   let spawnRef;

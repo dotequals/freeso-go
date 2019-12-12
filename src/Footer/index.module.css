@@ -1,0 +1,13 @@
+.footer {
+  display:flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-right: 0.875rem;
+}
+
+.divider {
+  border-color: var(--foreground);
+  border-width: 0.03125rem;
+  opacity: 0.5;
+  margin: 0.75rem 0 0.75rem 0;
+}

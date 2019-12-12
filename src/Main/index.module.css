@@ -1,5 +1,6 @@
 .default {
   flex: 1;
+  line-height: 1.25rem;
   margin-bottom: 3rem;
   position: relative;
 }

@@ -82,6 +82,10 @@ h3 {
   margin: 3rem 0 1rem;
 }
 
+h3:first-of-type {
+  margin-top: 0;
+}
+
 :not(input):not(textarea),
 :not(input):not(textarea)::after,
 :not(input):not(textarea)::before {
@@ -204,10 +208,6 @@ div.chrome-picker.picker {
   color: var(--foreground);
 }
 
-.firstHeading {
-  margin-top: 0;
-}
-
 .subHeading {
   color: var(--accent);
   margin-top: -1rem;
@@ -269,7 +269,6 @@ div.chrome-picker.picker {
 
 .Dropdown-placeholder {
   border: 2px solid var(--foreground-translucent);
-  margin-top: 0.5rem;
   padding: 0.25rem 0.6rem;
 }
 
@@ -285,12 +284,19 @@ div.chrome-picker.picker {
   visibility: hidden;
 }
 
+.Dropdown-root {
+  position: relative;
+}
+
 .Dropdown-menu {
   background-color: var(--background);
   border: 1px solid var(--border);
+  bottom: 0;
   box-sizing: border-box;
-  margin-top: -1.875rem;
+  max-height: 30rem;
+  overflow-y: scroll;
   padding: 0.5rem 0;
+  position: absolute;
   width: 17.5rem;
 }
 

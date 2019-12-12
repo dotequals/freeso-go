@@ -8,7 +8,7 @@ const BlogWidget = (props) => {
   const renderWidget = items ? (
     <div>
       {
-        [...items].map(item => {
+        [...items].map((item, index) => {
           const title = item.querySelector('title').textContent;
           const link = item.querySelector('link').textContent;
           const date = item.querySelector('pubDate').textContent;
@@ -16,7 +16,7 @@ const BlogWidget = (props) => {
           const body = item.querySelector('description').textContent.replace(' [&#8230;]', '... ');
 
           return (
-            <div key={link}>
+            <div key={link} className={styles.post}>
               <h3 className={styles.blogHeading}><a href={link} target="_blank" rel="noopener noreferrer">{title}</a></h3>
               
               <div className={styles.authorDate}>
@@ -29,10 +29,8 @@ const BlogWidget = (props) => {
                   minute: '2-digit',
                 })}
               </div>
-              <div className={styles.body} dangerouslySetInnerHTML={{ __html: body }}>
-              </div>
+              <div className={styles.body} dangerouslySetInnerHTML={{ __html: body }} />
               <a href={link} className={styles.readMore} target="_blank" rel="noopener noreferrer">Read More</a>
-
             </div>
           );
         })

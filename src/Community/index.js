@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { TwitterTimelineEmbed } from 'react-twitter-embed';
 
 import Container from '../Container';
+import Footer from '../Footer';
 import Header from '../Header';
 import InfoPanel from '../InfoPanel';
 import Main from '../Main';
@@ -16,7 +17,7 @@ import BlogWidget from './BlogWidget';
 import { requestBlogData } from '../redux/blog';
 import Offline from '../Offline';
 
-class Home extends PureComponent {
+class Community extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -44,7 +45,7 @@ class Home extends PureComponent {
 
     const renderLastChecked = forumUpdate || blogUpdate ? (
       <div className={styles.subheading}>
-        Last Checked:&nbsp;
+        Last updated&nbsp;
         <span className="highlight">{new Date(forumUpdate || blogUpdate).toLocaleString([],
         {
           year: 'numeric',
@@ -60,29 +61,16 @@ class Home extends PureComponent {
     return !online ? (<Offline />) :
     (
       <Container>
-        <Header title="Home" loading={blogLoading || forumLoading} />
+        <Header title="Community" loading={blogLoading || forumLoading} />
         <Scrollable>
           <Main>
-            <div className={styles.header}>
-              <div className={styles.headings}>
-                <h3 className="firstHeading">
-                  FreeSO Announcements
-                </h3>
-                <div className={styles.subheading}>
-                  {renderLastChecked}
-                </div>
-              </div>
-              <div className={styles.refreshContainer}>
-                <button className={styles.refresh} onClick={this.refresh}>Refresh</button>
-              </div>
-            </div>
             <BlogWidget blogData={blogDocument} />
           </Main>
           <InfoPanel>
             <ForumWidget forumData={forumDocument} />
             {/* Use this div to hide the emphasis text if offline */}
             <div>
-              <div className="emphasis">Twitter @FreeSOGame</div>
+              <div className="emphasis">@FreeSOGame &amp; @Simitone</div>
               <TwitterTimelineEmbed
                 borderColor={accent}
                 linkColor={accent}
@@ -92,16 +80,25 @@ class Home extends PureComponent {
                 noHeader
                 noScrollbar
                 options={{
-                  height: 2100,
+                  tweetLimit: '5',
                 }}
-                sourceType="profile"
-                screenName="freesogame"
+                sourceType="list"
+                ownerScreenName="dotequals"
+                slug="fs-engine"
                 theme={darkTheme ? 'dark' : 'light'}
                 transparent
               />
             </div>
           </InfoPanel>
         </Scrollable>
+        <Footer>
+          <div className={styles.details}>
+            <button onClick={this.refresh}>Refresh</button>
+            <div className={styles.detailText}>
+              {renderLastChecked}
+            </div>
+          </div>
+        </Footer>
       </Container>
     );
   }
@@ -123,4 +120,4 @@ const mapStateToProps = state => (
   }
 );
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps)(Community);

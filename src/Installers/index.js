@@ -58,9 +58,24 @@ class Installers extends PureComponent {
   }
 
   componentDidMount() {
-    this.setHasTso();
-    this.setHasFso();
-    this.checkRemesh();
+    const { online } = this.props;
+
+      this.setHasTso();
+      this.setHasFso();
+
+      if (online) {
+      this.checkRemesh();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const oldOnline = prevProps.online;
+    const { online, remeshAvailable } = this.props;
+    if (!oldOnline && online) {
+      if (!remeshAvailable) {
+        this.checkRemesh();
+      }
+    }
   }
 
   checkRemesh() {
@@ -300,7 +315,7 @@ class Installers extends PureComponent {
                     <div className={styles.installGroup}>
                     <Icon name="TheSimsOnline" className="big" />
                     <div className={styles.installText}>
-                      <h3 className="firstHeading">The Sims Online</h3>
+                      <h3>The Sims Online</h3>
                       {
                         hasTso ? (
                           <div className={styles.reinstallable}>
@@ -329,7 +344,7 @@ class Installers extends PureComponent {
                   <div className={styles.installGroup}>
                     <Icon name="FsoOutline" className="big" />
                     <div className={styles.installText}>
-                      <h3 className="firstHeading">FreeSO</h3>
+                      <h3>FreeSO</h3>
                       {
                         hasFso ? (
                         <div className={styles.reinstallable}>
@@ -359,7 +374,7 @@ class Installers extends PureComponent {
                     <div className={styles.installGroup}>
                       <Icon name="RemeshPackage" className="big" />
                       <div className={styles.installText}>
-                        <h3 className="firstHeading">Remesh Package</h3>
+                        <h3>Remesh Package</h3>
                         <div className={styles.reinstallable}>
                           <div>
                             <div className="subText">

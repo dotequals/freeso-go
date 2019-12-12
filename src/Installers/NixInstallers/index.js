@@ -42,7 +42,7 @@ class NixInstallers extends PureComponent {
         <div className={styles.installGroup}>
           <Icon name="Mono" className="big" />
           <div className={styles.installText}>
-            <h3 className="firstHeading">{mono}</h3>
+            <h3>{mono}</h3>
             {
               monoInstalled ? (
                 <div className="subHeading">

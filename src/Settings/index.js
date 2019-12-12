@@ -155,7 +155,7 @@ class Settings extends PureComponent {
         <Header title="Settings" />
         <Scrollable>
           <Main>
-            <h3 className="firstHeading">FreeSO &amp; Simitone Settings</h3>
+            <h3>FreeSO &amp; Simitone Settings</h3>
             <div className={styles.setting} onMouseEnter={this.updateDetails} onMouseLeave={this.updateDetails} data-setting="Graphics Mode">
               Graphics Mode
               <Dropdown options={graphicsModes} value={graphics} onChange={this.dispatchGraphics} disabled={_platform !== 'win32'} />

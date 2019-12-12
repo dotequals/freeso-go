@@ -13,3 +13,11 @@
 .readMore {
   white-space: nowrap;
 }
+
+.post {
+  margin-top: 3rem;
+}
+
+.post:first-of-type {
+  margin: 0;
+}

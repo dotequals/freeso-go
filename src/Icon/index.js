@@ -2,8 +2,8 @@ import React from 'react';
 import {ReactComponent as About} from '../assets/images/about.svg';
 import {ReactComponent as Advanced} from '../assets/images/advanced.svg';
 import {ReactComponent as DotNet} from '../assets/images/dotnet.svg';
-import {ReactComponent as PlayFreeSO} from '../assets/images/freeso-icon.svg';
-import {ReactComponent as Home} from '../assets/images/home.svg';
+import {ReactComponent as FreeSO} from '../assets/images/freeso-icon.svg';
+import {ReactComponent as Community} from '../assets/images/home.svg';
 import {ReactComponent as Installers} from '../assets/images/installers.svg';
 import {ReactComponent as Placeholder} from '../assets/images/placeholder.svg';
 import {ReactComponent as Settings} from '../assets/images/settings.svg';
@@ -17,9 +17,9 @@ import {ReactComponent as Mono} from '../assets/images/monogame.svg';
 import styles from './index.module.css';
 
 const mapRoutesToIcons = {
-  'Play FreeSO': PlayFreeSO,
-  'Play Simitone': Simitone,
-  Home,
+  FreeSO,
+  Simitone,
+  Community,
   Installers,
   Settings,
   Advanced,
@@ -34,7 +34,7 @@ const mapRoutesToIcons = {
 };
 
 const Icon = (props) => {
-  const Component = mapRoutesToIcons[props.name || 'Home'];
+  const Component = mapRoutesToIcons[props.name || 'Community'];
   return (
     <Component className={styles[props.className] || styles.default} />
   );

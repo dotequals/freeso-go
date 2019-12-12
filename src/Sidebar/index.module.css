@@ -9,10 +9,6 @@
   background-color: var(--background-translucent);
 }
 
-.launching::before {
-  opacity: 1;
-}
-
 .divider {
   border-color: var(--foreground);
   border-width: 0.5px;

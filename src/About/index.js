@@ -14,57 +14,38 @@ const About = () => (
     <Header title={title} />
     <Scrollable>
       <Main>
-        <h3 className="firstHeading">What is FreeSO?</h3>
+        <h3>Are FreeSO &amp; Simitone Legal?</h3>
         <div>
-          FreeSO (Free Simulator Online) is a re-implementation of The Sims Online&trade; (TSO) using C#, .NET, and MonoGame.
+          Yes, they are a reverse-engineering of SimAntics that can load the game files of The Sims and The Sims Online. Any intellectual property (IP) belonging to Electronic Arts must be legally obtained and provided by the user. We neither distribute nor alter any IP belonging to Electronic Arts, Inc. We use our own original artwork to promote the games and maintain the projects as non-commercial. 
         </div>
-        <h3>Is FreeSO Legal?</h3>
+        <h3>Will FreeSO &amp; Simitone always be Free-to-Play?</h3>
         <div>
-          Yes, FreeSO consists of 100% original code reverse-engineered to replicate the gameplay of TSO. FreeSO is only a game engine, thus any content that resembles the graphics or sound effects of TSO must be legally obtained and provided by the user. We neither distribute nor alter any intellectual property belonging to Electronic Arts, Inc. We use our own original artwork to promote FreeSO and maintain the project as non-commercial. 
+          Yes, they will always be free open-source software, but in the case of Simitone, an install of The Sims Complete Collection or a backup of game data is required.
         </div>
-        <h3>Will FreeSO always be free-to-play?</h3>
+        <h3>What is Volcanic?</h3>
         <div>
-          Yes, it will always be free in its entirety.
-        </div>
-        <h3>How do I launch Volcanic (FSO.IDE)?</h3>
-        <div>
-          Right-click the play button.
+          Volcanic is an object development environment for FreeSO and Simitone that aims to replicate Maxis' official editor, Edith. It can read object data from The Sims 1 and The Sims Online and even create custom content or patches of existing content that is compatible with them. For a deep dive about the software you can read <a href="https://freeso.org/stuff/Volcanic.pdf" target="_blank" rel="noopener noreferrer">this paper</a>.
         </div>
       </Main>
       <InfoPanel>
         <div className="emphasis">
-          Helpful Links
+          Source Code
         </div>
         <ul className="list">
           <li className="link">
-            <a href="https://freeso.org" target="_blank" rel="noopener noreferrer">
-              FreeSO.org
+            <a href="https://github.com/riperiperi/FreeSO" target="_blank" rel="noopener noreferrer">
+              FreeSO GitHub
             </a>
           </li>
           <li className="link">
-            <a href="https://beta.freeso.org" target="_blank" rel="noopener noreferrer">
-              Create an Account
-            </a>
-          </li>
-          <li className="link">
-            <a href="https://beta.freeso.org/forgot" target="_blank" rel="noopener noreferrer">
-              Forgot Password?
-            </a>
-          </li>
-          <li className="link">
-            <a href="http://freeso.org/rules-terms-of-service/" target="_blank" rel="noopener noreferrer">
-              Rules &amp; Terms of Service
-            </a>
-          </li>
-          <li className="link">
-            <a href="http://forum.freeso.org/threads/common-errors-crashes.6326/" target="_blank" rel="noopener noreferrer">
-              Common Errors &amp; Crashes
+            <a href="https://github.com/riperiperi/Simitone" target="_blank" rel="noopener noreferrer">
+              Simitone GitHub
             </a>
           </li>
         </ul>
         
         <div className="emphasis">
-          Official Channels
+          Communication
         </div>
         <ul className="list">
           <li className="link">
@@ -90,21 +71,6 @@ const About = () => (
           <li className="link">
             <a href="https://www.reddit.com/r/freesogame" target="_blank" rel="noopener noreferrer">
               Reddit
-            </a>
-          </li>
-        </ul>
-        <div className="emphasis">
-          Third-Party Resources
-        </div>
-        <ul className="list">
-          <li className="link">
-            <a href="http://www.tsomania.net/" target="_blank" rel="noopener noreferrer">
-              TSOMania
-            </a>
-          </li>
-          <li className="link">
-            <a href="https://dashboard.thecode.house" target="_blank" rel="noopener noreferrer">
-              FreeSO Dashboard
             </a>
           </li>
         </ul>

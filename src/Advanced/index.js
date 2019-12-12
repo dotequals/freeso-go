@@ -9,7 +9,7 @@ import Scrollable from '../Scrollable';
 
 import isRunningAsAdmin from '../utils/isRunningAsAdmin';
 import launchScreenshotTool from '../utils/launchScreenshotTool';
-import launchDataFolder from '../utils/launchDataFolder';
+import { openDataFolder } from '../utils/openFolder';
 import { ts1InstallPath } from '../utils/ts1Helpers';
 import { tsoInstallDir } from '../utils/tsoHelpers';
 import { fsoInstallPath } from '../utils/fsoHelpers';
@@ -173,13 +173,13 @@ ${simitoneText}`.trim();
             <div className="emphasis">Troubleshooting Tools</div>
             <ul className="list">
               <li className="link">
-                <button className="buttonLink" onClick={launchScreenshotTool}>
-                  Take a Screenshot
+                <button className="buttonLink" onClick={openDataFolder}>
+                  Open FreeSO Go Data Folder
                 </button>
               </li>
               <li className="link">
-                <button className="buttonLink" onClick={launchDataFolder}>
-                  Open FreeSO Go Data Folder
+                <button className="buttonLink" onClick={launchScreenshotTool}>
+                  Take a Screenshot
                 </button>
               </li>
               <li className="link">
