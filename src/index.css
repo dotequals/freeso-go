@@ -113,6 +113,11 @@ button + button {
   margin-left: 1rem;
 }
 
+button:disabled {
+  border: 2px solid var(--foreground-translucent);
+  color: var(--foreground-translucent);
+}
+
 a,
 a:visited,
 a:hover {

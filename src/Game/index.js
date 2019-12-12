@@ -7,6 +7,7 @@ import Footer from '../Footer';
 import FreeSOPanel from '../FreeSOPanel';
 import Header from '../Header';
 import Scrollable from '../Scrollable';
+import SimitonePanel from '../SimitonePanel';
 
 import playButtonText from '../utils/playButtonText';
 import { readVersion } from '../utils/readVersion';
@@ -14,7 +15,9 @@ import { launchFso } from '../utils/fsoHelpers';
 import { launchSimitone } from '../utils/simitoneHelpers';
 
 import styles from './index.module.css';
-import SimitonePanel from '../SimitonePanel';
+
+const { remote } = window.nodeRequire('electron');
+const { process } = remote;
 
 class Game extends Component {
   constructor(props) {
@@ -23,13 +26,13 @@ class Game extends Component {
     this.state = {
       dropdown: [
         { label: game, value: game },
-        { label: `${game} + Volcanic IDE`, value: `${game}-ide`},
+        { label: `${game} + Volcanic IDE`, value: `${game}-ide`, disabled: true || process.platform === 'darwin' },
       ],
       launch: game,
       version: '',
     };
 
-    this.launchGame = this.launchGame.bind(this);
+    this.gameActionButton = this.gameActionButton.bind(this);
     this.options = this.options.bind(this);
     this.dropdownChanged = this.dropdownChanged.bind(this);
   }
@@ -63,38 +66,44 @@ class Game extends Component {
     }
   }
 
-  async launchGame(e) {
+  async gameActionButton(e) {
+    const buttonText = e.target.textContent;
     const { _3d, fsoDir, game, graphics, stDir } = this.props;
-    const { launch } = this.state;
-    const useVolcanic = /ide/.test(launch);
-    let dir = '';
 
-    switch(game) {
-      case 'FreeSO':
-        dir = fsoDir;
-        break;
-      case 'Simitone':
-        dir = stDir;
-        break;
-      default:
-        break;
-    }
+    if (buttonText !== 'Play') {
+      this.props.history.push(`/install?game=${game}`);
+    } else {
+      const { launch } = this.state;
+      const useVolcanic = /ide/.test(launch);
+      let dir = '';
+  
+      switch(game) {
+        case 'FreeSO':
+          dir = fsoDir;
+          break;
+        case 'Simitone':
+          dir = stDir;
+          break;
+        default:
+          break;
+      }
+  
+      if (game === 'FreeSO') {
+        launchFso(dir, useVolcanic, _3d, graphics === 'DirectX');
+      }
+      if (game === 'Simitone') {
+        launchSimitone(dir, useVolcanic, _3d, graphics === 'DirectX');
+      }
 
-    if (game === 'FreeSO') {
-      launchFso(dir, useVolcanic, _3d, graphics === 'DirectX');
+      // Not the best solution to make sure the version is up to date
+      const version = await readVersion(dir);
+      this.setState({ version });
     }
-    if (game === 'Simitone') {
-      launchSimitone(dir, useVolcanic, _3d, graphics === 'DirectX');
-    }
-    
-    // Not the best solution to make sure the version is up to date
-    const version = await readVersion(dir);
-    this.setState({ version });
   }
 
   options() {
     const { game } = this.props;
-    this.props.history.push(`/settings?game=${game.toLowerCase()}`);
+    this.props.history.push(`/settings?game=${game}`);
   }
 
   dropdownChanged(e) {
@@ -147,7 +156,7 @@ class Game extends Component {
           <Dropdown disabled={!canPlay} options={dropdown} value={launch} onChange={this.dropdownChanged} />
           <div className={styles.details}>
             <div>
-              <button disabled={!canPlay} onClick={this.launchGame}>{actionButtonText}</button>
+              <button onClick={this.gameActionButton}>{actionButtonText}</button>
               { canPlay ? <button onClick={this.options}>Options</button> : ''}
             </div>
             { version ? <span className={styles.detailText}>Version {version}. View the <a href={patchNotesHref} target="_blank" rel="noopener noreferrer">Patch Notes</a>.</span> : '' }
