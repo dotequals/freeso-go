@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import Toggle from 'react-toggle';
 import { ChromePicker } from 'react-color';
 import { connect } from 'react-redux';
-import Dropdown from 'react-dropdown';
+import Dropdown from '@dotequals/react-dropdown';
 
 import Container from '../Container';
 import Header from '../Header';

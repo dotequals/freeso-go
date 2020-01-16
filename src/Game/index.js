@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Dropdown from 'react-dropdown';
+import Dropdown from '@dotequals/react-dropdown';
 import { connect } from 'react-redux';
 
 import Container from '../Container';
@@ -26,7 +26,7 @@ class Game extends Component {
     this.state = {
       dropdown: [
         { label: game, value: game },
-        { label: `${game} + Volcanic IDE`, value: `${game}-ide`, disabled: true || process.platform === 'darwin' },
+        { label: `${game} + Volcanic IDE`, value: `${game}-ide`, disabled: process.platform === 'darwin' },
       ],
       launch: game,
       version: '',
@@ -58,7 +58,7 @@ class Game extends Component {
       this.setState({ 
         dropdown: [
           { label: game, value: game },
-          { label: `${game} + Volcanic IDE`, value: `${game}-ide`},
+          { label: `${game} + Volcanic IDE`, value: `${game}-ide`, disabled: process.platform === 'darwin' },
         ],
         launch: game,
         version
